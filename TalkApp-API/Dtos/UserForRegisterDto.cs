@@ -7,7 +7,7 @@ namespace TalkApp_API.Dtos
         [Required]
         public string UserName { get; set; }
         [Required]
-        [StringLength(10, MinimumLength = 4, ErrorMessage = "Password must be between  4 and 10")]
+        [StringLength(10, MinimumLength = 8, ErrorMessage = "Password must be between  8 and 10")]
         public string Password { get; set; }
     }
 }
