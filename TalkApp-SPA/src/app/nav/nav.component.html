@@ -1,16 +1,20 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Talk App</a>
+    <a class="navbar-brand" [routerLink]="['/home']">Talk App</a>
 
     <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home </a>
+      <li class="nav-item active" routerLinkActive="router-link-active">
+        <a class="nav-link" [routerLink]="['/members']">Partners </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">List</a>
+      <li class="nav-item" routerLinkActive="router-link-active">
+        <a class="nav-link" [routerLink]="['/lists']">List</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" tabindex="-1" aria-disabled="true"
+      <li class="nav-item" routerLinkActive="router-link-active">
+        <a
+          class="nav-link"
+          [routerLink]="['/messages']"
+          tabindex="-1"
+          aria-disabled="true"
           >Messages</a
         >
       </li>
