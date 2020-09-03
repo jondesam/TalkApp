@@ -14,11 +14,11 @@ namespace TalkApp_API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ITalkAppRepo _repo;
-        // private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public UsersController(ITalkAppRepo repo)
+        public UsersController(ITalkAppRepo repo, IMapper mapper)
         {
-            // this._mapper = mapper;
+            this._mapper = mapper;
             this._repo = repo;
         }
 
@@ -28,9 +28,9 @@ namespace TalkApp_API.Controllers
 
             var users = await _repo.GetUsers();
 
-            // var usersToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(users);
+            var usersToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(users);
 
-            return Ok(users);
+            return Ok(usersToReturn);
         }
 
         [HttpGet("{id}")]
@@ -38,9 +38,9 @@ namespace TalkApp_API.Controllers
         {
             var user = await _repo.GetUser(id);
 
-            // var userToReturn = _mapper.Map<UserForDetailedDto>(user);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(user);
 
-            return Ok(user);
+            return Ok(userToReturn);
         }
 
     }
