@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TalkApp_API.Data;
+using TalkApp_API.Dtos;
 
 namespace TalkApp_API.Controllers
 {
@@ -9,11 +12,13 @@ namespace TalkApp_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
-    { 
+    {
         private readonly ITalkAppRepo _repo;
+        // private readonly IMapper _mapper;
 
         public UsersController(ITalkAppRepo repo)
         {
+            // this._mapper = mapper;
             this._repo = repo;
         }
 
@@ -23,6 +28,8 @@ namespace TalkApp_API.Controllers
 
             var users = await _repo.GetUsers();
 
+            // var usersToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(users);
+
             return Ok(users);
         }
 
@@ -30,6 +37,8 @@ namespace TalkApp_API.Controllers
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _repo.GetUser(id);
+
+            // var userToReturn = _mapper.Map<UserForDetailedDto>(user);
 
             return Ok(user);
         }

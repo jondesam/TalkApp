@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -44,6 +45,7 @@ namespace TalkApp_API
 
             services.AddCors();
 
+            services.AddAutoMapper(typeof(TalkAppRepo).Assembly);
             services.AddScoped<IAuthRepo, AuthRepo>();
 
             services.AddScoped<ITalkAppRepo, TalkAppRepo>();

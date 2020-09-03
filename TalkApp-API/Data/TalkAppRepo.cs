@@ -28,14 +28,14 @@ namespace TalkApp_API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).FirstOrDefaultAsync(u => u.Id == id);
 
             return user;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            var users = await _context.Users.Include(p => p.Photos).ToListAsync();
+            var users = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).ToListAsync();
 
             return users;
         }
