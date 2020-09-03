@@ -37,11 +37,16 @@ namespace TalkApp_API
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
             services.AddCors();
 
             services.AddScoped<IAuthRepo, AuthRepo>();
+
+            services.AddScoped<ITalkAppRepo, TalkAppRepo>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
@@ -55,6 +60,7 @@ namespace TalkApp_API
                       ValidateAudience = false
                   };
               });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
