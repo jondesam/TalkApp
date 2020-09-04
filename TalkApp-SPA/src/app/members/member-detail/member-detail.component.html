@@ -12,6 +12,12 @@
         />
         <div class="card-body">
           <div>
+            <strong>Skills</strong>
+            <div *ngFor="let skill of user.skills">
+              <p>{{ skill.skillName }}</p>
+            </div>
+          </div>
+          <div>
             <strong>Location</strong>
             <p>{{ user.city }}, {{ user.country }}</p>
           </div>
@@ -41,6 +47,16 @@
             <p>{{ user.introduction }}</p>
             <h4>Looking for</h4>
             <p>{{ user.lookingFor }}</p>
+            <h4>Skills</h4>
+            <div *ngFor="let skill of user.skills">
+              <p>{{ skill.skillName }}</p>
+              <h5>Skill description</h5>
+              <p>{{ skill.description }}</p>
+              <h5>Links</h5>
+              <p>{{ skill.url1 }}</p>
+              <p>{{ skill.url2 }}</p>
+              <p>{{ skill.url3 }}</p>
+            </div>
           </tab>
 
           <tab heading="Photos">

@@ -18,6 +18,7 @@ namespace TalkApp_API.Helpers
                      opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url));
 
             CreateMap<Photo, PhotoForDetailedDto>();
+            CreateMap<Skill, SkillForDetailedDto>();
 
             CreateMap<UserForRegisterDto, User>();
 
