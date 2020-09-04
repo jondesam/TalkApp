@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
+ 
   model: any = {};
+
 
   constructor(
     public authService: AuthService,

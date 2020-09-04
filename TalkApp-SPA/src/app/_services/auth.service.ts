@@ -18,7 +18,7 @@ export class AuthService {
     return this.http.post(this.baseUrl + 'login', model).pipe(
       map((response: any) => {
         const resObj = response;
-
+        console.log(model);
         if (resObj) {
           localStorage.setItem('token', resObj.token);
           this.decodedToken = this.jwtHelper.decodeToken(resObj.token);
@@ -36,4 +36,3 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 }
- 
