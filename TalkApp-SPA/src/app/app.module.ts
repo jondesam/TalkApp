@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -19,6 +20,7 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './routes';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 
 export const tokenGetter = () => localStorage.getItem('token');
 
@@ -33,6 +35,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     ListsComponent,
     MessagesComponent,
     MemberCardComponent,
+    MemberDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     FormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
