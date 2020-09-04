@@ -2,5 +2,7 @@
 bin
 obj
 *.db
-appsettings.json 
- 
+appsettings.json
+talkapp.db
+talkapp.db-shm
+talkapp.db-wal
