@@ -22,17 +22,23 @@ export class MemberDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadUser();
+    this.route.data.subscribe((data) => {
+      console.log(data);
+
+      this.user = data['user'];
+    });
+
+    // this.loadUser();
   }
 
-  loadUser() {
-    this.userService.getUser(this.route.snapshot.params.id).subscribe(
-      (user: User) => {
-        this.user = user;
-      },
-      (error) => {
-        this.alerify.error(error);
-      }
-    );
-  }
+  // loadUser() {
+  //   this.userService.getUser(this.route.snapshot.params.id).subscribe(
+  //     (user: User) => {
+  //       this.user = user;
+  //     },
+  //     (error) => {
+  //       this.alerify.error(error);
+  //     }
+  //   );
+  // }
 }
