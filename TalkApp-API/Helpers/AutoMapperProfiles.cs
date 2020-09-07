@@ -21,7 +21,7 @@ namespace TalkApp_API.Helpers
             CreateMap<Skill, SkillForDetailedDto>();
 
             CreateMap<UserForRegisterDto, User>();
-
+            CreateMap<UserForUpdateDto, User>();
         }
 
     }

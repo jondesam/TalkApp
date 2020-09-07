@@ -15,12 +15,11 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', { static: true }) editForm: NgForm;
-
+  @ViewChild('editSkillForme', { static: true }) editSkillForm: NgForm;
   user: User;
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    console.log('event', event);
     if (this.editForm.dirty) {
       $event.returnValue = true;
     }
@@ -29,6 +28,8 @@ export class MemberEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private alertify: AlertifyService,
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -39,6 +40,26 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateUser() {
+    console.log(this.user);
+    console.log(this.editForm);
+
+    this.userService
+      .updateUser(this.authService.decodedToken.nameid, this.user)
+      .subscribe(
+        (next) => {
+          this.alertify.success('Profile updated');
+          if (this.editForm.reset !== undefined) {
+            this.editForm.reset(this.user);
+          } else {
+            this.editSkillForm.reset(this.user);
+          }
+        },
+        (error) => {
+          this.alertify.error(error);
+        }
+      );
+  }
+  updateSkill() {
     console.log(this.user, this.editForm);
     this.alertify.success('Profile updated!');
     this.editForm.reset(this.user);
