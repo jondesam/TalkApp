@@ -44,7 +44,7 @@ namespace TalkApp_API
             });
 
             services.AddCors();
-
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(TalkAppRepo).Assembly);
             services.AddScoped<IAuthRepo, AuthRepo>();
 

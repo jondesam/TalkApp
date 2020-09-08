@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using TalkApp_API.Data;
 using TalkApp_API.Models;
 
-namespace DatingApp.API.Data
+namespace TalkApp_API.Data
 {
     public class Seed
     {

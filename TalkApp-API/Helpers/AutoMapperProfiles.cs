@@ -22,6 +22,8 @@ namespace TalkApp_API.Helpers
 
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForUpdateDto, User>();
+            CreateMap<Photo, PhotoForReturnDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
         }
 
     }

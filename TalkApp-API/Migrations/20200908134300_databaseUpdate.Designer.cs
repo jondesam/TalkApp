@@ -9,8 +9,8 @@ using TalkApp_API.Data;
 namespace TalkApp_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200903025918_ExtendedUserClassAndPhotoAndSkill")]
-    partial class ExtendedUserClassAndPhotoAndSkill
+    [Migration("20200908134300_databaseUpdate")]
+    partial class databaseUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,9 +56,6 @@ namespace TalkApp_API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PublicId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SkillName")

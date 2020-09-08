@@ -3,41 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TalkApp_API.Migrations
 {
-    public partial class ExtendedUserClassAndPhotoAndSkill : Migration
+    public partial class databaseUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "City",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Country",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "Users",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<string>(
-                name: "Introduction",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastActive",
-                table: "Users",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<string>(
-                name: "LookingFor",
-                table: "Users",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserName = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<byte[]>(nullable: true),
+                    PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LastActive = table.Column<DateTime>(nullable: false),
+                    Introduction = table.Column<string>(nullable: true),
+                    LookingFor = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Photos",
@@ -71,7 +60,6 @@ namespace TalkApp_API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SkillName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    PublicId = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false),
                     Url1 = table.Column<string>(nullable: true),
                     Url2 = table.Column<string>(nullable: true),
@@ -107,29 +95,8 @@ namespace TalkApp_API.Migrations
             migrationBuilder.DropTable(
                 name: "Skills");
 
-            migrationBuilder.DropColumn(
-                name: "City",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Country",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Created",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Introduction",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "LastActive",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "LookingFor",
-                table: "Users");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
