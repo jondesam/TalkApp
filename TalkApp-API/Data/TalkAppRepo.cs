@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TalkApp_API.Models;
@@ -37,6 +38,15 @@ namespace TalkApp_API.Data
             var photo = await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
             return photo;
         }
+
+        public async Task<Photo> GetMainPhotoForUser(int userId)
+        {
+            // Same as below
+            // await _context.Photos.FirstOrDefaultAsync(u => u.UserId == userId && u.IsMain);
+            return await _context.Photos.Where(u => u.UserId == userId).
+            FirstOrDefaultAsync(p => p.IsMain);
+        }
+        
         public async Task<IEnumerable<User>> GetUsers()
         {
             var users = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).ToListAsync();

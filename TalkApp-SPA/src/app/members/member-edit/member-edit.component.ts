@@ -64,4 +64,8 @@ export class MemberEditComponent implements OnInit {
     this.alertify.success('Profile updated!');
     this.editForm.reset(this.user);
   }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
+  }
 }

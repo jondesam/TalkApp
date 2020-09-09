@@ -98,5 +98,32 @@ namespace TalkApp_API.Controllers
 
             return BadRequest("Could not add the photo");
         }
+
+        [HttpPost("{photoId}/setMain")]
+        public async Task<IActionResult> SetMain(int userId, int photoId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var user = await _repo.GetUser(userId);
+
+            if (!user.Photos.Any(p => p.Id == photoId))
+                return Unauthorized("No photo matched");
+
+            var photoFromRepo = await _repo.GetPhoto(photoId);
+
+            if (photoFromRepo.IsMain)
+                return BadRequest("This is already the main photo");
+
+            var currentMainPhoto = await _repo.GetMainPhotoForUser(userId);
+            currentMainPhoto.IsMain = false;
+
+            photoFromRepo.IsMain = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Could not set photo to main");
+        }
     }
 }
