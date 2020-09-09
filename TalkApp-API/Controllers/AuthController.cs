@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,9 +19,12 @@ namespace TalkApp_API.Controllers
     {
         private readonly IAuthRepo _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepo repo, IConfiguration config)
+        private readonly IMapper _mapper;
+
+        public AuthController(IAuthRepo repo, IConfiguration config, IMapper mapper)
         {
             _config = config;
+            _mapper = mapper;
             _repo = repo;
         }
 
@@ -73,9 +77,12 @@ namespace TalkApp_API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            var user = _mapper.Map<UserForReturnDto>(userFromRepo);
+
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user
             });
         }
     }
