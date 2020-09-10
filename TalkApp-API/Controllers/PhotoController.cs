@@ -125,5 +125,51 @@ namespace TalkApp_API.Controllers
 
             return BadRequest("Could not set photo to main");
         }
+
+        [HttpDelete("{photoId}")]
+        public async Task<IActionResult> DeletePhoto(int userId, int photoId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var user = await _repo.GetUser(userId);
+
+            if (!user.Photos.Any(p => p.Id == photoId))
+                return Unauthorized();
+
+            var photoFromRepo = await _repo.GetPhoto(photoId);
+
+            if (photoFromRepo.IsMain)
+                return BadRequest("You cannot delete your main photo");
+
+
+            if (photoFromRepo.PublicId != null)
+            {
+                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+                var result = _cloudinary.Destroy(deleteParams);
+
+                if (result.Result == "ok")
+                {
+                    _repo.Delete(photoFromRepo);
+                }
+            }
+
+            if (photoFromRepo.PublicId == null)
+            {
+                _repo.Delete(photoFromRepo);
+            }
+
+            if (await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            else
+            {
+                throw new Exception("ERROR");
+
+            }
+
+            // return BadRequest("Failed to delete photo");
+        }
     }
 }
