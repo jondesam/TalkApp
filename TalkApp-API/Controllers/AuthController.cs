@@ -37,14 +37,14 @@ namespace TalkApp_API.Controllers
             if (await _repo.UserExists(userForRegisterDto.UserName))
                 return BadRequest("Username already exist");
 
-            var userToCreate = new User
-            {
-                UserName = userForRegisterDto.UserName
-            };
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 
-            return StatusCode(201);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id }, userToReturn);
+
         }
 
         [HttpPost("login")]
