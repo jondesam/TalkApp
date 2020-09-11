@@ -14,7 +14,7 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   currentUser: User;
-  mainPhotoUrl = new BehaviorSubject<string>('./../../assets/user.png');
+  mainPhotoUrl = new BehaviorSubject<string>('../../assets/user.png');
   currentPhotoUrl = this.mainPhotoUrl.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -28,7 +28,7 @@ export class AuthService {
       map((response: any) => {
         const resObj = response;
 
-        console.log(model);
+        console.log('resObj', resObj);
 
         if (resObj) {
           localStorage.setItem('token', resObj.token);
@@ -36,7 +36,7 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(resObj.user));
 
           this.decodedToken = this.jwtHelper.decodeToken(resObj.token);
-          this.currentUser = resObj.token;
+          this.currentUser = resObj.user;
           console.log('decodedToken', this.decodedToken);
           this.changeMemberPhoto(this.currentUser.photoUrl);
         }
