@@ -21,20 +21,19 @@
         />
 
         <div class="card-body">
-          <div>
-            <strong>Skills</strong>
+          <div *ngIf="user.skills">
             <div *ngFor="let skill of user.skills">
+              <strong>Skills</strong>
               <p>{{ skill.skillName }}</p>
             </div>
           </div>
-          <div>
+          <div *ngIf="user.city">
             <strong>Location</strong>
-            <p>{{ user.city }}, {{ user?.country }}</p>
+            <p>{{ user.city }}, {{ user.country }}</p>
           </div>
-
           <div>
             <strong>Last Active</strong>
-            <p>{{ user?.lastActive }}</p>
+            <p>{{ user.lastActive | timeago }}</p>
           </div>
           <div>
             <strong>Member since</strong>

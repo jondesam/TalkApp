@@ -62,6 +62,7 @@ namespace TalkApp_API
                       ValidateAudience = false
                   };
               });
+            services.AddScoped<LogUserActivity>();
 
         }
 
