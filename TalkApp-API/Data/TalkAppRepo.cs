@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TalkApp_API.Helpers;
 using TalkApp_API.Models;
 
 namespace TalkApp_API.Data
@@ -46,12 +47,12 @@ namespace TalkApp_API.Data
             return await _context.Photos.Where(u => u.UserId == userId).
             FirstOrDefaultAsync(p => p.IsMain);
         }
-        
-        public async Task<IEnumerable<User>> GetUsers()
-        {
-            var users = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).ToListAsync();
 
-            return users;
+        public async Task<PagedList<User>> GetUsers(UserParams userParams)
+        {
+            var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills);
+
+            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<bool> SaveAll()
