@@ -50,7 +50,28 @@ namespace TalkApp_API.Data
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills);
+            var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills).OrderByDescending(u => u.LastActive).AsQueryable();
+
+            users = users.Where(user => user.Id != userParams.UserId);
+
+            if (!string.IsNullOrEmpty(userParams.Search))
+            {
+                users = users.Where(u => u.Skills.Any(s => s.SkillName.Contains(userParams.Search)));
+            }
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending(u => u.Created);
+                        break;
+
+                    default:
+                        users = users.OrderByDescending(u => u.LastActive);
+                        break;
+                }
+            }
 
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }

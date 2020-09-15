@@ -1,11 +1,73 @@
+<div class="text-center mt-3">
+  <h3>Total {{ pagination.totalItems }} found</h3>
+</div>
+
 <div class="container mt-5">
+  <form class="form-inline" (ngSubmit)="loadUsers()" novalidate>
+    <button
+      type="button"
+      class="btn btn-info"
+      (click)="resetFilters()"
+      style="margin-left: 10px"
+    >
+      Reset Filter
+    </button>
+    <div>
+      <button
+        type="button"
+        name="orderBy"
+        class="btn btn-primary"
+        [(ngModel)]="userParams.orderBy"
+        (click)="loadUsers()"
+        btnRadio="lastActive"
+      >
+        Last Active
+      </button>
+      <button
+        type="button"
+        name="orderBy"
+        class="btn btn-primary"
+        [(ngModel)]="userParams.orderBy"
+        (click)="loadUsers()"
+        btnRadio="created"
+      >
+        Newest Members
+      </button>
+    </div>
+
+    <div class="col">
+      <div class="btn-group float-right">
+        <div class="form-group">
+          <input
+            #newHero
+            type="string"
+            class="form-control ml-20"
+            style="width: 70px"
+            id="search"
+            [(ngModel)]="userParams.search"
+            name="search"
+          />
+
+          <button
+            type="button"
+            name="search"
+            class="btn btn-primary"
+            (click)="loadUsers()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <br />
   <div class="row">
     <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
 </div>
-
 <div class="d-flex justify-content-center">
   <pagination
     [boundaryLinks]="true"

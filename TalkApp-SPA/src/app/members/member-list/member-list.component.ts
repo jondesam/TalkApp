@@ -13,6 +13,7 @@ import { PaginatedResult, Pagination } from 'src/app/_models/Pagination';
 export class MemberListComponent implements OnInit {
   users: User[];
   pagination: Pagination;
+  userParams: any = {};
 
   constructor(
     private userService: UserService,
@@ -28,8 +29,10 @@ export class MemberListComponent implements OnInit {
       this.pagination = data['users'].pagination;
     });
     // this.loadUsers();
+    this.userParams.orderBy = 'create';
+    this.userParams.search = '';
   }
-  
+
   pageChanged(event: any): void {
     console.log(event);
     this.pagination.currentPage = event.page;
@@ -40,14 +43,24 @@ export class MemberListComponent implements OnInit {
 
   loadUsers() {
     this.userService
-      .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+      .getUsers(
+        this.pagination.currentPage,
+        this.pagination.itemsPerPage,
+        this.userParams
+      )
       .subscribe(
         (res: PaginatedResult<User[]>) => {
           this.users = res.result;
+          this.pagination = res.pagination;
         },
         (error) => {
           this.alertify.error(error);
         }
       );
+  }
+
+  resetFilters() {
+    this.userParams.search = '';
+    this.loadUsers();
   }
 }

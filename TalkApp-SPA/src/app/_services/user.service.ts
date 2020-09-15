@@ -19,7 +19,11 @@ export class UserService {
   baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
-  getUsers(pageNumber?, itemsPerPage?): Observable<PaginatedResult<User[]>> {
+  getUsers(
+    pageNumber?,
+    itemsPerPage?,
+    userParams?
+  ): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
     >();
@@ -29,6 +33,11 @@ export class UserService {
     if (pageNumber != null && itemsPerPage !== null) {
       params = params.append('pageNumber', pageNumber);
       params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (userParams != null) {
+      params = params.append('orderBy', userParams.orderBy);
+      params = params.append('search', userParams.search);
     }
 
     return this.http

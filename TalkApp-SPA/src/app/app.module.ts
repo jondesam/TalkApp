@@ -9,6 +9,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -55,6 +56,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    ButtonsModule.forRoot(),
     BsDropdownModule.forRoot(),
     PaginationModule.forRoot(),
     TabsModule.forRoot(),
