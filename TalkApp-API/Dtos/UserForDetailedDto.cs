@@ -17,6 +17,8 @@ namespace TalkApp_API.Dtos
         public string PhotoUrl { get; set; }
         public ICollection<PhotoForDetailedDto> Photos { get; set; }
         public ICollection<SkillForDetailedDto> Skills { get; set; }
+        public ICollection<LikeForDetailedDto> Likers { get; set; }
+        public ICollection<LikeForDetailedDto> Likees { get; set; }
 
     }
 }

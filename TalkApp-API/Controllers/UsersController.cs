@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using TalkApp_API.Data;
 using TalkApp_API.Dtos;
 using TalkApp_API.Helpers;
+using TalkApp_API.Models;
 
 namespace TalkApp_API.Controllers
 {
@@ -29,7 +30,6 @@ namespace TalkApp_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
-
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             var userFromRopo = await _repo.GetUser(currentUserId);
@@ -69,6 +69,34 @@ namespace TalkApp_API.Controllers
                 return NoContent();
 
             throw new Exception($"Updating user {id} failed on save");
+        }
+
+        [HttpPost("{userId}/like/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var like = await _repo.GetLike(userId, recipientId);
+
+            if (like != null)
+                return BadRequest("You already like this user. Would you like to cancel it?");
+
+            if (await _repo.GetUser(recipientId) == null)
+                return NotFound();
+
+            like = new Like
+            {
+                LikerId = userId,
+                LikeeId = recipientId
+            };
+
+            _repo.Add<Like>(like);
+
+            if (await _repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to like user");
         }
 
     }

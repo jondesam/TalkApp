@@ -19,12 +19,13 @@ namespace TalkApp_API.Helpers
 
             CreateMap<Photo, PhotoForDetailedDto>();
             CreateMap<Skill, SkillForDetailedDto>();
+            CreateMap<Like, LikeForDetailedDto>();
 
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForUpdateDto, User>();
             CreateMap<Photo, PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto, Photo>();
-            CreateMap<UserForRegisterDto, User>();
+
         }
 
     }

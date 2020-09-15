@@ -9,7 +9,7 @@ using TalkApp_API.Data;
 namespace TalkApp_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200908134300_databaseUpdate")]
+    [Migration("20200915222901_databaseUpdate")]
     partial class databaseUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,21 @@ namespace TalkApp_API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
+
+            modelBuilder.Entity("TalkApp_API.Models.Like", b =>
+                {
+                    b.Property<int>("LikerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikeeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("LikerId", "LikeeId");
+
+                    b.HasIndex("LikeeId");
+
+                    b.ToTable("Likes");
+                });
 
             modelBuilder.Entity("TalkApp_API.Models.Photo", b =>
                 {
@@ -116,6 +131,21 @@ namespace TalkApp_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TalkApp_API.Models.Like", b =>
+                {
+                    b.HasOne("TalkApp_API.Models.User", "Likee")
+                        .WithMany("Likers")
+                        .HasForeignKey("LikeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TalkApp_API.Models.User", "Liker")
+                        .WithMany("Likees")
+                        .HasForeignKey("LikerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TalkApp_API.Models.Photo", b =>
