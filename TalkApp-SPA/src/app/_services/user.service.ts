@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
-import { PaginatedResult } from '../_models/Pagination';
+import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
 
 // const httpOptions = {
@@ -22,7 +22,8 @@ export class UserService {
   getUsers(
     pageNumber?,
     itemsPerPage?,
-    userParams?
+    userParams?,
+    likesParam?
   ): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
@@ -38,6 +39,14 @@ export class UserService {
     if (userParams != null) {
       params = params.append('orderBy', userParams.orderBy);
       params = params.append('search', userParams.search);
+    }
+
+    if (likesParam === 'Likers') {
+      params = params.append('Likers', 'true');
+    }
+
+    if (likesParam === 'Likees') {
+      params = params.append('Likees', 'true');
     }
 
     return this.http
@@ -80,5 +89,12 @@ export class UserService {
 
   deletePhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
+  }
+
+  sendLike(userId: number, recipientId: number) {
+    return this.http.post(
+      this.baseUrl + 'users/' + userId + '/like/' + recipientId,
+      {}
+    );
   }
 }
