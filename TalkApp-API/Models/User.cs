@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TalkApp_API.Models;
 
 namespace TalkApp_API.Models
 {
@@ -19,6 +20,8 @@ namespace TalkApp_API.Models
         public ICollection<Skill> Skills { get; set; }
         public ICollection<Like> Likers { get; set; }
         public ICollection<Like> Likees { get; set; }
+        public virtual ICollection<Message> MessagesSent { get; set; }
+        public virtual ICollection<Message> MessagesReceived { get; set; }
 
     }
 }

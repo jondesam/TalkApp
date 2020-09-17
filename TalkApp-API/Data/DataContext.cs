@@ -1,4 +1,3 @@
-
 using TalkApp_API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +11,7 @@ namespace TalkApp_API.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //Make primary key in combination of LikerId and LikeeId
@@ -28,6 +28,16 @@ namespace TalkApp_API.Data
                .HasOne(u => u.Liker)
                .WithMany(u => u.Likees)
                .HasForeignKey(u => u.LikerId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+               .HasOne(u => u.Sender)
+               .WithMany(m => m.MessagesSent)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+               .HasOne(u => u.Recipient)
+               .WithMany(m => m.MessagesReceived)
                .OnDelete(DeleteBehavior.Restrict);
         }
     }
