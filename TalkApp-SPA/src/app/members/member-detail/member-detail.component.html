@@ -34,7 +34,9 @@
         <div class="card-footer">
           <div class="btn-group d-flex">
             <button class="btn btn-primary w-100">Like</button>
-            <button class="btn btn-success w-100">Message</button>
+            <button class="btn btn-success w-100" (click)="selectTab(2)">
+              Message
+            </button>
           </div>
         </div>
       </div>
@@ -68,7 +70,9 @@
             ></ngx-gallery>
           </tab>
 
-          <tab heading="Messages"> <p>messages here</p> </tab>
+          <tab heading="Messages">
+            <app-member-messages [recipientId]="user.id"></app-member-messages>
+          </tab>
         </tabset>
       </div>
     </div>

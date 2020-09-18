@@ -33,6 +33,10 @@ export class MemberDetailComponent implements OnInit {
 
       this.user = data['user'];
     });
+    this.route.queryParams.subscribe((params) => {
+      const selectedTab = params['tab'];
+      this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
+    });
 
     this.galleryOptions = [
       {
@@ -60,6 +64,10 @@ export class MemberDetailComponent implements OnInit {
       });
     }
     return imageUrls;
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
   }
   // loadUser() {
   //   this.userService.getUser(this.route.snapshot.params.id).subscribe(
