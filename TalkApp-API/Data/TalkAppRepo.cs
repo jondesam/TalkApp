@@ -116,9 +116,9 @@ namespace TalkApp_API.Data
                 u.LikerId == userId && u.LikeeId == recipientId);
         }
 
-        public async Task<Message> GetMessage(int id)
+        public async Task<Message> GetMessage(int messageId)
         {
-            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
         }
 
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
