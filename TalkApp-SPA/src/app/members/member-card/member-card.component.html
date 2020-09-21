@@ -1,11 +1,45 @@
-<div class="card mb-4">
-  <div class="card-img-wrapper">
-    <img
-      class="card-img-top"
-      src="{{ user.photoUrl || 'assets/user.png' }}"
-      alt="{{ user.userName }}"
-    />
-    <ul class="list-inline member-icons animate text-center">
+<div class="card m-2 p-2">
+  <div class="row no-gutters">
+    <div class="col-lg-3 col-md-3 col-sm-4 text-left">
+      <img
+        class="float:left"
+        src="{{ user.photoUrl || 'assets/user.png' }}"
+        alt="{{ user.userName }}"
+      />
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ user.userName }}</h5>
+        <div *ngFor="let skill of user.skills">
+          <p>
+            <strong>{{ skill.skillName }}</strong>
+          </p>
+          <div *ngIf="skill.url1">
+            <p>{{ skill.url1 }}</p>
+          </div>
+          <div *ngIf="skill.url2">
+            <p>{{ skill.url2 }}</p>
+          </div>
+          <div *ngIf="skill.url3">
+            <p>{{ skill.url3 }}</p>
+          </div>
+        </div>
+
+        <p>{{ user.city }}, {{ user.country }}</p>
+        <p class="card-text">
+          {{ user.introduction }}
+        </p>
+        <p>{{ user.lookingFor }}</p>
+        <p class="card-text">
+          <small class="text-muted"
+            >Last active {{ user.lastActive | timeago }}</small
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="card-body p-1">
+    <ul class="list-inline member-icons text-left ml-3">
       <li class="list-inline-item">
         <button class="btn btn-primary" [routerLink]="['/members/', user.id]">
           <i class="fa fa-user"></i>
@@ -26,11 +60,6 @@
         </button>
       </li>
     </ul>
-  </div>
-  <div class="card-body p-1">
-    <h6 class="card-title text-center mb-1">
-      <i class="fa fa-user"></i> {{ user.userName }}
-    </h6>
-    <p class="card-text text-muted text-center">{{ user.city }}</p>
+    <p></p>
   </div>
 </div>

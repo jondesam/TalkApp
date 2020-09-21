@@ -26,6 +26,7 @@ export class UserService {
     userParams?,
     likesParam?
   ): Observable<PaginatedResult<User[]>> {
+    
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
     >();

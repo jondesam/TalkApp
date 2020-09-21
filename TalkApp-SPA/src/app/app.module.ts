@@ -10,6 +10,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -74,6 +75,7 @@ export const tokenGetter = () => localStorage.getItem('token');
         disallowedRoutes: ['localhost:5000/api/auth'],
       },
     }),
+    ModalModule.forRoot(),
   ],
   providers: [
     AuthService,

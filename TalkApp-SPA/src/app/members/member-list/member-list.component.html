@@ -2,7 +2,7 @@
   <h3>Total {{ pagination.totalItems }} found</h3>
 </div>
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
   <form class="form-inline" (ngSubmit)="loadUsers()" novalidate>
     <button
       type="button"
@@ -42,7 +42,7 @@
             #newHero
             type="string"
             class="form-control ml-20"
-            style="width: 70px"
+            style="width: 170px"
             id="search"
             [(ngModel)]="userParams.search"
             name="search"
@@ -63,7 +63,7 @@
 
   <br />
   <div class="row">
-    <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
+    <div *ngFor="let user of users" class="">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
