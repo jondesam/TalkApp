@@ -1,5 +1,4 @@
 using System;
-using TalkApp_API.Models;
 
 namespace TalkApp_API.Models
 {

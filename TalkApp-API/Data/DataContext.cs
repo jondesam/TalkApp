@@ -12,6 +12,7 @@ namespace TalkApp_API.Data
         public DbSet<Skill> Skills { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Rate> Rates { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //Make primary key in combination of LikerId and LikeeId
@@ -36,9 +37,21 @@ namespace TalkApp_API.Data
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Message>()
-               .HasOne(u => u.Recipient)
-               .WithMany(m => m.MessagesReceived)
-               .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Rate>()
+                .HasOne(u => u.Rater)
+                .WithMany(m => m.Ratees)
+                .HasForeignKey(u => u.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Rate>()
+                .HasOne(u => u.Ratee)
+                .WithMany(m => m.Raters)
+                .HasForeignKey(m => m.RecipientId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -50,7 +50,9 @@ namespace TalkApp_API.Data
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Likers).Include(p => p.Likees).OrderByDescending(u => u.LastActive).AsQueryable();
+            var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Likers).Include(p => p.Likees)
+            .Include(p => p.Raters).Include(p => p.Ratees)
+            .OrderByDescending(u => u.LastActive).AsQueryable();
 
             users = users.Where(user => user.Id != userParams.UserId);
 
@@ -163,5 +165,42 @@ namespace TalkApp_API.Data
 
             return messages;
         }
+
+        public async Task<PagedList<Rate>> GetRates(RateParams rateParams)
+        {
+            var rates = _context.Rates.AsNoTracking()
+                            .Include(u => u.Rater)
+                            .ThenInclude(p => p.Photos).AsNoTracking()
+                            // .Include(u => u.Ratee)
+                            // .ThenInclude(p => p.Photos)
+                            // .AsNoTracking()
+                            .AsQueryable();
+
+            rates.Where(u => u.RecipientId == rateParams.UserId);
+
+            rates = rates.OrderByDescending(d => d.RateMade);
+
+            return await PagedList<Rate>.CreateAsync(rates, rateParams.PageNumber, rateParams.PageSize);
+        }
+
+        public bool IsRated(User rater, User ratee)
+        {
+            var rates = _context.Rates.Where(r => r.SenderId == rater.Id).Where(r => r.RecipientId == ratee.Id);
+
+            if (rates.Count() > 0)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        public async Task<Rate> GetRate(int rateId)
+        {
+            return await _context.Rates.FirstOrDefaultAsync(m => m.Id == rateId);
+        }
+
+
     }
 }

@@ -16,7 +16,22 @@ namespace TalkApp_API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
 
-            modelBuilder.Entity("TalkApp_API.Model.Message", b =>
+            modelBuilder.Entity("TalkApp_API.Models.Like", b =>
+                {
+                    b.Property<int>("LikerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikeeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("LikerId", "LikeeId");
+
+                    b.HasIndex("LikeeId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("TalkApp_API.Models.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,21 +70,6 @@ namespace TalkApp_API.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("TalkApp_API.Models.Like", b =>
-                {
-                    b.Property<int>("LikerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikeeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LikerId", "LikeeId");
-
-                    b.HasIndex("LikeeId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("TalkApp_API.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -99,6 +99,42 @@ namespace TalkApp_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("TalkApp_API.Models.Rate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RateMade")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RaterPhotoUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RaterUserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Rates");
                 });
 
             modelBuilder.Entity("TalkApp_API.Models.Skill", b =>
@@ -170,21 +206,6 @@ namespace TalkApp_API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TalkApp_API.Model.Message", b =>
-                {
-                    b.HasOne("TalkApp_API.Models.User", "Recipient")
-                        .WithMany("MessagesReceived")
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TalkApp_API.Models.User", "Sender")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TalkApp_API.Models.Like", b =>
                 {
                     b.HasOne("TalkApp_API.Models.User", "Likee")
@@ -200,12 +221,42 @@ namespace TalkApp_API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TalkApp_API.Models.Message", b =>
+                {
+                    b.HasOne("TalkApp_API.Models.User", "Recipient")
+                        .WithMany("MessagesReceived")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TalkApp_API.Models.User", "Sender")
+                        .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TalkApp_API.Models.Photo", b =>
                 {
                     b.HasOne("TalkApp_API.Models.User", "User")
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TalkApp_API.Models.Rate", b =>
+                {
+                    b.HasOne("TalkApp_API.Models.User", "Ratee")
+                        .WithMany("Raters")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TalkApp_API.Models.User", "Rater")
+                        .WithMany("Ratees")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

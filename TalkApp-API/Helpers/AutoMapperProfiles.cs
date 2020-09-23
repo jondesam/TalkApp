@@ -23,14 +23,21 @@ namespace TalkApp_API.Helpers
 
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForUpdateDto, User>();
+            
             CreateMap<Photo, PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto, Photo>();
+
             CreateMap<MessageForCreationDto, Message>().ReverseMap();
             CreateMap<Message, MessageToReturnDto>()
                 .ForMember(m => m.SenderPhotoUrl, src => src
                      .MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(m => m.RecipientPhotoUrl, src => src
                       .MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
+
+            CreateMap<RateForCreationDto, Rate>().ReverseMap();
+            CreateMap<Rate, RateForReturnDto>()
+                .ForMember(m => m.RaterPhotoUrl, src => src
+                    .MapFrom(u => u.Rater.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
 
     }
