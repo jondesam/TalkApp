@@ -12,8 +12,7 @@ using TalkApp_API.Models;
 
 namespace TalkApp_API.Controllers
 {
-    [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -30,11 +29,15 @@ namespace TalkApp_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
-            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            if (User.FindFirst(ClaimTypes.NameIdentifier) != null)
+            {
+                var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var userFromRopo = await _repo.GetUser(currentUserId);
+                var userFromRopo = await _repo.GetUser(currentUserId);
 
-            userParams.UserId = currentUserId;
+                userParams.UserId = currentUserId;
+            }
+
 
             var users = await _repo.GetUsers(userParams);
 
@@ -54,7 +57,8 @@ namespace TalkApp_API.Controllers
 
             return Ok(userToReturn);
         }
-
+        [ServiceFilter(typeof(LogUserActivity))]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
@@ -70,7 +74,8 @@ namespace TalkApp_API.Controllers
 
             throw new Exception($"Updating user {id} failed on save");
         }
-
+        [ServiceFilter(typeof(LogUserActivity))]
+        [Authorize]
         [HttpPost("{userId}/like/{recipientId}")]
         public async Task<IActionResult> LikeUser(int userId, int recipientId)
         {

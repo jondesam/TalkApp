@@ -52,21 +52,27 @@ namespace TalkApp_API.Data
         {
             var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Likers).Include(p => p.Likees)
             .Include(p => p.Raters).Include(p => p.Ratees)
-            .OrderByDescending(u => u.LastActive).AsQueryable();
+            .OrderByDescending(u => u.Created).AsQueryable();
 
-            users = users.Where(user => user.Id != userParams.UserId);
+            users = users.Where(user => user.Skills.Count > 0);
 
-            if (userParams.Likers)
+            if (userParams.UserId > 0)
             {
-                var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
-                users = users.Where(u => userLikers.Contains(u.Id));
+                users = users.Where(user => user.Id != userParams.UserId);
+
+                if (userParams.Likers)
+                {
+                    var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+                    users = users.Where(u => userLikers.Contains(u.Id));
+                }
+
+                if (userParams.Likees)
+                {
+                    var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+                    users = users.Where(u => userLikees.Contains(u.Id));
+                }
             }
 
-            if (userParams.Likees)
-            {
-                var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
-                users = users.Where(u => userLikees.Contains(u.Id));
-            }
 
             if (!string.IsNullOrEmpty(userParams.Search))
             {

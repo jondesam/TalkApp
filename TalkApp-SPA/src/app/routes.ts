@@ -1,5 +1,5 @@
 import { Routes, RunGuardsAndResolvers } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
@@ -15,24 +15,24 @@ import { MessagesResolver } from './_resolvers/messages.resolver';
 
 export const appRoutes: Routes = [
   {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
     path: '',
-    component: HomeComponent,
+    component: MemberListComponent,
+    resolve: { users: MemberListResolver },
+  },
+  {
+    path: 'members/:id',
+    component: MemberDetailComponent,
+    resolve: { user: MemberDetailResolver },
   },
   {
     path: '',
     runGuardsAndResolvers: 'always' as RunGuardsAndResolvers,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'members',
-        component: MemberListComponent,
-        resolve: { users: MemberListResolver },
-      },
-      {
-        path: 'members/:id',
-        component: MemberDetailComponent,
-        resolve: { user: MemberDetailResolver },
-      },
       {
         path: 'member/edit',
         component: MemberEditComponent,
