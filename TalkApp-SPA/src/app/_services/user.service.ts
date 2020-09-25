@@ -164,4 +164,40 @@ export class UserService {
       )
       .subscribe();
   }
+
+  getRates(userId: number, pageNumber?, itemsPerPage?, messageContainer?) {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
+      Message[]
+    >();
+
+    let params = new HttpParams();
+
+    params = params.append('RateContainer', messageContainer);
+
+    if (pageNumber != null && itemsPerPage != null) {
+      params = params.append('pageNumber', pageNumber);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http
+      .get<Message[]>(this.baseUrl + 'users/' + userId + '/rates', {
+        observe: 'response',
+        params,
+      })
+      .pipe(
+        map((response) => {
+          console.log(response);
+
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') !== null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          console.log('paginatedResult', paginatedResult);
+
+          return paginatedResult;
+        })
+      );
+  }
 }

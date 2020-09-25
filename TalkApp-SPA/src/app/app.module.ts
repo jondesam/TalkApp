@@ -11,12 +11,13 @@ import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { RatingModule } from 'ng-starrating';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
 import { NavComponent } from './nav/nav.component';
 import { AuthService } from './_services/auth.service';
-import { HomeComponent } from './home/home.component';
+
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +36,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { FileUploadModule } from 'ng2-file-upload';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
+
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 export const tokenGetter = () => localStorage.getItem('token');
 
@@ -43,7 +45,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     AppComponent,
     ValueComponent,
     NavComponent,
-    HomeComponent,
+
     RegisterComponent,
     MemberListComponent,
     ListsComponent,
@@ -76,6 +78,7 @@ export const tokenGetter = () => localStorage.getItem('token');
       },
     }),
     ModalModule.forRoot(),
+    RatingModule,
   ],
   providers: [
     AuthService,

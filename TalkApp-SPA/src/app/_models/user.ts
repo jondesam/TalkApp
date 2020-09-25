@@ -1,5 +1,6 @@
 import { Photo } from './photo';
 import { Skill } from './skill';
+import { Rate } from './rate';
 
 export interface User {
   id: number;
@@ -13,4 +14,5 @@ export interface User {
   lookingFor?: string;
   photos?: Photo[];
   skills?: Skill[];
+  raters?: Rate[];
 }
