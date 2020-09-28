@@ -1,166 +1,139 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-sm-4">
-      <h1>Your Profile</h1>
-    </div>
-    <div class="col-sm-8">
-      <div *ngIf="editForm.dirty" class="alert alert-info">
-        <strong>Information: </strong>You have made changes. Any unsaved changes
-        will be lost!
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card">
-        <img
-          class="card-img-top img-thumbnail"
-          src="{{ mainPhotoUrl || 'assets/user.png' }}"
-          alt="{{ user?.userName }}"
-        />
-
-        <div class="card-body">
-          <div *ngIf="user.skills">
+<div class="container">
+  <div class="mt-4">
+    <div class="card shadow p-4 colxl-12">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-128x128">
+              <img
+                class="profile float:left"
+                src="{{ user.photoUrl || 'assets/user.png' }}"
+                alt="{{ user.userName }}"
+              />
+            </figure>
+          </div>
+          <div class="media-content pl-2 pr-2">
+            <p class="title is-4">{{ user.userName }}</p>
             <div *ngFor="let skill of user.skills">
-              <strong>Skills</strong>
-              <p>{{ skill.skillName }}</p>
+              <p>
+                Skills : <strong> {{ skill.skillName }}</strong>
+              </p>
+            </div>
+
+            <div *ngIf="user.city">
+              <p>
+                Location : <strong>{{ user.city }}, {{ user.country }}</strong>
+              </p>
             </div>
           </div>
-          <div *ngIf="user.city">
-            <strong>Location</strong>
-            <p>{{ user.city }}, {{ user.country }}</p>
-          </div>
-          <div>
-            <strong>Last Active</strong>
-            <p>{{ user.lastActive | timeago }}</p>
-          </div>
-          <div>
-            <strong>Member since</strong>
-            <p>{{ user?.created | date: "mediumDate" }}</p>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="col-sm-8">
-      <div class="tab-panel">
-        <tabset class="member-tabset">
-          <tab heading="Edit Profile">
-            <form
-              #editForm="ngForm"
-              id="editInfoForm"
-              (ngSubmit)="updateUser()"
-            >
-              <h4>Description</h4>
+
+        <div class="content">
+          <form #editForm="ngForm" id="editInfoForm" (ngSubmit)="updateUser()">
+            <h4>Description</h4>
+            <textarea
+              name="introduction"
+              rows="6"
+              class="form-control textarea"
+              [(ngModel)]="user.introduction"
+            ></textarea>
+            <h4>Looking for</h4>
+            <textarea
+              name="lookingFor"
+              rows="6"
+              class="form-control textarea"
+              [(ngModel)]="user.lookingFor"
+            ></textarea>
+
+            <div class="form-inline mt-3">
+              <label for="city">City </label>
+              <input
+                class="form-control input ml-2 mr-3"
+                type="text"
+                name="city"
+                [(ngModel)]="user.city"
+              />
+              <label for="city">Country</label>
+              <input
+                class="form-control input ml-2"
+                type="text"
+                name="country"
+                [(ngModel)]="user.country"
+              />
+            </div>
+            <div class="card-footer mt-1">
+              <button
+                [disabled]="!editForm.dirty"
+                form="editInfoForm"
+                class="btn btn-primary"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+
+          <form
+            #editSkillForm="ngForm"
+            id="editSkillForm"
+            (ngSubmit)="updateUser()"
+          >
+            <div class="mt-2" *ngFor="let skill of user.skills">
+              <h4 class="mt-2">Skills</h4>
+              <input
+                class="form-control input"
+                type="text"
+                name="skill"
+                [(ngModel)]="skill.skillName"
+              />
+
+              <h4>Skill Description</h4>
               <textarea
-                name="introduction"
-                rows="6"
-                class="form-control"
-                [(ngModel)]="user.introduction"
-              ></textarea>
-              <h4>Looking for</h4>
-              <textarea
-                name="lookingFor"
-                rows="6"
-                class="form-control"
-                [(ngModel)]="user.lookingFor"
-              ></textarea>
+                name="skills"
+                row="3"
+                class="form-control textarea"
+                [(ngModel)]="skill.description"
+              >
+              </textarea>
 
-              <h4>Location details:</h4>
-              <div class="form-inline">
-                <label for="city">City</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="city"
-                  [(ngModel)]="user.city"
-                />
-                <label for="city">Country</label>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="country"
-                  [(ngModel)]="user.country"
-                />
-              </div>
-              <div class="card-footer">
-                <button
-                  [disabled]="!editForm.dirty"
-                  form="editInfoForm"
-                  class="btn btn-success btn-block"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </tab>
+              <h4>Link 1</h4>
+              <input
+                class="form-control input"
+                type="text"
+                name="url1"
+                [(ngModel)]="skill.url1"
+              />
+              <h4>Link 2</h4>
+              <input
+                class="form-control input"
+                type="text"
+                name="url2"
+                [(ngModel)]="skill.url2"
+              />
 
-          <tab heading="Edit Skills">
-            <form
-              #editSkillForm="ngForm"
-              id="editSkillForm"
-              (ngSubmit)="updateUser()"
-            >
-              <h4>Skills</h4>
+              <h4>Link 3</h4>
+              <input
+                class="form-control input"
+                type="text"
+                name="url3"
+                [(ngModel)]="skill.url3"
+              />
+            </div>
+            <div class="card-footer">
+              <button
+                [disabled]="!editSkillForm.dirty"
+                form="editSkillForm"
+                class="btn btn-info"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
 
-              <div *ngFor="let skill of user.skills; let i = index">
-                <input
-                  class="form-control"
-                  type="text"
-                  name="skill"
-                  [(ngModel)]="skill.skillName"
-                />
-
-                <h4>Skill Description</h4>
-                <textarea
-                  name="skills"
-                  row="3"
-                  class="form-control"
-                  [(ngModel)]="skill.description"
-                >
-                </textarea>
-
-                <h4>Link 1</h4>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="url1"
-                  [(ngModel)]="skill.url1"
-                />
-                <h4>Link 2</h4>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="url2"
-                  [(ngModel)]="skill.url2"
-                />
-
-                <h4>Link 3</h4>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="url3"
-                  [(ngModel)]="skill.url3"
-                />
-              </div>
-              <div class="card-footer">
-                <button
-                  [disabled]="!editSkillForm.dirty"
-                  form="editSkillForm"
-                  class="btn btn-success btn-block"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </tab>
-          <tab heading="Edit Photos">
-            <app-photo-editor
-              [photos]="user.photos"
-              (getMemberPhotoChange)="updateMainPhoto($event)"
-            ></app-photo-editor>
-          </tab>
-        </tabset>
+          <app-photo-editor
+            [photos]="user.photos"
+            (getMemberPhotoChange)="updateMainPhoto($event)"
+          ></app-photo-editor>
+        </div>
       </div>
     </div>
   </div>

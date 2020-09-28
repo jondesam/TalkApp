@@ -1,7 +1,7 @@
 .img-thumbnail {
   margin: 25px;
-  width: 85%;
-  height: 85%;
+  width: 100px;
+  height: 100px;
 }
 
 .card-body {
@@ -18,13 +18,16 @@
   display: inline-block;
   margin-bottom: 20px;
 }
-
-ngx-gallery /deep/ ngx-gallery-image .ngx-gallery-arrow {
-  background-color: orangered;
+.checked {
+  color: gold;
+  font-size: 2rem;
 }
-ngx-gallery /deep/ ngx-gallery-thumbnails .ngx-gallery-arrow {
-  background-color: orangered;
+.reviews {
+  font-size: 1.8rem;
 }
-ngx-gallery /deep/ ngx-gallery-preview .ngx-gallery-arrow {
-  background-color: orangered;
+.normal {
+  font-size: 1.5rem;
+}
+.title {
+  font-size: 1.5rem;
 }

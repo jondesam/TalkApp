@@ -1,42 +1,51 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
-import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import {
   NgxGalleryOptions,
   NgxGalleryImage,
   NgxGalleryAnimation,
 } from '@kolkov/ngx-gallery';
-
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { AuthService } from 'src/app/_services/auth.service';
+import { StarRatingComponent } from 'ng-starrating';
+// import {RatingModule} from 'ngx'
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css'],
 })
 export class MemberDetailComponent implements OnInit {
-  @ViewChild('memberTabs', { static: true }) memberTabs: TabsetComponent;
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
+  modalRef: BsModalRef;
+  newRate: any = {};
+  rating: number = 0;
+  options: number[];
+  selectedOption: number;
 
   constructor(
     private userService: UserService,
     private alerify: AlertifyService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: BsModalService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.options = [1, 2, 3, 4, 5];
+
+    this.selectedOption = this.options[0];
+
     this.route.data.subscribe((data) => {
-      console.log(data);
+      console.log('df', data);
 
       this.user = data['user'];
     });
-    this.route.queryParams.subscribe((params) => {
-      const selectedTab = params['tab'];
-      this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
-    });
+    console.log(this.user.raters);
 
     this.galleryOptions = [
       {
@@ -65,9 +74,46 @@ export class MemberDetailComponent implements OnInit {
     }
     return imageUrls;
   }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
-  selectTab(tabId: number) {
-    this.memberTabs.tabs[tabId].active = true;
+  createRate() {
+    console.log(this.newRate);
+
+    // this.userService.createRate(
+    //   this.authService.decodedToken.nameid,
+    //   this.user.id
+    // );
+  }
+
+  loggedIn() {
+    return this.authService.loggedIn();
+  }
+
+  // onRate($event: {
+  //   oldValue: number;
+  //   newValue: number;
+  //   starRating: StarRatingComponent;
+  // }) {
+  //   console.log('ADFAFD');
+
+  //   alert(`Old Value:${$event.oldValue},
+  //     New Value: ${$event.newValue},
+  //     Checked Color: ${$event.starRating.checkedcolor},
+  //     Unchecked Color: ${$event.starRating.uncheckedcolor}`);
+  // }
+
+  onRate($event: {
+    oldValue: number;
+    newValue: number;
+    starRating: StarRatingComponent;
+  }) {
+    console.log($event);
+    this.rating = $event.newValue;
+    $event.starRating.value = 0;
+    this.rating = 0;
+    console.log(this.rating);
   }
   // loadUser() {
   //   this.userService.getUser(this.route.snapshot.params.id).subscribe(
