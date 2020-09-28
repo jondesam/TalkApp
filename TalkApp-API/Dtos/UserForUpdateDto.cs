@@ -11,6 +11,7 @@ namespace TalkApp_API.Dtos
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Skill> Skills { get; set; }
+        public float AvgRate { get; set; }
 
     }
 }

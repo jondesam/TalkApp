@@ -21,6 +21,7 @@ namespace TalkApp_API.Dtos
         public ICollection<LikeForDetailedDto> Likees { get; set; }
         public ICollection<RateForCreationDto> Raters { get; set; }
         public ICollection<RateForCreationDto> Ratees { get; set; }
+        public float AvgRate { get; set; }
 
     }
 }

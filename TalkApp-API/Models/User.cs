@@ -24,5 +24,6 @@ namespace TalkApp_API.Models
         public virtual ICollection<Message> MessagesReceived { get; set; }
         public ICollection<Rate> Raters { get; set; }
         public ICollection<Rate> Ratees { get; set; }
+        public float AvgRate { get; set; }
     }
 }

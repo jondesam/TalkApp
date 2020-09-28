@@ -174,6 +174,9 @@ namespace TalkApp_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<float>("AvgRate")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
 

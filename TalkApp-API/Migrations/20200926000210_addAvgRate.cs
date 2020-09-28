@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TalkApp_API.Migrations
 {
-    public partial class UpdateDB : Migration
+    public partial class addAvgRate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,8 @@ namespace TalkApp_API.Migrations
                     Introduction = table.Column<string>(nullable: true),
                     LookingFor = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true)
+                    Country = table.Column<string>(nullable: true),
+                    AvgRate = table.Column<float>(nullable: false)
                 },
                 constraints: table =>
                 {

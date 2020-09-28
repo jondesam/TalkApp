@@ -61,6 +61,13 @@ namespace TalkApp_API.Controllers
             rateForCreationDto.RaterUserName = rater.UserName;
             rateForCreationDto.RaterPhotoUrl = userDetails.PhotoUrl;
 
+            var avg = _repo.GetAvgRates(rateForCreationDto.RecipientId, rateForCreationDto.Score);
+
+            if (avg == 0)
+            {
+                avg = rateForCreationDto.Score;
+            }
+
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
@@ -72,15 +79,19 @@ namespace TalkApp_API.Controllers
             if (recipient == null)
                 return BadRequest("Could not find user");
 
-            if (_repo.IsRated(rater, recipient))
-                return BadRequest("You have already commented on this person");
+            // if (_repo.IsRated(rater, recipient))
+            //     return BadRequest("You have already commented on this person");
 
             var rate = _mapper.Map<Rate>(rateForCreationDto);
+
+            recipient.AvgRate = avg;
 
             _repo.Add(rate);
 
             if (await _repo.SaveAll())
             {
+                _repo.Add(recipient);
+
                 var rateToReturn = _mapper.Map<RateForReturnDto>(rate);
 
                 var result = CreatedAtRoute("GetMessage",

@@ -10,7 +10,6 @@ namespace TalkApp_API.Data
     public class TalkAppRepo : ITalkAppRepo
     {
         private DataContext _context;
-
         public TalkAppRepo(DataContext context)
         {
             this._context = context;
@@ -30,7 +29,7 @@ namespace TalkApp_API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Raters).Include(p => p.Ratees).FirstOrDefaultAsync(u => u.Id == id);
 
             return user;
         }
@@ -84,11 +83,17 @@ namespace TalkApp_API.Data
                 switch (userParams.OrderBy)
                 {
                     case "created":
+
                         users = users.OrderByDescending(u => u.Created);
                         break;
 
+                    case "mostReviewed":
+                        users = users.OrderByDescending(u => u.Raters.Count());
+                        break;
+
                     default:
-                        users = users.OrderByDescending(u => u.LastActive);
+
+                        users = users.OrderByDescending(u => u.AvgRate);
                         break;
                 }
             }
@@ -207,6 +212,19 @@ namespace TalkApp_API.Data
             return await _context.Rates.FirstOrDefaultAsync(m => m.Id == rateId);
         }
 
+        public float GetAvgRates(int recipientId, int score)
+        {
+            var user = _context.Users.Include(u => u.Raters).Where(u => u.Id == recipientId);
 
+            var previousSum = user.SelectMany(user => user.Raters).Sum(rater => (float)rater.Score);
+
+            var sum = previousSum + score;
+
+            var num = (user.Select(user => user.Raters.Count())).First();
+
+            var avg = sum / (num + 1);
+
+            return avg;
+        }
     }
 }

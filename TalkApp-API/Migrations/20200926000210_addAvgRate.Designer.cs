@@ -9,8 +9,8 @@ using TalkApp_API.Data;
 namespace TalkApp_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200922201912_UpdateDB")]
-    partial class UpdateDB
+    [Migration("20200926000210_addAvgRate")]
+    partial class addAvgRate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -175,6 +175,9 @@ namespace TalkApp_API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<float>("AvgRate")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
