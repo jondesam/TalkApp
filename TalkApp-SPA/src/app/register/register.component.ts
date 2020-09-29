@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
   createRegisterForm() {
     this.registerForm = this.formBuilder.group(
       {
-        username : ['', Validators.required],
+        username: ['', Validators.required],
         password: [
           '',
           [
@@ -70,7 +70,7 @@ export class RegisterComponent implements OnInit {
         },
         () => {
           this.authService.login(this.user).subscribe(() => {
-            this.router.navigate(['/members']);
+            this.router.navigate(['/']);
           });
         }
       );

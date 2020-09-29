@@ -7,3 +7,9 @@ img {
   border: 2px solid white;
   display: inline;
 }
+
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+}
