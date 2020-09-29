@@ -1,9 +1,10 @@
-.card img {
+.profile {
   float: left;
   margin-right: 10px;
   clear: both;
-  width: 200px;
-  border-radius: 5%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 p {
@@ -11,8 +12,41 @@ p {
   overflow: auto;
 }
 
-.imgbox {
+.ratephoto {
   float: left;
-  margin: 3px;
-  padding: 3px;
+  margin-right: 10px;
+  clear: both;
+  width: 50px;
+  border-radius: 50%;
+}
+.card {
+  max-width: 300px;
+  /* max-height: 200px; */
+}
+.card-img-top {
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+  clear: both;
+  width: 50px;
+  height: 50px;
+}
+.custom {
+  width: auto;
+}
+
+.gold {
+  color: gold;
+  font-size: 1rem;
+}
+
+.gray {
+  color: gray;
+  font-size: 1rem;
+}
+
+.fa:focus,
+.fa:active {
+  outline: none !important;
+  box-shadow: none;
 }

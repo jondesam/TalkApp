@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Rate } from 'src/app/_models/rate';
+import { Skill } from 'src/app/_models/skill';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -18,7 +20,9 @@ export class MemberCardComponent implements OnInit {
     private alertify: AlertifyService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.user);
+  }
 
   sendLike(recipientId: number) {
     this.userService
@@ -32,4 +36,5 @@ export class MemberCardComponent implements OnInit {
         }
       );
   }
+
 }

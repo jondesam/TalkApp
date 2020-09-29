@@ -1,65 +1,76 @@
-<div class="card m-2 p-2">
-  <div class="row no-gutters">
-    <div class="col-lg-3 col-md-3 col-sm-4 text-left">
-      <img
-        class="float:left"
-        src="{{ user.photoUrl || 'assets/user.png' }}"
-        alt="{{ user.userName }}"
-      />
-    </div>
-    <div class="col-lg-8 col-md-8 col-sm-8">
-      <div class="card-body">
-        <h5 class="card-title">{{ user.userName }}</h5>
-        <div *ngFor="let skill of user.skills">
-          <p>
-            <strong>{{ skill.skillName }}</strong>
-          </p>
-          <div *ngIf="skill.url1">
-            <p>{{ skill.url1 }}</p>
-          </div>
-          <div *ngIf="skill.url2">
-            <p>{{ skill.url2 }}</p>
-          </div>
-          <div *ngIf="skill.url3">
-            <p>{{ skill.url3 }}</p>
-          </div>
+<div class="card shadow mb-4 p-2">
+  <div class="card-img-wrapper">
+    <img
+      class="card-img-top"
+      src="{{ user.photoUrl || 'assets/user.png' }}"
+      alt="{{ user.userName }}"
+      [routerLink]="['/members/', user.id]"
+    />
+    <h5 class="card-title text-left mb-1">
+      {{ user.userName | titlecase }}
+    </h5>
+    <div *ngIf="user.avgRate > 0" style="text-align: center"></div>
+    <ng-template [ngIf]="user.avgRate" [ngIfElse]="loading">
+      <div>
+        <div style="display: inline-block; color: orange">
+          {{ user.avgRate.toFixed(1) }}
         </div>
 
-        <p>{{ user.city }}, {{ user.country }}</p>
-        <p class="card-text">
-          {{ user.introduction }}
-        </p>
-        <p>{{ user.lookingFor }}</p>
-        <p class="card-text">
-          <small class="text-muted"
-            >Last active {{ user.lastActive | timeago }}</small
-          >
+        <rating
+          [max]="5"
+          [(ngModel)]="user.avgRate"
+          [customTemplate]="tt"
+          readonly="true"
+          class="ml-1"
+        ></rating>
+
+        <ng-template #tt let-i="index" let-v="value">
+          <i
+            class="fa fa-star  {{ i < v ? 'gold' : 'gray' }} mr-1  "
+            aria-hidden="true"
+          ></i>
+        </ng-template>
+        <div style="display: inline-block; color: gray">
+          ({{ user.raters.length }})
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #loading>
+      <div class="ml-2">New Member</div>
+    </ng-template>
+  </div>
+
+  <div class="content mt-1">
+    <div *ngFor="let skill of user.skills; let i = index">
+      <div *ngIf="i < 1">
+        <p>
+          Skills : <strong> {{ skill.skillName }}</strong>
         </p>
       </div>
+
+      <div *ngIf="skill.url1">
+        <p>{{ skill.url1 }}</p>
+      </div>
     </div>
-  </div>
-  <div class="card-body p-1">
-    <ul class="list-inline member-icons text-left ml-3">
-      <li class="list-inline-item">
-        <button class="btn btn-primary" [routerLink]="['/members/', user.id]">
-          <i class="fa fa-user"></i>
-        </button>
-      </li>
-      <li class="list-inline-item">
-        <button class="btn btn-primary" (click)="sendLike(user.id)">
-          <i class="fa fa-heart"></i>
-        </button>
-      </li>
-      <li class="list-inline-item">
-        <button class="btn btn-primary">
-          <i
-            class="fa fa-envelope"
-            [routerLink]="['/members/', user.id]"
-            [queryParams]="{ tab: 2 }"
-          ></i>
-        </button>
-      </li>
-    </ul>
-    <p></p>
+    <button
+      class="btn btn-block btn-outline-primary"
+      [routerLink]="['/members/', user.id]"
+    >
+      Send a message
+    </button>
+    <button
+      class="btn btn-block btn-outline-primary"
+      (click)="sendLike(user.id)"
+    >
+      Add to favorites
+      <strong> </strong>
+    </button>
+
+    <p class="card-text">
+      <small class="text-muted"
+        >Last active {{ user.lastActive | timeago }}</small
+      >
+    </p>
   </div>
 </div>
