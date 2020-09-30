@@ -23,13 +23,10 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      console.log(data);
-
       this.users = data['users'].result;
       this.pagination = data['users'].pagination;
     });
-    // this.loadUsers();
-    this.userParams.orderBy = 'create';
+    this.userParams.orderBy = 'score';
     this.userParams.search = '';
   }
 
@@ -57,10 +54,5 @@ export class MemberListComponent implements OnInit {
           this.alertify.error(error);
         }
       );
-  }
-
-  resetFilters() {
-    this.userParams.search = '';
-    this.loadUsers();
   }
 }

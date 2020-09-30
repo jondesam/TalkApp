@@ -1,32 +1,74 @@
-<div class="text-center mt-3">
-  <h3>Total {{ pagination.totalItems }} found</h3>
-</div>
+<section class="hero is-info is-medium is-bold">
+  <div class="jumbotron">
+    <h1 class="display-4">Hero Image Here!</h1>
+    <p class="lead">
+      This is a simple hero unit, a simple jumbotron-style component for calling
+      extra attention to featured content or information.
+    </p>
+    <hr class="my-4" />
+    <p>
+      It uses utility classes for typography and spacing to space content out
+      within the larger container.
+    </p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </p>
+    <div class="field has-addons centerall">
+      <div class="control">
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Serch skills"
+          #newHero
+          type="string"
+          style="width: 270px"
+          id="search"
+          name="search"
+          [(ngModel)]="userParams.search"
+        />
+      </div>
+      <div class="control">
+        <a
+          class="btn btn-primary"
+          type="button"
+          name="search"
+          (click)="loadUsers()"
+        >
+          Search
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-body"></div>
+</section>
 
-<div class="container-fluid mt-5">
+<div class="container mt-5">
   <form class="form-inline" (ngSubmit)="loadUsers()" novalidate>
-    <button
-      type="button"
-      class="btn btn-info"
-      (click)="resetFilters()"
-      style="margin-left: 10px"
-    >
-      Reset Filter
-    </button>
     <div>
       <button
-        type="button"
+        type="radio"
         name="orderBy"
-        class="btn btn-primary"
+        class="btn btn-outline-info"
         [(ngModel)]="userParams.orderBy"
         (click)="loadUsers()"
-        btnRadio="lastActive"
+        btnRadio="score"
       >
-        Last Active
+        Highest Rated
       </button>
       <button
-        type="button"
+        type="radio"
         name="orderBy"
-        class="btn btn-primary"
+        class="btn btn-outline-info"
+        [(ngModel)]="userParams.orderBy"
+        (click)="loadUsers()"
+        btnRadio="mostReviewed"
+      >
+        Most Reviewd
+      </button>
+      <button
+        type="radio"
+        name="orderBy"
+        class="btn btn-outline-info"
         [(ngModel)]="userParams.orderBy"
         (click)="loadUsers()"
         btnRadio="created"
@@ -34,46 +76,23 @@
         Newest Members
       </button>
     </div>
-
-    <div class="col">
-      <div class="btn-group float-right">
-        <div class="form-group">
-          <input
-            #newHero
-            type="string"
-            class="form-control ml-20"
-            style="width: 170px"
-            id="search"
-            [(ngModel)]="userParams.search"
-            name="search"
-          />
-
-          <button
-            type="button"
-            name="search"
-            class="btn btn-primary"
-            (click)="loadUsers()"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-    </div>
   </form>
 
   <br />
+
   <div class="row">
-    <div *ngFor="let user of users" class="">
+    <div *ngFor="let user of users" class="col-lg-3 col-md-6 col-sm-6 col-12">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
 </div>
+
 <div class="d-flex justify-content-center">
   <pagination
     [boundaryLinks]="true"
     [totalItems]="pagination.totalItems"
-    [(ngModel)]="pagination.currentPage"
     [itemsPerPage]="pagination.itemsPerPage"
+    [(ngModel)]="pagination.currentPage"
     (pageChanged)="pageChanged($event)"
     previousText="&lsaquo;"
     nextText="&rsaquo;"

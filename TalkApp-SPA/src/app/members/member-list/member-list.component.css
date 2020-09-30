@@ -1,0 +1,18 @@
+.centerall {
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.page {
+  padding: 0;
+  /* display: grid; */
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  width: 200px;
+}
