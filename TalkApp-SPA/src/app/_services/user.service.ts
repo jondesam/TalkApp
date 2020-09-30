@@ -6,6 +6,7 @@ import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
 import { Message } from '../_models/Message';
+import { Rate } from '../_models/rate';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({
@@ -26,7 +27,6 @@ export class UserService {
     userParams?,
     likesParam?
   ): Observable<PaginatedResult<User[]>> {
-    
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
     >();
@@ -41,6 +41,8 @@ export class UserService {
     if (userParams != null) {
       params = params.append('orderBy', userParams.orderBy);
       params = params.append('search', userParams.search);
+    } else {
+      params = params.append('orderBy', 'score');
     }
 
     if (likesParam === 'Likers') {
@@ -165,22 +167,34 @@ export class UserService {
       .subscribe();
   }
 
-  getRates(userId: number, pageNumber?, itemsPerPage?, messageContainer?) {
-    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
-      Message[]
+  createRate(
+    senderId: number,
+    recipientId: number,
+    comment: string,
+    score: number
+  ) {
+    return this.http.post(this.baseUrl + 'users/' + 'rates', {
+      senderId,
+      recipientId,
+      comment,
+      score,
+    });
+  }
+
+  getRates(userId: number, pageNumber?, itemsPerPage?) {
+    const paginatedResult: PaginatedResult<Rate[]> = new PaginatedResult<
+      Rate[]
     >();
 
     let params = new HttpParams();
-
-    params = params.append('RateContainer', messageContainer);
-
+    // debugger;
     if (pageNumber != null && itemsPerPage != null) {
       params = params.append('pageNumber', pageNumber);
       params = params.append('pageSize', itemsPerPage);
     }
 
     return this.http
-      .get<Message[]>(this.baseUrl + 'users/' + userId + '/rates', {
+      .get<Rate[]>(this.baseUrl + 'users/' + 'rates', {
         observe: 'response',
         params,
       })

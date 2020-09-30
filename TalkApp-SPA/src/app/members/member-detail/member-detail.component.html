@@ -25,7 +25,7 @@
 
               <div *ngIf="user.city">
                 <strong>Location</strong>
-                <p>{{ user.city }}, {{ user.country }}</p>
+                <p>{{ user.city }},{{ user.country }}</p>
               </div>
 
               <p class="card-text">
@@ -41,8 +41,12 @@
                 </button>
               </li>
               <li class="list-inline-item">
-                <button class="btn btn-info" (click)="openModal(template)">
-                  Review
+                <button
+                  class="btn btn-info"
+                  *ngIf="loggedIn()"
+                  (click)="openModal(template)"
+                >
+                  Leave a review
                 </button>
               </li>
             </ul>
@@ -68,8 +72,8 @@
       </div>
       <div class="card shadow p-4">
         <div class="reviews mb-3">
-          <span class="fa fa-star checked mr-1"></span
-          ><span class="normal mr-4">{{ user.avgRate }}</span>
+          <span class="fa fa-star checked mr-2"></span
+          ><span class="normal mr-4">{{ user.avgRate.toFixed(1) }}</span>
           {{ user.raters.length }} Reviews
         </div>
 
@@ -78,7 +82,7 @@
             <div class="row m-2">
               <div class="col-sm-2">
                 <img
-                  class="d-block w-100"
+                  class="d-block w-100 ratePhoto"
                   src="{{ rater.raterPhotoUrl }}"
                   alt=""
                 />
@@ -101,6 +105,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-4">
       <app-member-messages [recipientId]="user.id"></app-member-messages>
     </div>
@@ -121,63 +126,47 @@
   </div>
 
   <div class="modal-body">
-    <div class="btn-group" dropdown>
-      <button
-        id="button-basic"
-        dropdownToggle
-        type="button"
-        class="btn btn-primary dropdown-toggle"
-        aria-controls="dropdown-basic"
-      >
-        rate it <span class="caret"></span>
-      </button>
-      <ul
-        id="dropdown-basic"
-        *dropdownMenu
-        class="dropdown-menu"
-        role="menu"
-        aria-labelledby="button-basic"
-      >
-        <li role="menuitem" *ngFor="let option of options">
-          <span class="dropdown-item">
-            {{ option }}
-          </span>
-        </li>
-      </ul>
-    </div>
+    <div>
+      <rating
+        [max]="5"
+        [(ngModel)]="newRate.score"
+        [customTemplate]="tt"
+      ></rating>
 
+      <ng-template #tt let-i="index" let-v="value">
+        <button class="btn">
+          <i
+            class="fa fa-star  {{ i < v ? 'gold' : 'gray' }}  "
+            aria-hidden="true"
+          ></i>
+        </button>
+      </ng-template>
+    </div>
     <form
       *ngIf="loggedIn()"
       #rateForm="ngForm"
-      class="form-inline my-2 my-lg-0 p-2"
+      class="form my-2 my-lg-0 p-2"
       (ngSubmit)="createRate()"
     >
-      <input
-        class="form-control mr-sm-2 inline-block"
+      <textarea
+        class="form-control mr-sm-2 mb-2"
         type="text"
         name="comment"
-        placeholder="You can review here"
+        placeholder="Please tell us about your experience"
         aria-label="Search"
+        rows="6"
         required
         [(ngModel)]="newRate.comment"
-      />
+      ></textarea>
 
       <button
         [disabled]="!rateForm.valid"
-        class="btn btn-outline-success my-2 my-sm-0"
+        class="btn btn-outline-success float-right"
         type="submit"
         (click)="modalRef.hide()"
       >
         Submit
       </button>
     </form>
-    <!-- <button
-      type="button"
-      class="btn btn-primary m-2"
-      [routerLink]="['/register/']"
-      (click)="modalRef.hide()"
-    >
-      Register
-    </button> -->
   </div>
 </ng-template>

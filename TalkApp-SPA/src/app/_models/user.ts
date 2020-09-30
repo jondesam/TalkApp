@@ -7,12 +7,13 @@ export interface User {
   userName: string;
   created: Date;
   lastActive: any;
-  photoUrl: string;
-  city: string;
-  country: string;
+  photoUrl?: string;
+  city?: string;
+  country?: string;
   introduction?: string;
   lookingFor?: string;
   photos?: Photo[];
   skills?: Skill[];
+  avgRate?: number;
   raters?: Rate[];
 }

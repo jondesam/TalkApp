@@ -31,3 +31,26 @@
 .title {
   font-size: 1.5rem;
 }
+.gold {
+  color: gold;
+  font-size: 2rem;
+}
+
+.gray {
+  color: gray;
+  font-size: 2rem;
+}
+
+.fa:focus,
+.fa:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.ratePhoto {
+  border-radius: 50%;
+}
+
+.countryFlag {
+  width: 40px;
+}
