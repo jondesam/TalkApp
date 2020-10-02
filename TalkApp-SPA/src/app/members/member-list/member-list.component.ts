@@ -14,6 +14,7 @@ export class MemberListComponent implements OnInit {
   users: User[];
   pagination: Pagination;
   userParams: any = {};
+  btnName: string = 'Highest Rated';
 
   constructor(
     private userService: UserService,
@@ -54,5 +55,9 @@ export class MemberListComponent implements OnInit {
           this.alertify.error(error);
         }
       );
+  }
+
+  setBtnName(btnName: string) {
+    this.btnName = btnName;
   }
 }

@@ -18,7 +18,7 @@
         <input
           class="form-control"
           type="text"
-          placeholder="Serch skills"
+          placeholder="Serch for anything"
           #newHero
           type="string"
           style="width: 270px"
@@ -43,51 +43,71 @@
 </section>
 
 <div class="container mt-5">
-  <form class="form-inline" (ngSubmit)="loadUsers()" novalidate>
-    <div>
-      <button
-        type="radio"
-        name="orderBy"
-        class="btn btn-outline-info"
-        [(ngModel)]="userParams.orderBy"
-        (click)="loadUsers()"
-        btnRadio="score"
-      >
-        Highest Rated
-      </button>
-      <button
-        type="radio"
-        name="orderBy"
-        class="btn btn-outline-info"
-        [(ngModel)]="userParams.orderBy"
-        (click)="loadUsers()"
-        btnRadio="mostReviewed"
-      >
-        Most Reviewd
-      </button>
-      <button
-        type="radio"
-        name="orderBy"
-        class="btn btn-outline-info"
-        [(ngModel)]="userParams.orderBy"
-        (click)="loadUsers()"
-        btnRadio="created"
-      >
-        Newest Members
-      </button>
-    </div>
-  </form>
+  <div class="btn-group" dropdown>
+    <button
+      id="button-basic"
+      dropdownToggle
+      type="button"
+      class="btn btn-primary dropdown-toggle"
+      aria-controls="dropdown-basic"
+      style="width: 170px"
+    >
+      {{ btnName }}
+      <span class="caret"></span>
+    </button>
+    <ul
+      id="dropdown-basic"
+      *dropdownMenu
+      class="dropdown-menu"
+      role="menu"
+      aria-labelledby="button-basic"
+    >
+      <li role="menuitem">
+        <a
+          class="dropdown-item"
+          [(ngModel)]="userParams.orderBy"
+          (click)="setBtnName('Highest Rated')"
+          (click)="loadUsers()"
+          btnRadio="score"
+        >
+          Highest Rated</a
+        >
+      </li>
+      <li role="menuitem">
+        <a
+          class="dropdown-item"
+          [(ngModel)]="userParams.orderBy"
+          (click)="setBtnName('Most Reviewd')"
+          (click)="loadUsers()"
+          btnRadio="mostReviewed"
+          >Most Reviewd</a
+        >
+      </li>
 
+      <li role="menuitem">
+        <a
+          class="dropdown-item"
+          [(ngModel)]="userParams.orderBy"
+          (click)="setBtnName('Newest Members')"
+          (click)="loadUsers()"
+          btnRadio="created"
+        >
+          Newest Members</a
+        >
+      </li>
+    </ul>
+  </div>
+  <br />
   <br />
 
   <div class="row">
-    <div *ngFor="let user of users" class="col-lg-3 col-md-6 col-sm-6 col-12">
+    <div *ngFor="let user of users" class="col-lg-12 col-md-12 col-12">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center mb-3">
   <pagination
     [boundaryLinks]="true"
     [totalItems]="pagination.totalItems"

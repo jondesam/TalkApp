@@ -15,7 +15,8 @@ import { UserService } from '../_services/user.service';
 export class MessagesComponent implements OnInit {
   messages: Message[];
   pagination: Pagination;
-  messageContainer = 'Unread';
+  messageContainer = 'Inbox';
+  btnName: string = 'Inbox';
 
   constructor(
     private userService: UserService,
@@ -80,5 +81,9 @@ export class MessagesComponent implements OnInit {
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadMessages();
+  }
+  
+  setBtnName(btnName: string) {
+    this.btnName = btnName;
   }
 }

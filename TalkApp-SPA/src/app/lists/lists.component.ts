@@ -15,7 +15,8 @@ export class ListsComponent implements OnInit {
   users: User[];
   pagination: Pagination;
   likesParam: string;
-  
+  btnName: string = 'My Favorites';
+
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -28,7 +29,7 @@ export class ListsComponent implements OnInit {
       this.users = data['users'].result;
       this.pagination = data['users'].pagination;
     });
-    this.likesParam = 'Likers';
+    this.likesParam = 'Likees';
   }
 
   loadUsers() {
@@ -53,5 +54,9 @@ export class ListsComponent implements OnInit {
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadUsers();
+  }
+
+  setBtnName(btnName: string) {
+    this.btnName = btnName;
   }
 }

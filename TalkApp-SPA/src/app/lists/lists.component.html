@@ -1,54 +1,71 @@
-<div class="text-center mt-3">
-  <h2>
-    {{
-      likesParam === "Likers" ? "Members who like me" : "Members who I've Liked"
-    }}
-    : {{ pagination.totalItems }}
-  </h2>
-</div>
-
-<div class="container mt-3">
+<div class="container">
   <div class="row">
-    <div class="btn-group">
+    <div class="btn-group ml-3" dropdown>
       <button
-        class="btn btn-primary"
-        [(ngModel)]="likesParam"
-        btnRadio="Likers"
-        (click)="loadUsers()"
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="btn btn-outline-primary dropdown-toggle"
+        aria-controls="dropdown-basic"
+        style="width: 170px"
       >
-        who like me
+        {{ btnName }}<span class="caret"></span>
       </button>
-      <button
-        class="btn btn-primary"
-        [(ngModel)]="likesParam"
-        btnRadio="Likees"
-        (click)="loadUsers()"
+      <ul
+        id="dropdown-basic"
+        *dropdownMenu
+        class="dropdown-menu"
+        role="menu"
+        aria-labelledby="button-basic"
       >
-        who I like
-      </button>
+        <li role="menuitem">
+          <a
+            class="dropdown-item"
+            [(ngModel)]="likesParam"
+            btnRadio="Likees"
+            (click)="setBtnName('My Favorites')"
+            (click)="loadUsers()"
+          >
+            My Favorites
+          </a>
+        </li>
+        <li role="menuitem">
+          <a
+            class="dropdown-item"
+            [(ngModel)]="likesParam"
+            btnRadio="Likers"
+            (click)="setBtnName('Who favorites me')"
+            (click)="loadUsers()"
+          >
+            Who favorites me
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
   <br />
 
   <div class="row">
-    <div *ngFor="let user of users" class="">
+    <div *ngFor="let user of users" class="col-xl-12 col-lg-12">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
 </div>
 
 <div class="d-flex justify-content-center">
-  <pagination
-    [boundaryLinks]="true"
-    [totalItems]="pagination.totalItems"
-    [itemsPerPage]="pagination.itemsPerPage"
-    [(ngModel)]="pagination.currentPage"
-    (pageChanged)="pageChanged($event)"
-    previousText="&lsaquo;"
-    nextText="&rsaquo;"
-    firstText="&laquo;"
-    lastText="&raquo;"
-  >
-  </pagination>
+  <div class="page">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
 </div>

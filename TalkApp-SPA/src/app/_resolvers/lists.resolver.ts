@@ -9,8 +9,8 @@ import { catchError } from 'rxjs/operators';
 @Injectable()
 export class ListsResolver implements Resolve<User[]> {
   pageNumber = 1;
-  pageSize = 5;
-  likesParam = 'Likers';
+  pageSize = 6;
+  likesParam = 'Likees';
 
   constructor(
     private userService: UserService,
@@ -24,7 +24,7 @@ export class ListsResolver implements Resolve<User[]> {
       .pipe(
         catchError((error) => {
           this.alertify.error('Problem retrieving data');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/members']);
           return of(null);
         })
       );
