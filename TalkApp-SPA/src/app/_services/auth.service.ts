@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
+import { Sidebar } from '../_models/sidebar';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,17 @@ export class AuthService {
   mainPhotoUrl = new BehaviorSubject<string>('../../assets/user.png');
   currentPhotoUrl = this.mainPhotoUrl.asObservable();
 
+  sidebarToggle = new BehaviorSubject<Sidebar>({
+    isOpen: false,
+    recipientId: 0,
+  });
+  currentSidebar = this.sidebarToggle.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  setSidebar(setBool: boolean, recipientId: number) {
+    this.sidebarToggle.next({ isOpen: setBool, recipientId: recipientId });
+  }
 
   changeMemberPhoto(photoUrl: string) {
     this.mainPhotoUrl.next(photoUrl);

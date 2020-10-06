@@ -24,7 +24,7 @@
     "alertifyjs": "^1.13.1",
     "bootstrap": "^4.5.2",
     "font-awesome": "^4.7.0",
-    "ng-starrating": "^1.0.20",
+    "ng-sidebar": "^9.4.2",
     "ng2-file-upload": "^1.4.0",
     "ngx-bootstrap": "^6.1.0",
     "ngx-timeago": "^1.0.4",

@@ -12,6 +12,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { SidebarModule } from 'ng-sidebar';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -58,6 +59,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     BrowserModule,
     HttpClientModule,
     FormsModule,
+
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ButtonsModule.forRoot(),
@@ -77,6 +79,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     }),
     ModalModule.forRoot(),
     RatingModule.forRoot(),
+    SidebarModule.forRoot(),
   ],
   providers: [
     AuthService,
