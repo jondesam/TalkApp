@@ -22,5 +22,6 @@ namespace TalkApp_API.Data
         bool IsRated(User rater, User ratee);
         Task<Rate> GetRate(int rateId);
         float GetAvgRates(int userId, int score);
+        Task<Skill> GetSkill(int skillId);
     }
 }

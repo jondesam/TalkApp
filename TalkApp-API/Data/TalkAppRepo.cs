@@ -226,5 +226,10 @@ namespace TalkApp_API.Data
 
             return avg;
         }
+
+        public async Task<Skill> GetSkill(int skillId)
+        {
+            return await _context.Skills.FirstOrDefaultAsync(s => s.Id == skillId);
+        }
     }
 }

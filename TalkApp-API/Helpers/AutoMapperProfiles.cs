@@ -18,12 +18,12 @@ namespace TalkApp_API.Helpers
                      src.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url));
 
             CreateMap<Photo, PhotoForDetailedDto>();
-            CreateMap<Skill, SkillForDetailedDto>();
+            CreateMap<Skill, SkillForDetailedDto>().ReverseMap();
             CreateMap<Like, LikeForDetailedDto>();
 
             CreateMap<UserForRegisterDto, User>();
             CreateMap<UserForUpdateDto, User>();
-            
+
             CreateMap<Photo, PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto, Photo>();
 
