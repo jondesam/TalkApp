@@ -11,3 +11,16 @@ img.img-thumbnail {
 input[type="file"] {
   color: transparent;
 }
+
+.choosePhoto {
+  display: flex;
+}
+.singlePhoto {
+  display: flex;
+  max-width: 200px;
+}
+
+.multiplePhoto {
+  display: flex;
+  max-width: 200px;
+}
