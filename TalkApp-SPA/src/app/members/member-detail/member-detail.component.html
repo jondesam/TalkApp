@@ -1,113 +1,304 @@
 <div class="container">
   <div class="row">
-    <div class="col-8">
-      <div class="card shadow p-4 mb-4">
-        <div class="card-body">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-128x128">
-                <img
-                  class="profile float:left"
-                  src="{{ user.photoUrl || 'assets/user.png' }}"
-                  alt="{{ user.userName }}"
-                />
-              </figure>
+    <div class="col-12">
+      <div class="card shadow p-5 mb-4">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-128x128">
+              <img
+                class="profile float:left"
+                src="{{ user.photoUrl || 'assets/user.png' }}"
+                alt="{{ user.userName }}"
+              />
+            </figure>
+          </div>
+          <div class="media-content pl-2 pr-2 ml-3">
+            <p class="title">
+              {{ user.userName | titlecase }}
+            </p>
+            <div *ngFor="let skill of user.skills; let i = index">
+              Subject {{ i + 1 }}: <strong> {{ skill.skillName }}</strong>
             </div>
-            <div class="media-content pl-2 pr-2">
-              <p class="title is-4">
-                {{ user.userName | titlecase }}
-              </p>
-              <div *ngFor="let skill of user.skills">
-                <p>
-                  Skills : <strong> {{ skill.skillName }}</strong>
-                </p>
-              </div>
 
-              <div *ngIf="user.city">
-                <strong>Location</strong>
-                <p>{{ user.city }},{{ user.country }}</p>
-              </div>
-
-              <p class="card-text">
-                <small class="text-muted"
-                  >Last active {{ user.lastActive | timeago }}</small
-                >
-              </p>
+            <div *ngIf="user.city">
+              <strong>Location</strong>
+              <p>{{ user.city }},{{ user.country }}</p>
             </div>
-            <ul class="list-inline member-icons text-center">
-              <li class="list-inline-item">
-                <button class="btn btn-info">
-                  <i class="fa fa-heart"></i>
-                </button>
-              </li>
-              <li class="list-inline-item">
-                <button
-                  class="btn btn-info"
-                  *ngIf="loggedIn()"
-                  (click)="openModal(template)"
-                >
-                  Leave a review
-                </button>
-              </li>
-            </ul>
+
+            <p class="card-text">
+              <small class="text-muted"
+                >Last active {{ user.lastActive | timeago }}</small
+              >
+            </p>
           </div>
 
-          <div class="content">
-            <h4>Description</h4>
-            <p>{{ user.introduction }}</p>
-            <h4>Looking for</h4>
-            <p>{{ user.lookingFor }}</p>
-            <h4>Skills</h4>
-            <div *ngFor="let skill of user.skills">
-              <p>{{ skill.skillName }}</p>
-              <h5>Skill description</h5>
-              <p>{{ skill.description }}</p>
-              <h5>Links</h5>
-              <p>{{ skill.url1 }}</p>
-              <p>{{ skill.url2 }}</p>
-              <p>{{ skill.url3 }}</p>
+          <ul class="list-inline member-icons text-center" id="btnsBigScreen">
+            <li class="list-inline-item">
+              <button
+                *ngIf="loggedIn()"
+                class="btn btn-info"
+                (click)="sendLike(user.id)"
+              >
+                <i class="fa fa-heart"></i>
+              </button>
+              <button
+                class="btn btn-info"
+                *ngIf="!loggedIn()"
+                (click)="toggleIsFavo(true)"
+                (click)="openModal(loginTemplate)"
+              >
+                <i class="fa fa-heart"></i>
+              </button>
+            </li>
+            <li class="list-inline-item">
+              <button
+                *ngIf="loggedIn()"
+                class="btn btn-info"
+                (click)="openModal(template)"
+              >
+                Leave a review
+              </button>
+            </li>
+            <li class="list-inline-item">
+              <button
+                *ngIf="loggedIn()"
+                (click)="setSidebar()"
+                class="btn btn-info"
+              >
+                Messages
+              </button>
+              <button
+                class="btn btn-info"
+                (click)="toggleIsFavo(false)"
+                *ngIf="!loggedIn()"
+                (click)="openModal(loginTemplate)"
+              >
+                Messages
+              </button>
+            </li>
+          </ul>
+
+          <ul
+            class="list-inline member-icons text-center fixed-bottom"
+            id="smallScreen"
+          >
+            <li class="list-inline-item">
+              <button
+                class="btn btn-info"
+                *ngIf="loggedIn()"
+                (click)="sendLike(user.id)"
+              >
+                <i class="fa fa-heart"></i>
+              </button>
+              <button
+                class="btn btn-info"
+                *ngIf="!loggedIn()"
+                (click)="toggleIsFavo(true)"
+                (click)="openModal(loginTemplate)"
+              >
+                <i class="fa fa-heart"></i>
+              </button>
+            </li>
+            <li class="list-inline-item">
+              <button
+                class="btn btn-info"
+                *ngIf="loggedIn()"
+                (click)="openModal(template)"
+              >
+                Leave a review
+              </button>
+            </li>
+            <li class="list-inline-item">
+              <button
+                class="btn btn-info"
+                *ngIf="loggedIn()"
+                (click)="setSidebar()"
+              >
+                Messages
+              </button>
+              <button
+                class="btn btn-info"
+                *ngIf="!loggedIn()"
+                (click)="toggleIsFavo(false)"
+                (click)="openModal(loginTemplate)"
+              >
+                Messages
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content">
+          <p style="font-size: 1.5rem">About {{ user.userName | titlecase }}</p>
+          <p>{{ user.introduction }}</p>
+          <p style="font-size: 1.5rem">Looking for</p>
+          <p>{{ user.lookingFor }}</p>
+        </div>
+      </div>
+
+      <div class="card shadow p-5 mb-4" id="subjectsTab">
+        <div class="content">
+          <div class="float-left mr-4 mt-1">
+            <p style="font-size: 1.5rem">Subjects</p>
+          </div>
+          <tabset>
+            <tab
+              heading="{{ skill.skillName }}"
+              id="tab1"
+              *ngFor="let skill of user.skills"
+            >
+              <p class="mt-3" style="color: gray">{{ skill.description }}</p>
+
+              <div *ngIf="skill.url1">
+                <label class="mr-2">Link </label>
+                <a href="{{ skill.url1 }}" target="_blank">{{ skill.url1 }}</a>
+              </div>
+              <div *ngIf="skill.url2">
+                <label class="mr-2"> Link </label>
+                <a href="{{ skill.url2 }}" target="_blank">{{ skill.url2 }}</a>
+              </div>
+              <div *ngIf="skill.url2">
+                <label class="mr-2">Link </label>
+                <a href="{{ skill.url3 }}" target="_blank">{{ skill.url3 }}</a>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+
+      <div class="card shadow p-5 mb-4" id="subjectsDropdown">
+        <div class="btn-group" dropdown>
+          <button
+            id="button-basic"
+            dropdownToggle
+            type="button"
+            class="btn btn-outline dropdown-toggle"
+            aria-controls="dropdown-basic"
+            style="font-size: 1.5rem"
+          >
+            {{ subjectTitle | titlecase }} <span class="caret"></span>
+          </button>
+          <ul
+            id="dropdown-basic"
+            *dropdownMenu
+            class="dropdown-menu"
+            role="menu"
+            aria-labelledby="button-basic"
+            style="min-width: auto"
+          >
+            <li role="menuitem" *ngFor="let skill of user.skills">
+              <a
+                class="dropdown-item"
+                (click)="setSubject(skill.skillName)"
+                aria-controls="subject1"
+                >{{ skill.skillName }}</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div *ngFor="let skill of user.skills">
+          <div id="subject1" *ngIf="subjectTitle === skill.skillName">
+            <div>
+              <p class="mt-3" style="color: gray">{{ skill.description }}</p>
+
+              <div *ngIf="skill.url1">
+                <label class="mr-2">Link </label>
+                <a href="{{ skill.url1 }}" target="_blank">{{ skill.url1 }}</a>
+              </div>
+              <div *ngIf="skill.url2">
+                <label class="mr-2"> Link </label>
+                <a href="{{ skill.url2 }}" target="_blank">{{ skill.url2 }}</a>
+              </div>
+              <div *ngIf="skill.url2">
+                <label class="mr-2">Link </label>
+                <a href="{{ skill.url3 }}" target="_blank">{{ skill.url3 }}</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="card shadow p-4">
+
+      <div class="card shadow p-5">
         <div class="reviews mb-3">
           <span class="fa fa-star checked mr-2"></span
           ><span class="normal mr-4">{{ user.avgRate.toFixed(1) }}</span>
-          {{ user.raters.length }} Reviews
+          {{ pagination.totalItems }} Reviews
         </div>
 
-        <div *ngIf="user.raters" style="text-align: left">
-          <div *ngFor="let rater of user.raters">
+        <div *ngIf="rates.length > 0" style="text-align: left">
+          <div *ngFor="let rate of rates">
             <div class="row m-2">
-              <div class="col-sm-2">
+              <div class="col-3 col-md-2">
                 <img
-                  class="d-block w-100 ratePhoto"
-                  src="{{ rater.raterPhotoUrl }}"
-                  alt=""
+                  class="mx-auto d-block w-100 ratePhoto"
+                  src="{{ rate.raterPhotoUrl }}"
+                  alt="rate.raterPhotoUrl"
                 />
               </div>
-              <div class="col-sm-10">
+              <div class="col-9 col-md-10">
                 <div class="card-block">
-                  <!--           <h4 class="card-title">Small card</h4> -->
+                  <div
+                    class="btn-group pull-right"
+                    *ngIf="loggedIn()"
+                    dropdown
+                    [dropup]="true"
+                  >
+                    <a
+                      type="btn"
+                      class="btn btn-outline"
+                      id="button-dropup"
+                      dropdownToggle
+                      aria-controls="dropdown-dropup"
+                      *ngIf="rate.raterId === senderId"
+                    >
+                      ...
+                    </a>
+                    <ul
+                      id="dropdown-dropup"
+                      *dropdownMenu
+                      class="dropdown-menu"
+                      role="menu"
+                      aria-labelledby="button-dropup"
+                    >
+                      <li role="menuitem">
+                        <a class="dropdown-item" (click)="deleteRate(rate.id) "
+                          >Delete</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
                   <div>
-                    <strong>{{ rater.raterUserName }}</strong>
+                    <strong>{{ rate.raterUserName | titlecase }}</strong>
                   </div>
                   <p>
-                    <small>{{ rater.rateMade | timeago }}</small>
+                    <small>{{ rate.rateMade | timeago }}</small>
                   </p>
-                  <p>{{ rater.comment }}</p>
+                  <p>{{ rate.comment }}</p>
                 </div>
               </div>
             </div>
             <hr />
           </div>
         </div>
+        <div
+          class="d-flex justify-content-center mb-3"
+          *ngIf="pagination.totalItems > 10"
+        >
+          <pagination
+            [boundaryLinks]="true"
+            [totalItems]="pagination.totalItems"
+            [itemsPerPage]="pagination.itemsPerPage"
+            [(ngModel)]="pagination.currentPage"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;"
+            nextText="&rsaquo;"
+            firstText="&laquo;"
+            lastText="&raquo;"
+          >
+          </pagination>
+        </div>
       </div>
-    </div>
-
-    <div class="col-4">
-      <app-member-messages [recipientId]="user.id"></app-member-messages>
     </div>
   </div>
 </div>
@@ -116,7 +307,7 @@
   <div class="modal-header">
     <h4 class="modal-title pull-left">About {{ user.userName | titlecase }}</h4>
     <button
-      type="button"
+      type="btn"
       class="close pull-right"
       aria-label="Close"
       (click)="modalRef.hide()"
@@ -167,6 +358,74 @@
       >
         Submit
       </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #loginTemplate>
+  <div class="modal-header">
+    <p class="modal-title pull-left" *ngIf="isFavo" style="font-size: 1.5rem">
+      Log in to add to your favorites
+    </p>
+    <p class="modal-title pull-left" *ngIf="!isFavo" style="font-size: 1.5rem">
+      Log in to send a message
+    </p>
+    <button
+      type="btn"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form
+      *ngIf="!loggedIn()"
+      #loginForm="ngForm"
+      class="form-inline my-2 my-lg-0 p-2"
+    >
+      <input
+        class="form-control inline-block input-block-level mb-2"
+        type="text"
+        name="username"
+        placeholder="Id"
+        aria-label="Search"
+        required
+        [(ngModel)]="model.username"
+      />
+      <input
+        class="form-control inline-block input-block-level mb-2"
+        type="password"
+        name="password"
+        placeholder="Password"
+        aria-label="Search"
+        required
+        [(ngModel)]="model.password"
+      />
+
+      <button
+        [disabled]="!loginForm.valid"
+        class="btn btn-outline-success loginBtn"
+        type="submit"
+        (click)="modalRef.hide()"
+      >
+        Log In
+      </button>
+      <div class="newLine">
+        <p class="mt-2 or">or</p>
+
+        <button
+          *ngIf="!loggedIn()"
+          type="btn"
+          class="btn btn-primary registerBtn"
+          [routerLink]="['/register/']"
+          (click)="modalRef.hide()"
+        >
+          Sign Up
+        </button>
+      </div>
     </form>
   </div>
 </ng-template>

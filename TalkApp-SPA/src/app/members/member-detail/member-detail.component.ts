@@ -7,6 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AuthService } from 'src/app/_services/auth.service';
 import { Rate } from 'src/app/_models/rate';
 import { Router } from '@angular/router';
+import { PaginatedResult, Pagination } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-member-detail',
@@ -17,10 +18,18 @@ export class MemberDetailComponent implements OnInit {
   user: User;
   modalRef: BsModalRef;
   newRate: any = {};
+  mainPhotoUrl: string;
+  senderId: number;
+  rates: Rate[];
+  pagination: Pagination;
+
+  subjectTitle: string;
+  model: any = {};
+  isFavo: boolean = false;
 
   constructor(
     private userService: UserService,
-    private alerify: AlertifyService,
+    private alertify: AlertifyService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
     private authService: AuthService,
@@ -29,8 +38,33 @@ export class MemberDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
+      console.log(data);
+
       this.user = data['user'];
+      this.rates = data['rates'].result;
+      this.pagination = data['rates'].pagination;
+      this.senderId = parseInt(this.authService.decodedToken.nameid);
     });
+    this.loadRates();
+    this.authService.currentPhotoUrl.subscribe(
+      (photoUrl) => (this.mainPhotoUrl = photoUrl)
+    );
+    console.log(this.user);
+    this.subjectTitle = this.user.skills[0]?.skillName;
+    console.log(this.senderId, this.rates);
+  }
+
+  sendLike(recipientId: number) {
+    this.userService
+      .sendLike(this.authService.decodedToken.nameid, recipientId)
+      .subscribe(
+        (data) => {
+          this.alertify.success('You have liked: ' + this.user.userName);
+        },
+        (error) => {
+          this.alertify.error(error);
+        }
+      );
   }
 
   openModal(template: TemplateRef<any>) {
@@ -49,15 +83,98 @@ export class MemberDetailComponent implements OnInit {
       )
       .subscribe(
         (rate: Rate) => {
-          this.router.navigate(['/home']);
+          this.rates.unshift(rate);
+
+          // this.router.navigate(['']);
         },
         (error) => {
-          this.alerify.error(error);
+          this.alertify.error(error);
         }
       );
   }
 
   loggedIn() {
     return this.authService.loggedIn();
+  }
+
+  setSidebar() {
+    this.authService.setSidebar(true, this.user.id);
+  }
+
+  deleteRate(rateId: number) {
+    console.log('rer', rateId);
+
+    this.alertify.confirm(
+      'Are you sure you want to delete this message?',
+      () => {
+        this.userService
+          .deleteRate(this.authService.decodedToken.nameid, rateId)
+          .subscribe(
+            (next) => {
+              const objToDelete: Rate[] = this.rates.filter(
+                (rate) => rate.id === rateId
+              );
+              console.log(objToDelete);
+
+              this.rates = this.rates.filter(
+                (rate) => rate.id !== objToDelete[0].id
+              );
+
+              console.log(this.rates);
+
+              this.alertify.success('Your rate has been deleted');
+            },
+            (error) => {
+              this.alertify.error(error);
+            }
+          );
+      }
+    );
+  }
+
+  pageChanged(event: any): void {
+    this.pagination.currentPage = event.page;
+    this.loadRates();
+  }
+
+  loadRates() {
+    this.userService
+      .getRates(
+        this.user.id,
+        this.pagination.currentPage,
+        this.pagination.itemsPerPage
+      )
+      .subscribe(
+        (res: PaginatedResult<Rate[]>) => {
+          console.log('loadRates', res);
+
+          this.rates = res.result;
+          this.pagination = res.pagination;
+        },
+        (error) => {
+          this.alertify.error(error);
+        }
+      );
+  }
+
+  setSubject(subjectTitle: string) {
+    this.subjectTitle = subjectTitle;
+  }
+
+  login() {
+    console.log(this.model);
+    this.authService.login(this.model).subscribe(
+      (next) => {
+        this.alertify.success('Logged in successfully');
+      },
+      (error) => {
+        this.alertify.error(error);
+      }
+    );
+  }
+
+  toggleIsFavo(favo: boolean) {
+    this.isFavo = favo;
+    return this.isFavo;
   }
 }
