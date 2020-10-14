@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace TalkApp_API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Raters).Include(p => p.Ratees).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Raters).Include(p => p.Ratees).Include(p => p.Languages).FirstOrDefaultAsync(u => u.Id == id);
 
             return user;
         }
@@ -50,7 +51,7 @@ namespace TalkApp_API.Data
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             var users = _context.Users.Include(p => p.Photos).Include(p => p.Skills).Include(p => p.Likers).Include(p => p.Likees)
-            .Include(p => p.Raters).Include(p => p.Ratees)
+            .Include(p => p.Raters).Include(p => p.Ratees).Include(p => p.Languages)
             .OrderByDescending(u => u.Created).AsQueryable();
 
             users = users.Where(user => user.Skills.Count > 0);
@@ -75,7 +76,7 @@ namespace TalkApp_API.Data
 
             if (!string.IsNullOrEmpty(userParams.Search))
             {
-                users = users.Where(u => u.Skills.Any(s => s.SkillName.Contains(userParams.Search)));
+                users = users.Where(u => u.Skills.Any(s => s.SkillName.ToLower().Contains(userParams.Search.ToLower())));
             }
 
             if (!string.IsNullOrEmpty(userParams.OrderBy))
@@ -182,12 +183,10 @@ namespace TalkApp_API.Data
             var rates = _context.Rates.AsNoTracking()
                             .Include(u => u.Rater)
                             .ThenInclude(p => p.Photos).AsNoTracking()
-                            // .Include(u => u.Ratee)
-                            // .ThenInclude(p => p.Photos)
-                            // .AsNoTracking()
+                            .Include(u => u.Ratee)
+                            .ThenInclude(p => p.Photos)
+                            .AsNoTracking().Where(u => u.RecipientId == rateParams.UserId)
                             .AsQueryable();
-
-            rates.Where(u => u.RecipientId == rateParams.UserId);
 
             rates = rates.OrderByDescending(d => d.RateMade);
 
@@ -212,7 +211,7 @@ namespace TalkApp_API.Data
             return await _context.Rates.FirstOrDefaultAsync(m => m.Id == rateId);
         }
 
-        public float GetAvgRates(int recipientId, int score)
+        public AvgRates GetAvgRates(int recipientId, int score)
         {
             var user = _context.Users.Include(u => u.Raters).Where(u => u.Id == recipientId);
 
@@ -220,16 +219,25 @@ namespace TalkApp_API.Data
 
             var sum = previousSum + score;
 
-            var num = (user.Select(user => user.Raters.Count())).First();
+            var num = (user.Select(user => user.Raters.Count())).First() + 1;
 
-            var avg = sum / (num + 1);
+            var avg = sum / num;
 
-            return avg;
+
+            return new AvgRates { Avg = avg, TotalNumOfRates = num };
+
+
+
         }
 
         public async Task<Skill> GetSkill(int skillId)
         {
             return await _context.Skills.FirstOrDefaultAsync(s => s.Id == skillId);
+        }
+
+        public async Task<Language> GetLang(int langId)
+        {
+            return await _context.Languages.FirstOrDefaultAsync(s => s.Id == langId);
         }
     }
 }

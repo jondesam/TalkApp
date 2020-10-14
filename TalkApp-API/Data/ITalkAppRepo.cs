@@ -21,7 +21,8 @@ namespace TalkApp_API.Data
         Task<PagedList<Rate>> GetRates(RateParams rateParams);
         bool IsRated(User rater, User ratee);
         Task<Rate> GetRate(int rateId);
-        float GetAvgRates(int userId, int score);
+        AvgRates GetAvgRates(int userId, int score);
         Task<Skill> GetSkill(int skillId);
+        Task<Language> GetLang(int langId);
     }
 }

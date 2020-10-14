@@ -13,6 +13,7 @@ namespace TalkApp_API.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<Language> Languages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //Make primary key in combination of LikerId and LikeeId
@@ -52,6 +53,8 @@ namespace TalkApp_API.Data
                 .WithMany(m => m.Raters)
                 .HasForeignKey(m => m.RecipientId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

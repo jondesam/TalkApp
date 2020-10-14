@@ -16,11 +16,14 @@
     ],
     "Skills": [
       {
-        "skillName": "excepteur",
+        "skillName": "Java",
         "isMain": true,
-        "description": "Adipisicing tempor non consectetur pariatur magna ut."
+        "description": "Adipisicing tempor non consectetur pariatur magna ut.",
+        "yearsOfExp": 2,
+        "fee": 10
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "english" ,"isNative":true}, { "langueSpeak": "french" }]
   },
   {
     "Username": "Viola",
@@ -39,11 +42,14 @@
     ],
     "Skills": [
       {
-        "skillName": "irure",
+        "skillName": "English",
         "isMain": true,
-        "description": "Culpa exercitation non ad officia excepteur qui incididunt ut sit sint laboris id culpa voluptate."
+        "description": "Culpa exercitation non ad officia excepteur qui incididunt ut sit sint laboris id culpa voluptate.",
+        "yearsOfExp": 13,
+        "fee": 40
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "french" ,"isNative":true}, { "langueSpeak": "spanish" }]
   },
   {
     "Username": "Vicki",
@@ -62,11 +68,14 @@
     ],
     "Skills": [
       {
-        "skillName": "officia",
+        "skillName": "JavaScript",
         "isMain": true,
-        "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia."
+        "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia.",
+        "yearsOfExp": 5,
+        "fee": 30
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "spanish" ,"isNative":true}, { "langueSpeak": "russian" }]
   },
   {
     "Username": "Leslie",
@@ -85,11 +94,14 @@
     ],
     "Skills": [
       {
-        "skillName": "eu",
+        "skillName": "python",
         "isMain": true,
-        "description": "Qui labore pariatur anim non consequat."
+        "description": "Qui labore pariatur anim non consequat.",
+        "yearsOfExp": 0,
+        "fee": 0
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "japanese" ,"isNative":true} ]
   },
   {
     "Username": "Lena",
@@ -108,16 +120,21 @@
     ],
     "Skills": [
       {
-        "skillName": "eiusmod",
+        "skillName": "wrting",
         "isMain": true,
-        "description": "Magna ad sit in ex ad tempor cillum pariatur commodo ea minim."
+        "description": "Magna ad sit in ex ad tempor cillum pariatur commodo ea minim.",
+        "yearsOfExp": 3,
+        "fee": 12
       },
       {
         "skillName": "eu",
         "isMain": true,
-        "description": "Qui labore pariatur anim non consequat."
+        "description": "Qui labore pariatur anim non consequat.",
+        "yearsOfExp": 4,
+        "fee": 14
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "korean" ,"isNative":true}, { "langueSpeak": "russian" }]
   },
   {
     "Username": "ami",
@@ -138,9 +155,12 @@
       {
         "skillName": "excepteur",
         "isMain": true,
-        "description": "Adipisicing tempor non consectetur pariatur magna ut."
+        "description": "Adipisicing tempor non consectetur pariatur magna ut.",
+        "yearsOfExp": 5,
+        "fee": 16
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "russian" ,"isNative":true}, { "langueSpeak": "chinese" }]
   },
   {
     "Username": "Vres",
@@ -161,9 +181,12 @@
       {
         "skillName": "irure",
         "isMain": true,
-        "description": "Culpa exercitation non ad officia excepteur qui incididunt ut sit sint laboris id culpa voluptate."
+        "description": "Culpa exercitation non ad officia excepteur qui incididunt ut sit sint laboris id culpa voluptate.",
+        "yearsOfExp": 10,
+        "fee": 25
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "japanese" ,"isNative":true}, { "langueSpeak": "chinese" }]
   },
   {
     "Username": "Reus",
@@ -184,9 +207,12 @@
       {
         "skillName": "officia",
         "isMain": true,
-        "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia."
+        "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia.",
+        "yearsOfExp": 13,
+        "fee": 25
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }]
   },
   {
     "Username": "Lee",
@@ -205,16 +231,21 @@
     ],
     "Skills": [
       {
-        "skillName": "eu",
+        "skillName": "photoshop",
         "isMain": true,
-        "description": "Qui labore pariatur anim non consequat."
+        "description": "Qui labore pariatur anim non consequat.",
+        "yearsOfExp": 5,
+        "fee": 20
       },
       {
-        "skillName": "excepteur",
+        "skillName": "indesign",
         "isMain": true,
-        "description": "Adipisicing tempor non consectetur pariatur magna ut."
+        "description": "Adipisicing tempor non consectetur pariatur magna ut.",
+        "yearsOfExp": 2,
+        "fee": 10
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }]
   },
   {
     "Username": "nadia",
@@ -233,20 +264,25 @@
     ],
     "Skills": [
       {
-        "skillName": "eiusmod",
+        "skillName": "english",
         "isMain": true,
-        "description": "Magna ad sit in ex ad tempor cillum pariatur commodo ea minim."
+        "description": "Magna ad sit in ex ad tempor cillum pariatur commodo ea minim.",
+        "yearsOfExp": 3,
+        "fee": 13
       },
       {
-        "skillName": "eu",
+        "skillName": "french",
         "isMain": true,
-        "description": "Qui labore pariatur anim non consequat."
+        "description": "Qui labore pariatur anim non consequat.",
+        "yearsOfExp": 1,
+        "fee": 10
       },
       {
         "skillName": "officia",
         "isMain": true,
         "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia."
       }
-    ]
+    ],
+    "Languages": [{ "langueSpeak": "arabic" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }]
   }
 ]
