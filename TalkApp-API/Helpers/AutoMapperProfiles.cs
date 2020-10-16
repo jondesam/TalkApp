@@ -38,7 +38,6 @@ namespace TalkApp_API.Helpers
             CreateMap<Rate, RateForReturnDto>()
                 .ForMember(m => m.RaterPhotoUrl, src => src
                     .MapFrom(u => u.Rater.Photos.FirstOrDefault(p => p.IsMain).Url));
-
             CreateMap<Language, LanguageForDetailedDto>().ReverseMap();
         }
 

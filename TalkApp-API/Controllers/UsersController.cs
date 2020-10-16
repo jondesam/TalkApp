@@ -44,7 +44,7 @@ namespace TalkApp_API.Controllers
             var usersToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(users);
 
             Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
-
+         
             return Ok(usersToReturn);
         }
 
@@ -57,6 +57,7 @@ namespace TalkApp_API.Controllers
 
             return Ok(userToReturn);
         }
+
         [ServiceFilter(typeof(LogUserActivity))]
         [Authorize]
         [HttpPut("{id}")]
@@ -67,13 +68,14 @@ namespace TalkApp_API.Controllers
 
             var userFromRepo = await _repo.GetUser(id);
 
-            _mapper.Map(userForUpdateDto, userFromRepo);
+            var userToReturn = _mapper.Map(userForUpdateDto, userFromRepo);
 
             if (await _repo.SaveAll())
-                return NoContent();
+                return Ok(userToReturn);
 
             throw new Exception($"Updating user {id} failed on save");
         }
+
         [ServiceFilter(typeof(LogUserActivity))]
         [Authorize]
         [HttpPost("{userId}/like/{recipientId}")]
@@ -85,7 +87,12 @@ namespace TalkApp_API.Controllers
             var like = await _repo.GetLike(userId, recipientId);
 
             if (like != null)
-                return BadRequest("You already like this user. Would you like to cancel it?");
+            {
+                _repo.Delete<Like>(like);
+
+                if (await _repo.SaveAll())
+                    return BadRequest("Unliked!");
+            }
 
             if (await _repo.GetUser(recipientId) == null)
                 return NotFound();

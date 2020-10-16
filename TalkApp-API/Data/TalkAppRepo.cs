@@ -239,5 +239,12 @@ namespace TalkApp_API.Data
         {
             return await _context.Languages.FirstOrDefaultAsync(s => s.Id == langId);
         }
+
+        public async Task<IEnumerable<Language>> GetLangs(int userId)
+        {
+            var Languages = await _context.Languages.Where(l => l.UserId == userId).ToListAsync();
+
+            return Languages;
+        }
     }
 }

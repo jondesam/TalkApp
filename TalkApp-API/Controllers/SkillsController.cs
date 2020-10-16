@@ -46,6 +46,25 @@ namespace TalkApp_API.Controllers
             throw new Exception($"Updating user {userId} failed on save");
         }
 
+
+        [HttpPut("{skillId}")]
+        public async Task<IActionResult> UpdateSkill(int userId, SkillForDetailedDto skillForDetailedDto)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            // var userFromRepo = await _repo.GetUser(userId);
+
+            var skillFromRepo = await _repo.GetSkill(skillForDetailedDto.Id);
+
+            var userToReturn = _mapper.Map(skillForDetailedDto, skillFromRepo);
+
+            if (await _repo.SaveAll())
+                return Ok(userToReturn);
+
+            throw new Exception($"Updating user {userId} failed on save");
+        }
+
         [HttpDelete("{skillId}")]
         public async Task<IActionResult> DeleteSkill(int userId, int skillId)
         {

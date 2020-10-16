@@ -54,7 +54,7 @@ namespace TalkApp_API.Controllers
                 .ToLower(), userForLoginDto.Password);
 
             if (userFromRepo == null)
-                return Unauthorized();
+                return BadRequest("Please check Username or Password");
 
             var claims = new[]
             {

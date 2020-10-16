@@ -24,5 +24,6 @@ namespace TalkApp_API.Data
         AvgRates GetAvgRates(int userId, int score);
         Task<Skill> GetSkill(int skillId);
         Task<Language> GetLang(int langId);
+        Task<IEnumerable<Language>> GetLangs(int userId);
     }
 }

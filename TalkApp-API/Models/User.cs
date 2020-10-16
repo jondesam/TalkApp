@@ -16,14 +16,16 @@ namespace TalkApp_API.Models
         public string LookingFor { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
         public ICollection<Like> Likers { get; set; }
         public ICollection<Like> Likees { get; set; }
-        public virtual ICollection<Message> MessagesSent { get; set; }
-        public virtual ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
         public ICollection<Rate> Raters { get; set; }
         public ICollection<Rate> Ratees { get; set; }
         public float AvgRate { get; set; }
+        public int TotalNumOfRates { get; set; }
+        public ICollection<Language> Languages { get; set; }
     }
 }

@@ -16,6 +16,28 @@ namespace TalkApp_API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
 
+            modelBuilder.Entity("TalkApp_API.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsNative")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LangueSpeak")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("TalkApp_API.Models.Like", b =>
                 {
                     b.Property<int>("LikerId")
@@ -146,6 +168,9 @@ namespace TalkApp_API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Fee")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("SkillName")
                         .HasColumnType("TEXT");
 
@@ -159,6 +184,9 @@ namespace TalkApp_API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("YearsOfExp")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -201,12 +229,24 @@ namespace TalkApp_API.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("TotalNumOfRates")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TalkApp_API.Models.Language", b =>
+                {
+                    b.HasOne("TalkApp_API.Models.User", "User")
+                        .WithMany("Languages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TalkApp_API.Models.Like", b =>

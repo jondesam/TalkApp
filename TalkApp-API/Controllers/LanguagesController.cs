@@ -37,21 +37,37 @@ namespace TalkApp_API.Controllers
             return Ok(messageFromRepo);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetLangs(int userId)
+        {
+            var langsFromRepo = await _repo.GetLangs(userId);
+
+            if (langsFromRepo == null)
+                return NotFound();
+
+            return Ok(langsFromRepo);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> SaveLanguages(int userId, LanguageForDetailedDto languageForDetailedDto)
+        public async Task<IActionResult> SaveLanguages(int userId, LanguageForDetailedDto[] languageForDetailedDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            languageForDetailedDto.UserId = userId;
+            foreach (var lang in languageForDetailedDto)
+            {
+                lang.UserId = userId;
+                var language = _mapper.Map<Language>(lang);
 
-            var language = _mapper.Map<Language>(languageForDetailedDto);
+                _repo.Add(language);
+            }
 
-            _repo.Add(language);
+
 
             if (await _repo.SaveAll())
             {
-                return NoContent();
+                var languages = _repo.GetLangs(userId);
+                return Ok(languages);
             }
 
             throw new Exception($"Updating user {userId} failed on save");

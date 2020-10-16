@@ -12,7 +12,7 @@ using TalkApp_API.Models;
 
 namespace TalkApp_API.Controllers
 {
-    [Route("api/users/[controller]")]
+    [Route("api/users/{userId}/[controller]")]
     [ApiController]
 
     public class RatesController : ControllerBase
@@ -36,10 +36,13 @@ namespace TalkApp_API.Controllers
 
             return Ok(messageFromRepo);
         }
+        
         [HttpGet]
-        public async Task<IActionResult> GetRates([FromQuery] RateParams rateParams)
+        public async Task<IActionResult> GetRates(int userId, [FromQuery] RateParams rateParams)
         {
+            rateParams.UserId = userId;
             var rateFromRepo = await _repo.GetRates(rateParams);
+
 
             var rates = _mapper.Map<IEnumerable<RateForReturnDto>>(rateFromRepo);
 
@@ -61,11 +64,13 @@ namespace TalkApp_API.Controllers
             rateForCreationDto.RaterUserName = rater.UserName;
             rateForCreationDto.RaterPhotoUrl = userDetails.PhotoUrl;
 
-            var avg = _repo.GetAvgRates(rateForCreationDto.RecipientId, rateForCreationDto.Score);
 
-            if (avg == 0)
+
+            var obj = _repo.GetAvgRates(rateForCreationDto.RecipientId, rateForCreationDto.Score);
+
+            if (obj.Avg == 0)
             {
-                avg = rateForCreationDto.Score;
+                obj.Avg = rateForCreationDto.Score;
             }
 
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -84,13 +89,14 @@ namespace TalkApp_API.Controllers
 
             var rate = _mapper.Map<Rate>(rateForCreationDto);
 
-            recipient.AvgRate = avg;
+            recipient.AvgRate = obj.Avg;
+            recipient.TotalNumOfRates = obj.TotalNumOfRates;
 
             _repo.Add(rate);
 
             if (await _repo.SaveAll())
             {
-                _repo.Add(recipient);
+                // _repo.Add(recipient);
 
                 var rateToReturn = _mapper.Map<RateForReturnDto>(rate);
 
@@ -101,5 +107,27 @@ namespace TalkApp_API.Controllers
 
             throw new Exception("Creating the message failed on save");
         }
+
+        [HttpDelete("{rateId}")]
+        public async Task<IActionResult> DeleteRate(int rateId, int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var rateFromRepo = await _repo.GetRate(rateId);
+
+            if (rateFromRepo == null)
+            {
+                return BadRequest("Could not find Review");
+            }
+
+            _repo.Delete(rateFromRepo);
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            throw new Exception("Error deleting the message");
+        }
+
     }
 }

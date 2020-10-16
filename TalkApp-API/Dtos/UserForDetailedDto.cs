@@ -17,11 +17,14 @@ namespace TalkApp_API.Dtos
         public string PhotoUrl { get; set; }
         public ICollection<PhotoForDetailedDto> Photos { get; set; }
         public ICollection<SkillForDetailedDto> Skills { get; set; }
-        public ICollection<LikeForDetailedDto> Likers { get; set; }
-        public ICollection<LikeForDetailedDto> Likees { get; set; }
-        public ICollection<RateForCreationDto> Raters { get; set; }
-        public ICollection<RateForCreationDto> Ratees { get; set; }
+        // public ICollection<LikeForDetailedDto> Likers { get; set; }
+        // public ICollection<LikeForDetailedDto> Likees { get; set; }
+        // public ICollection<RateForCreationDto> Raters { get; set; }
+        // public ICollection<RateForCreationDto> Ratees { get; set; }
         public float AvgRate { get; set; }
+        public int TotalNumOfRates { get; set; }
+        public ICollection<LanguageForDetailedDto> Languages { get; set; }
+
 
     }
 }
