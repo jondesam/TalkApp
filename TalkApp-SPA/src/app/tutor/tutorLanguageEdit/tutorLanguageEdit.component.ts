@@ -21,7 +21,8 @@ export class TutorLanguageEditComponent implements OnInit {
     langueSpeak: null,
     isNative: false,
   };
-
+  canSave = false;
+  
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
@@ -67,7 +68,7 @@ export class TutorLanguageEditComponent implements OnInit {
 
             this.newLanguageForm.reset();
 
-            this.alertify.success(`All Added`);
+            this.alertify.success(`Saved`);
           },
           (error) => {
             console.log(error);

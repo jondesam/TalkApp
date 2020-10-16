@@ -44,19 +44,21 @@
           form="newLanguageForm"
           class="btn btn-primary addBtn ml-auto mr-3 "
           (click)="addToArr(newLanguage)"
+          (click)="canSave = !canSave"
 
         >
           Add
         </button>
       </div>
+
       <button
-      [disabled]="!newLanguageForm.dirty"
+      [disabled]="!canSave"
       form="newLanguageForm"
-      class="btn btn-primary  mt-4"
+      class="btn btn-primary btn-block  mt-4"
       (click)="saveNewLanguage(languages)"
 
     >
-      Save All
+      Save
     </button>
     </div>
   </div>
