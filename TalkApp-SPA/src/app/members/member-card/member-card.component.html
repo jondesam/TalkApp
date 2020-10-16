@@ -1,31 +1,47 @@
 <div class="card shadow my-2 p-2">
-  <div class="row">
-
+  <div class="row justify-content-md-center">
     <!-- Photo and Name -->
-    <div class="card-img-wrapper col-md-2 centerallF ml-5">
+    <div class="card-img-wrapper col-md-1 col-lg-1 ml-lg-5 centerallF  ">
+    <!-- <div class="card-img-wrapper col-md-4 col-lg-1 centerallF mx-auto"> -->
       <img
-        class="card-img-top userImg"
+        class="card-img-top userImg "
         src="{{ user.photoUrl || 'assets/user.png' }}"
         alt="{{ user.userName }}"
         [routerLink]="['/members/', user.id]"
+        (click)="setChosenUserId()"
       />
-      <div>
+     
+  
+    
+    </div>
+
+
+    <div class="col-md-1 col-lg-1 centerallF">
+
+      <div class=" ">
         <p
-          class="card-title text-left uName mt-3 ml-1"
+          class="card-title text-left uName mt-3 "
           style="font-size: 1.3rem; text-align: left"
           [routerLink]="['/members/', user.id]"
+          (click)="setChosenUserId()"
         >
           {{ user.userName | titlecase }}
         </p>
-        <p class="ml-1" style="font-size: 0.8rem">English Native</p>
+        <!-- <p class="ml-1" style="font-size: 0.8rem">English Native</p> -->
+        <div *ngFor="let language of user.languages; let i=index" >
+        <div *ngIf="language.isNative === true">
+       
+            <div class="language mr-1  " style="font-size: 0.8rem; color:gray"  *ngIf="i<3">{{language?.langueSpeak |titlecase }} </div>
+        </div>
+      </div>
       </div>
     </div>
 
     <!-- Rating -->
     <div class="col-md-3 col-lg-2 col-xl-3 centerall mr-3">
-      <div *ngIf="user.avgRate > 0"></div>
-      <ng-template class="centerall" [ngIf]="user.avgRate" [ngIfElse]="loading">
-        <div class="mt-3" style="text-align: center">
+
+  
+        <div class="mt-3"  *ngIf="user.avgRate > 0; else noReview" style="text-align: center">
           <div class="rating" style="display: inline-block; color: orange">
             {{ user.avgRate.toFixed(1) }}
           </div>
@@ -44,31 +60,39 @@
               aria-hidden="true"
             ></i>
           </ng-template>
-        </div>
-      </ng-template>
 
-      <ng-template #loading>
-        <div style="text-align: center">
-          <p class="mt-3 text-info" style="font-size: 1.3rem">New Member</p>
+          
         </div>
-      </ng-template>
-      <div
-        class="mt-2"
-        style="color: gray; text-align: center; font-size: 0.9rem"
-      >
-        <p>Based on {{ user.raters.length }} users</p>
-      </div>
+ 
+        <ng-template #noReview>
+          <div style="text-align: center">
+            <p class="mt-3 text-info" style="font-size: 1.3rem">New Member</p>
+          </div>
+        </ng-template>
+
+        <div
+          class="mt-2"
+          *ngIf="user.avgRate > 0"
+          style="color: gray; text-align: center; font-size: 0.9rem"
+        >
+          <p>based on {{ user.totalNumOfRates }} reviws</p>
+        </div>
+   
     </div>
 
     <!-- Exp and Fee -->
-    <div class="col-md-3 col-lg-2 centerall mt-3" style="text-align: center">
-      <p>2 years of experience</p>
+    <div class="col-md-4 col-lg-2 centerall mt-3" style="text-align: center">
+      <p *ngIf="user.skills[0].yearsOfExp > 0" style="display:inline">{{user.skills[0].yearsOfExp}} years of experience </p>
+      <p *ngIf="user.skills[0].yearsOfExp === 0">New subject</p>
 
-      <p class="mt-2">$15 per hour</p>
+
+      <p class="mt-2" *ngIf="user.skills[0].fee > 0">${{user.skills[0].fee}} per hour</p>
+      <p class="mt-2" *ngIf="user.skills[0].fee === 0">Free</p>
+      
     </div>
-    
+
     <!-- Skills -->
-    <div class="col-md-2 skill mt-3">
+    <div class="col-md-8 col-lg-2 skill">
       <div
         class="skill"
         style="display: inline-block"
@@ -76,7 +100,7 @@
       >
         <div>
           <ul class="list-inline mb-0">
-            <li class="liItem mr-1">{{ skill.skillName }}</li>
+            <li class="skills mr-1">{{ skill.skillName?.substring(0, 15) | titlecase }}</li>
           </ul>
         </div>
       </div>
@@ -88,6 +112,7 @@
         *ngIf="loggedIn()"
         class="btn btn-block btn-outline-primary btn-change"
         [routerLink]="['/members/', user.id]"
+        (click)="setChosenUserId()"
       >
         <div class="btn-change">Send a message</div>
       </button>
@@ -120,14 +145,14 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left" *ngIf="isFavo">
+    <h4 class="modal-title pull-left" *ngIf="isFavo" style="font-size: 1.5rem">
       Log in to add to your favorites
     </h4>
-    <h4 class="modal-title pull-left" *ngIf="!isFavo">
+    <h4 class="modal-title pull-left" *ngIf="!isFavo" style="font-size: 1.5rem">
       Log in to send a message
     </h4>
     <button
-      type="button"
+      type="btn"
       class="close pull-right"
       aria-label="Close"
       (click)="modalRef.hide()"
@@ -141,10 +166,9 @@
       *ngIf="!loggedIn()"
       #loginForm="ngForm"
       class="form-inline my-2 my-lg-0 p-2"
-      (ngSubmit)="login()"
     >
       <input
-        class="form-control mr-sm-2 inline-block input-block-level mb-2"
+        class="form-control inline-block input-block-level mb-2"
         type="text"
         name="username"
         placeholder="Id"
@@ -153,7 +177,7 @@
         [(ngModel)]="model.username"
       />
       <input
-        class="form-control mr-sm-2 inline-block input-block-level mb-2"
+        class="form-control inline-block input-block-level mb-2"
         type="password"
         name="password"
         placeholder="Password"
@@ -164,18 +188,18 @@
 
       <button
         [disabled]="!loginForm.valid"
-        class="btn btn-outline-success loginBtn mr-2"
+        class="btn btn-outline-success loginBtn"
         type="submit"
         (click)="modalRef.hide()"
       >
-        Log in
+        Log In
       </button>
       <div class="newLine">
         <p class="mt-2 or">or</p>
 
         <button
           *ngIf="!loggedIn()"
-          type="button"
+          type="btn"
           class="btn btn-primary registerBtn"
           [routerLink]="['/register/']"
           (click)="modalRef.hide()"

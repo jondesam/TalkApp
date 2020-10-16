@@ -46,12 +46,8 @@
   min-height: 28px;
 }
 
+.loginBtn,
 .registerBtn {
-  width: 100%;
-  display: block;
-}
-
-.loginBtn {
   width: 100%;
   display: block;
 }
@@ -76,12 +72,11 @@
   cursor: pointer;
 }
 
-.liItem {
-  display: inline;
+.skills {
   display: inline-block;
   zoom: 1;
   margin: 3px;
-  padding: 2px;
+  padding: 3px;
   background-color: rgba(178, 178, 178, 0.15);
 }
 
