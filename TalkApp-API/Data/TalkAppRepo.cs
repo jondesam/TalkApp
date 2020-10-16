@@ -54,7 +54,10 @@ namespace TalkApp_API.Data
             .Include(p => p.Raters).Include(p => p.Ratees).Include(p => p.Languages)
             .OrderByDescending(u => u.Created).AsQueryable();
 
-            users = users.Where(user => user.Skills.Count > 0);
+            if (!userParams.IncludeStudents)
+            {
+                users = users.Where(user => user.IsTutor == true);
+            }
 
             if (userParams.UserId > 0)
             {

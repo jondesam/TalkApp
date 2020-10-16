@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TalkApp_API.Migrations
 {
-    public partial class updated : Migration
+    public partial class update : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,7 +23,8 @@ namespace TalkApp_API.Migrations
                     City = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     AvgRate = table.Column<float>(nullable: false),
-                    TotalNumOfRates = table.Column<int>(nullable: false)
+                    TotalNumOfRates = table.Column<int>(nullable: false),
+                    IsTutor = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

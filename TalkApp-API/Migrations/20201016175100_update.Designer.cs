@@ -9,8 +9,8 @@ using TalkApp_API.Data;
 namespace TalkApp_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201012223856_updated")]
-    partial class updated
+    [Migration("20201016175100_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -218,6 +218,9 @@ namespace TalkApp_API.Migrations
 
                     b.Property<string>("Introduction")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsTutor")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("TEXT");

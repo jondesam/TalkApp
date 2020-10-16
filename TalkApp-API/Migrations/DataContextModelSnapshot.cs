@@ -217,6 +217,9 @@ namespace TalkApp_API.Migrations
                     b.Property<string>("Introduction")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsTutor")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("TEXT");
 

@@ -27,5 +27,6 @@ namespace TalkApp_API.Models
         public float AvgRate { get; set; }
         public int TotalNumOfRates { get; set; }
         public ICollection<Language> Languages { get; set; }
+        public bool IsTutor { get; set; }
     }
 }

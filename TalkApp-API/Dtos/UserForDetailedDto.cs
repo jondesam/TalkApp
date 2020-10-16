@@ -24,7 +24,6 @@ namespace TalkApp_API.Dtos
         public float AvgRate { get; set; }
         public int TotalNumOfRates { get; set; }
         public ICollection<LanguageForDetailedDto> Languages { get; set; }
-
-
+        public bool IsTutor { get; set; }
     }
 }
