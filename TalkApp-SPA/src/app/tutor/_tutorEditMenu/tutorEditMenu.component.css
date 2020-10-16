@@ -1,0 +1,63 @@
+.vertical-menu a {
+  color: gray;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  background-color: #ccc;
+}
+
+.vertical-menu a.menu {
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.topnav {
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: gray;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.menu {
+  color: black;
+}
+
+@media screen and (min-width: 0px) and (max-width: 991px) {
+  #bigScreen {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #smScreen {
+    display: none;
+  }
+}
+
+.navmenu {
+  border: none;
+  outline: none;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.active,
+.a:hover {
+  background-color: #e7f3fe;
+  color: #7cb6f4;
+}

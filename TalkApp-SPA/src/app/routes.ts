@@ -12,6 +12,11 @@ import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
+import { RatesResolver } from './_resolvers/rates.resolver';
+import { TutorBioEditComponent } from './tutor/tutorBioEdit/tutorBioEdit.component';
+import { TutorSkillEditComponent } from './tutor/tutorSkillEdit/tutorSkillEdit.component';
+import { TutorLanguageEditComponent } from './tutor/tutorLanguageEdit/tutorLanguageEdit.component';
+import { TutorEditMenuComponent } from './tutor/_tutorEditMenu/tutorEditMenu.component';
 
 export const appRoutes: Routes = [
   {
@@ -26,7 +31,7 @@ export const appRoutes: Routes = [
   {
     path: 'members/:id',
     component: MemberDetailComponent,
-    resolve: { user: MemberDetailResolver },
+    resolve: { user: MemberDetailResolver, rates: RatesResolver },
   },
   {
     path: '',
@@ -36,8 +41,8 @@ export const appRoutes: Routes = [
       {
         path: 'member/edit',
         component: MemberEditComponent,
-        resolve: { user: MemberEditResolver },
-        canDeactivate: [PreventUnsavedChanges],
+        resolve: { user: MemberEditResolver, rates: RatesResolver },
+        // canDeactivate: [PreventUnsavedChanges],
       },
       {
         path: 'messages',
@@ -48,6 +53,25 @@ export const appRoutes: Routes = [
         path: 'lists',
         component: ListsComponent,
         resolve: { users: ListsResolver },
+      },
+      {
+        path: 'tutor/bio/:id',
+        component: TutorBioEditComponent,
+        resolve: { user: MemberEditResolver },
+      },
+      {
+        path: 'tutor/skill/:id',
+        component: TutorSkillEditComponent,
+        resolve: { user: MemberEditResolver },
+      },
+      {
+        path: 'tutor/language/:id',
+        component: TutorLanguageEditComponent,
+      },
+      {
+        path: 'tutor/edit/:id',
+        component: TutorEditMenuComponent,
+        resolve: { user: MemberEditResolver },
       },
     ],
   },

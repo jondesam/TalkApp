@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="card p-4 ">
+        <div>
+          <form #editForm="ngForm" id="editForm">
+            <div class="gray" style="font-size: 1.7rem;">Bio</div>
+            <textarea
+              name="introduction"
+              rows="6"
+              class="form-control textarea mb-3"
+              [(ngModel)]="user.introduction"
+            ></textarea>
+
+            <div  class="form-group row gray">
+              <label for="city" class=" col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">City</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" name="city"
+                [(ngModel)]="user.city"  >
+              </div>
+            </div>
+            <div class="form-group row gray">
+              <label for="country" class="col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">Country</label>
+              <div class="col-sm-4">
+                <input type="ttext" class="form-control"       name="country"
+                [(ngModel)]="user.country">
+              </div>
+            </div>
+          
+          </form>
+          <hr>
+            <app-photo-editor 
+            class="gray"
+            [photos]="user.photos"
+            (getMemberPhotoChange)="updateMainPhoto($event)"
+          ></app-photo-editor>
+
+          <div>
+            <button
+              form="editForm"
+
+              class="btn btn-info pull-right"
+              [disabled]="!editForm.dirty "
+              (click)="updateBio()"
+            >
+              Update Profile
+            </button>
+          </div>
+
+        </div>
+
+    </div>
+</div>

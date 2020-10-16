@@ -1,25 +1,29 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
 import { Message } from '../_models/Message';
 import { Rate } from '../_models/rate';
-
-// const httpOptions = {
-//   headers: new HttpHeaders({
-//     Authorization: 'Bearer ' + localStorage.getItem('token'),
-//   }),
-// };
+import { Skill } from '../_models/skill';
+import { Language } from '../_models/language';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   baseUrl = environment.apiUrl;
+
+  chosenUserId = new BehaviorSubject<number>(0);
+  currentChosenUserId = this.chosenUserId.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  setChosenUserId(chosenUserId: number) {
+    this.chosenUserId.next(chosenUserId);
+  }
 
   getUsers(
     pageNumber?,
@@ -60,7 +64,6 @@ export class UserService {
       })
       .pipe(
         map((response) => {
-          console.log('response', response);
           paginatedResult.result = response.body;
 
           if (response.headers.get('Pagination') != null) {
@@ -68,7 +71,6 @@ export class UserService {
               response.headers.get('Pagination')
             );
           }
-          console.log('paginatedResult', paginatedResult);
           return paginatedResult;
         })
       );
@@ -123,16 +125,12 @@ export class UserService {
       })
       .pipe(
         map((response) => {
-          console.log(response);
-
           paginatedResult.result = response.body;
           if (response.headers.get('Pagination') !== null) {
             paginatedResult.pagination = JSON.parse(
               response.headers.get('Pagination')
             );
           }
-          console.log('paginatedResult', paginatedResult);
-
           return paginatedResult;
         })
       );
@@ -173,12 +171,18 @@ export class UserService {
     comment: string,
     score: number
   ) {
-    return this.http.post(this.baseUrl + 'users/' + 'rates', {
+    return this.http.post(this.baseUrl + 'users/' + senderId + '/rates', {
       senderId,
       recipientId,
       comment,
       score,
     });
+  }
+
+  deleteRate(userId: number, rateId: number) {
+    return this.http.delete(
+      this.baseUrl + 'users/' + userId + '/rates/' + rateId
+    );
   }
 
   getRates(userId: number, pageNumber?, itemsPerPage?) {
@@ -187,31 +191,65 @@ export class UserService {
     >();
 
     let params = new HttpParams();
-    // debugger;
+
     if (pageNumber != null && itemsPerPage != null) {
       params = params.append('pageNumber', pageNumber);
       params = params.append('pageSize', itemsPerPage);
     }
 
     return this.http
-      .get<Rate[]>(this.baseUrl + 'users/' + 'rates', {
+      .get<Rate[]>(this.baseUrl + 'users/' + userId + '/rates', {
         observe: 'response',
         params,
       })
       .pipe(
         map((response) => {
-          console.log(response);
-
           paginatedResult.result = response.body;
           if (response.headers.get('Pagination') !== null) {
             paginatedResult.pagination = JSON.parse(
               response.headers.get('Pagination')
             );
           }
-          console.log('paginatedResult', paginatedResult);
 
           return paginatedResult;
         })
       );
+  }
+
+  saveSkill(userId: number, skill: Skill) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/skills/', skill);
+  }
+
+  updateSkill(userId: number, skill: Skill) {
+    let skillId = skill.id;
+    return this.http.put(
+      this.baseUrl + 'users/' + userId + '/skills/' + skillId,
+      skill
+    );
+  }
+
+  deleteSkill(userId: number, skillId: number) {
+    return this.http.delete(
+      this.baseUrl + 'users/' + userId + '/skills/' + skillId
+    );
+  }
+
+  saveLanguages(userId: number, languages: Language[]) {
+    return this.http.post(
+      this.baseUrl + 'users/' + userId + '/languages',
+      languages
+    );
+  }
+
+  deleteLang(userId: number, langId: number) {
+    return this.http.delete(
+      this.baseUrl + 'users/' + userId + '/languages/' + langId
+    );
+  }
+
+  getLanguages(userId: number) {
+    return this.http.get<Language[]>(
+      this.baseUrl + 'users/' + userId + '/languages'
+    );
   }
 }

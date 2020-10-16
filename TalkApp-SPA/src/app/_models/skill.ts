@@ -1,10 +1,11 @@
 export interface Skill {
-  id: number;
+  id?: number;
   skillName: string;
   description: string;
-  publicId: string;
-  userId: number;
-  url1: string;
-  url2: string;
-  url3: string;
+  publicId?: string;
+  url1?: string;
+  url2?: string;
+  url3?: string;
+  yearsOfExp: number;
+  fee: number;
 }

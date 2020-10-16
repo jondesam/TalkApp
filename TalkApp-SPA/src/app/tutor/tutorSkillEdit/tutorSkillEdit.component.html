@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="">
+    <div class="card p-4">
+
+     <div (click)="$event.preventDefault()">
+        <button *ngIf="skills.length < 3"  type="button" class="btn btn-primary btn-sm  pull-right" (click)="addNewTab()">
+          Add new subject 
+        </button>
+
+        <tabset>
+          <tab
+            *ngFor="let skill of skills; let i = index"
+            heading="Subject {{i + 1}}"
+              (selectTab)="skill.active = true"
+              (deselect)="skill.active = false"
+              >
+
+              <form id="editSkillForm" [formGroup]="editSkillForm" bind-formGroup="editSkillForm">
+                <div [formArrayName]="'skillArray'">
+            
+                  <div class="mt-3 " [formArrayName]="i">
+                      <div class="">
+                        <label class="" style="display: inline; font-size:1.3rem">Subject</label> 
+        
+                          <div class="btn-group pull-right" dropdown [dropup]="true">
+                            <a
+                              type="btn"
+                              class="btn btn-outline"
+                              id="button-dropup"
+                              dropdownToggle
+                              aria-controls="dropdown-dropup"
+                            >
+                              ...
+                            </a>
+                            <ul
+                              id="dropdown-dropup"
+                              *dropdownMenu
+                              class="dropdown-menu"
+                              role="menu"
+                              aria-labelledby="button-dropup"
+                            >
+                              <li role="menuitem">
+                                <a
+                                  class="dropdown-item"
+                                  (click)="deleteSkill(skill.id)"
+                                  >Delete</a
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                      
+                          <input
+                            formControlName="skillName"
+                            class="form-control input mb-3"
+                            type="text"
+                            name="skillName"
+                            placeholder="Subject title"
+                            [(ngModel)]="skill.skillName"
+                          />
+                   
+                          <label class="mt-3" style="display: inline; font-size:1.3rem">Description</label>
+                          <textarea
+                            formControlName="description"
+                            name="skills"
+                            row="3"
+                            class="form-control textarea mb-3 mt-1"
+                            placeholder="Description"
+                            [(ngModel)]="skill.description"
+
+                          >
+                          </textarea>
+
+                          <label style="display: inline; font-size:1.3rem">Link </label>
+                          <input
+                            formControlName="url1"
+                            class="form-control input mb-3 mt-1"
+                            type="text"
+                            name="url1"
+                            placeholder="URL link"
+                            [(ngModel)]="skill.url1"
+                            style="min-width: 90%"
+                          />
+
+                          <label for="fee" style="display: inline; font-size:1.3rem">Fee per hour</label>
+                          <input
+                            formControlName="fee"
+                            class="form-control input mb-3 mt-1"
+                            type="text"
+                            name="fee"
+                            placeholder="Fee per hour"
+                            [(ngModel)]="skill.fee"
+                            style="min-width: 90%"
+                          />
+
+                          <label style="display: inline; font-size:1.3rem">Years of Experience</label>
+                          <input
+                            formControlName="yearsOfExp"
+                            class="form-control input mt-1"
+                            type="text"
+                            name="yearsOfExp"
+                            placeholder="Years of experience on this subject"
+                            [(ngModel)]="skill.yearsOfExp"
+                            style="min-width: 90%"
+                          />
+                          
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="mt-3">
+                  <button
+                  [disabled]="!editSkillForm.dirty"
+                  form="editSkillForm"
+                  class="btn btn-primary pull-right"
+                  (click)="saveSkill(skill)"
+                >
+                  Save
+                  </button>   
+                </div>
+
+          </tab>
+        </tabset>
+  </div>
+  
+
+  
+  
+  
+
+
+
+  <!-- <p>Form value : {{ editSkillForm.value | json }}</p>
+<p>Form value : {{ editSkillForm.status | json }}</p> -->

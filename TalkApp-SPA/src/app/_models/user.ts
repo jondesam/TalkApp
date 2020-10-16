@@ -1,6 +1,7 @@
 import { Photo } from './photo';
 import { Skill } from './skill';
 import { Rate } from './rate';
+import { Language } from './language';
 
 export interface User {
   id: number;
@@ -16,4 +17,6 @@ export interface User {
   skills?: Skill[];
   avgRate?: number;
   raters?: Rate[];
+  totalNumOfRates?: number;
+  languages: Language[];
 }

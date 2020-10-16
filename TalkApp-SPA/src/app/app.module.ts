@@ -37,6 +37,11 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { RatesResolver } from './_resolvers/rates.resolver';
+import { TutorBioEditComponent } from './tutor/tutorBioEdit/tutorBioEdit.component';
+import { TutorLanguageEditComponent } from './tutor/tutorLanguageEdit/tutorLanguageEdit.component';
+import { TutorSkillEditComponent } from './tutor/tutorSkillEdit/tutorSkillEdit.component';
+import { TutorEditMenuComponent } from './tutor/_tutorEditMenu/tutorEditMenu.component';
 
 export const tokenGetter = () => localStorage.getItem('token');
 
@@ -54,6 +59,10 @@ export const tokenGetter = () => localStorage.getItem('token');
     MemberEditComponent,
     PhotoEditorComponent,
     MemberMessagesComponent,
+    TutorBioEditComponent,
+    TutorLanguageEditComponent,
+    TutorSkillEditComponent,
+    TutorEditMenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +99,7 @@ export const tokenGetter = () => localStorage.getItem('token');
     PreventUnsavedChanges,
     ListsResolver,
     MessagesResolver,
+    RatesResolver,
   ],
   bootstrap: [AppComponent],
 })

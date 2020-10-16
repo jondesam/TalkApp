@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="">
+    <div class="card  p-4">
+      <div *ngIf="languages.length > 0" class="my-2" style="color: gray;">Current Languages :
+          <div
+          class="skill"
+          style="display: inline-block"
+          *ngFor="let language of languages"
+        >
+          <div>
+            <ul class="list-inline mb-3">
+              <li class="language mr-1 langDelete"><a (click)="deleteLang(language.id,language.langueSpeak)"> <i class="fa fa-times" aria-hidden="true"></i> {{language?.langueSpeak |titlecase }}</a></li>
+            </ul>
+          </div>
+        </div> 
+      </div>
+
+      <div id="NewLanguegeForm" class="row">
+        <form
+          #newLanguageForm="ngForm"
+          id="newLanguageForm"
+          class="col-5   mr-4 "
+        >
+        <div>
+
+          <input
+            name="languageName"
+            class="form-control"
+            [(ngModel)]="newLanguage.langueSpeak"
+            placeholder="Language"
+          />
+          </div>
+        </form>
+
+        <div class="form-check mt-2 ml-2 mr-4 col-4">
+          <input class="form-check-input" type="radio" name="isNative" id="radioBtn" value="true"  [(ngModel)]="newLanguage.isNative">
+          <label class="form-check-label" for="radoBtn" style="color:gray">
+            Native language
+          </label>
+        </div>
+
+        <button
+          [disabled]="!newLanguageForm.dirty"
+          form="newLanguageForm"
+          class="btn btn-primary addBtn ml-auto mr-3 "
+          (click)="addToArr(newLanguage)"
+
+        >
+          Add
+        </button>
+      </div>
+      <button
+      [disabled]="!newLanguageForm.dirty"
+      form="newLanguageForm"
+      class="btn btn-primary  mt-4"
+      (click)="saveNewLanguage(languages)"
+
+    >
+      Save All
+    </button>
+    </div>
+  </div>
+</div>
