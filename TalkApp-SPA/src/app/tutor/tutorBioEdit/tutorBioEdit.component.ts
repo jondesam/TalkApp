@@ -56,7 +56,7 @@ export class TutorBioEditComponent implements OnInit {
           this.alertify.success('Profile updated');
         },
         (error) => {
-          this.alertify.error(error);
+          this.alertify.error('Error');
         }
       );
   }
