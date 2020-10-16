@@ -1,10 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Skill } from 'src/app/_models/skill';
 import { User } from 'src/app/_models/user';

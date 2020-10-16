@@ -62,7 +62,7 @@
                           <textarea
                             formControlName="description"
                             name="skills"
-                            row="3"
+                            rows="7"
                             class="form-control textarea mb-3 mt-1"
                             placeholder="Description"
                             [(ngModel)]="skill.description"
@@ -112,7 +112,7 @@
                   <button
                   [disabled]="!editSkillForm.dirty"
                   form="editSkillForm"
-                  class="btn btn-primary pull-right"
+                  class="btn btn-primary btn-block mt-4"
                   (click)="saveSkill(skill)"
                 >
                   Save
@@ -122,13 +122,3 @@
           </tab>
         </tabset>
   </div>
-  
-
-  
-  
-  
-
-
-
-  <!-- <p>Form value : {{ editSkillForm.value | json }}</p>
-<p>Form value : {{ editSkillForm.status | json }}</p> -->
