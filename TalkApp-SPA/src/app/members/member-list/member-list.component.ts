@@ -44,7 +44,9 @@ export class MemberListComponent implements OnInit {
       .getUsers(
         this.pagination.currentPage,
         this.pagination.itemsPerPage,
-        this.userParams
+        this.userParams,
+        null,
+        null
       )
       .subscribe(
         (res: PaginatedResult<User[]>) => {

@@ -14,9 +14,9 @@
       <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
     </p>
     <div class="field has-addons centerall">
-      <div class="control">
+      <form class="form-inline" (ngSubmit)="loadUsers()">
         <input
-          class="form-control"
+          class="form-control form-control-lg"
           type="text"
           placeholder="Serch for anything"
           #newHero
@@ -26,16 +26,17 @@
           name="search"
           [(ngModel)]="userParams.search"
         />
-      </div>
-      <div class="control">
         <a
-          class="btn btn-primary"
-          type="button"
-          name="search"
-          (click)="loadUsers()"
-        >
-          Search
-        </a>
+        class="btn btn-primary btn-lg"
+        type="btn"
+        name="search"
+        (click)="loadUsers()"
+      >
+        Search
+      </a>
+      </form>
+      <div class="control">
+      
       </div>
     </div>
   </div>
@@ -47,8 +48,8 @@
     <button
       id="button-basic"
       dropdownToggle
-      type="button"
-      class="btn btn-primary dropdown-toggle"
+      type="btn"
+      class="btn btn-outline-primary dropdown-toggle"
       aria-controls="dropdown-basic"
       style="width: 170px"
     >
