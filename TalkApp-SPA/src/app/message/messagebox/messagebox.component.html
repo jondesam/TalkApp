@@ -1,0 +1,136 @@
+<div class="container">
+  <div class="list-group" *ngFor="let message of messages">
+
+    <a class="list-group-item list-group-item-action border-0" 
+       *ngIf=" +this.authService.decodedToken.nameid === message.recipientId"
+       (click)="loadThread( template, message )">
+        <img
+          src="{{ message.senderPhotoUrl || '../assets/user.png' }}"
+          alt="{{ message.senderUserName }}"
+          class="rounded-circle float-left flex-start "/>
+
+        <div class="float-left ml-2 " style="font-weight: 500;" > {{message.senderUserName | titlecase}}</div>
+
+        <div class="float-right flex-end mb-3" ><small class="text-muted">{{message.messageSent |timeago|timeAgoSeconde}}</small> </div>
+
+        <br>    
+        <div class="text pl-2 ">  {{message.content}}</div>
+    </a>
+
+    <a class="list-group-item list-group-item-action border-0" 
+      *ngIf=" +this.authService.decodedToken.nameid === message.senderId"
+      (click)="loadThread(template,   message)">
+          <img
+             src="{{ message.recipientPhotoUrl || '../assets/user.png' }}"
+             alt="{{ message.recipientUserName }}"
+             class="rounded-circle float-left flex-start"/>
+
+           <div class="float-left ml-2 " style="font-weight: 500;" > {{message.recipientUserName | titlecase}}</div>
+
+           <div class="float-right flex-end mb-3" ><small class="text-muted">{{message.messageSent |timeago|timeAgoSeconde}}</small> </div>
+
+          <br>    
+          <div class="text pl-2 ">  {{message.content}}</div>
+      </a>
+  </div>
+</div>
+
+
+ 
+<ng-template #template>
+  <div class="modal-header" *ngIf="chatPhotoWith !== null">
+    <div><span class="chat-img float-left  mr-2">
+      <img
+        src="{{ chatPhotoWith || '../assets/user.png' }}"
+        alt="{{ chatWith }}"
+        class="rounded-circle"           
+      />
+    </span></div>
+
+    <div class="chatWith" > {{ chatWith | titlecase }}</div>
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+ 
+  <div class="card shadow" *ngIf="chatPhotoWith !== null">
+    <div class="card-body">
+      <div *ngIf="messageThread?.length === 0">
+        <span class="noMessage">Write your message here... </span>
+      </div>
+
+      <ul class="chat">
+        <li *ngFor="let message of messageThread">
+
+          <div class="recipient" *ngIf="message.senderId == recipientId">
+
+            <span class="chat-img float-left  mr-2">
+              <img
+                src="{{ message.senderPhotoUrl || '../assets/user.png' }}"
+                alt="{{ message.senderUserName }}"
+                class="rounded-circle"           
+              />
+            </span>
+
+            <div class="mt-4 recipientText">{{ message.content }}     
+              <div class="dateU">
+                  <div class="dateL">
+                    <small class="text-muted float-right">
+                      {{ message.messageSent | timeago | timeAgoSeconde }}
+                      </small>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+       
+          <div class="sender" *ngIf="message.senderId != recipientId">
+              <div class="mt-3 senderText">{{ message.content }}
+                <div class="dateU">
+                  <div class="dateL">
+                    <small class="text-muted float-right">
+                      {{ message.messageSent | timeago | timeAgoSeconde }}
+                      </small>
+                  </div>
+              </div>
+             
+              </div>
+              <small class="text-muted">
+                <!-- <span *ngIf="!message.isRead" class="text-dark ml-1"
+                  >(unread)</span 
+                >-->
+                <!-- <span *ngIf="message.isRead" class="text-dark"
+                  >(Read)</span
+                > -->
+              </small>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <form
+        #messageForm="ngForm"
+        (ngSubmit)="messageForm.valid && sendMessage()"
+        class="input-group"
+      >
+        <textarea
+          type="text"
+          [(ngModel)]="newMessage.content"
+          name="content"
+          required
+          class="form-control"
+          placeholder="Send a message"
+        >
+        </textarea>
+        <div class="input-group-append">
+          <button [disabled]="!messageForm.valid" class="btn btn-info">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</ng-template>
