@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { Rate } from 'src/app/_models/rate';
 import { Router } from '@angular/router';
 import { PaginatedResult, Pagination } from 'src/app/_models/pagination';
+import { parse } from 'path';
+import { error } from 'console';
 
 @Component({
   selector: 'app-member-detail',
@@ -26,32 +28,53 @@ export class MemberDetailComponent implements OnInit {
   subjectTitle: string;
   model: any = {};
   isFavo: boolean = false;
+  avgRate: number;
 
+  isCurrentUser: boolean = false;
+
+  tutorEditBtnName: string = 'Become a Tutor';
+  isCurrentUserProfile = false;
+  isCollapsed = false;
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    private authService: AuthService,
-    private router: Router
+    public authService: AuthService // private router: Router
   ) {}
 
   ngOnInit() {
+    console.log();
+
     this.route.data.subscribe((data) => {
       console.log(data);
 
       this.user = data['user'];
+      this.avgRate = data['user'].avgRate;
       this.rates = data['rates'].result;
       this.pagination = data['rates'].pagination;
       this.senderId = parseInt(this.authService.decodedToken.nameid);
+
+      if (this.user.id === parseFloat(this.authService.decodedToken.nameid)) {
+        this.isCurrentUser = true;
+      }
+      if (this.user.skills.length > 0) {
+        this.tutorEditBtnName = 'Edit Profile';
+      }
     });
+
     this.loadRates();
+
     this.authService.currentPhotoUrl.subscribe(
       (photoUrl) => (this.mainPhotoUrl = photoUrl)
     );
+
     console.log(this.user);
     this.subjectTitle = this.user.skills[0]?.skillName;
-    console.log(this.senderId, this.rates);
+
+    if (this.user.id === parseInt(this.authService.decodedToken.nameid)) {
+      this.isCurrentUser = true;
+    }
   }
 
   sendLike(recipientId: number) {
@@ -59,10 +82,16 @@ export class MemberDetailComponent implements OnInit {
       .sendLike(this.authService.decodedToken.nameid, recipientId)
       .subscribe(
         (data) => {
-          this.alertify.success('You have liked: ' + this.user.userName);
+          if (data === null) {
+            this.alertify.success('Liked ' + this.user.userName);
+          } else {
+            this.alertify.error('Unliked ' + this.user.userName);
+          }
         },
         (error) => {
-          this.alertify.error(error);
+          console.log(error);
+
+          // this.alertify.error("Error");
         }
       );
   }
@@ -83,9 +112,10 @@ export class MemberDetailComponent implements OnInit {
       )
       .subscribe(
         (rate: Rate) => {
+          let sum = this.avgRate * this.rates.length;
           this.rates.unshift(rate);
-
-          // this.router.navigate(['']);
+          let newSum = sum + rate.score;
+          this.avgRate = newSum / this.rates.length;
         },
         (error) => {
           this.alertify.error(error);
@@ -114,13 +144,10 @@ export class MemberDetailComponent implements OnInit {
               const objToDelete: Rate[] = this.rates.filter(
                 (rate) => rate.id === rateId
               );
-              console.log(objToDelete);
 
               this.rates = this.rates.filter(
                 (rate) => rate.id !== objToDelete[0].id
               );
-
-              console.log(this.rates);
 
               this.alertify.success('Your rate has been deleted');
             },
@@ -146,10 +173,11 @@ export class MemberDetailComponent implements OnInit {
       )
       .subscribe(
         (res: PaginatedResult<Rate[]>) => {
-          console.log('loadRates', res);
+          // console.log('loadRates', res);
 
           this.rates = res.result;
           this.pagination = res.pagination;
+          // console.log(this.senderId, this.rates);
         },
         (error) => {
           this.alertify.error(error);
@@ -176,5 +204,18 @@ export class MemberDetailComponent implements OnInit {
   toggleIsFavo(favo: boolean) {
     this.isFavo = favo;
     return this.isFavo;
+  }
+
+  getLastMessages() {
+    this.userService
+      .getLastMessages(this.authService.decodedToken.nameid)
+      .subscribe(
+        (res: any) => {
+          console.log('last messages', res);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }

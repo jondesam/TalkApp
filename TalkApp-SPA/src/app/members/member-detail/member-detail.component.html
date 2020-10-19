@@ -1,166 +1,138 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="card shadow p-5 mb-4">
+      <div class="card shadow p-5 mb-3">
         <div class="media">
           <div class="media-left">
             <figure class="image is-128x128">
+              <div class="photobox">
               <img
                 class="profile float:left"
                 src="{{ user.photoUrl || 'assets/user.png' }}"
-                alt="{{ user.userName }}"
-              />
+                alt="{{ user.userName }}"/>
+            
+              <button
+              class="btn  photobtn"
+              *ngIf="loggedIn()"
+              (click)="sendLike(user.id)" >
+            
+              <i class="fa fa-heart"></i>
+            </button>
+          </div>
             </figure>
           </div>
           <div class="media-content pl-2 pr-2 ml-3">
-            <p class="title">
+            <div style="font-size: 1.5rem;">
               {{ user.userName | titlecase }}
-            </p>
-            <div *ngFor="let skill of user.skills; let i = index">
-              Subject {{ i + 1 }}: <strong> {{ skill.skillName }}</strong>
+            </div>
+    
+          <div class=""  *ngIf="user.languages.length > 0">Speaks
+              <div
+              class="skill"
+              style="display: inline-block"
+              *ngFor="let language of user.languages">
+              <div>
+             
+                <ul class="list-inline mb-0">
+                  <li class="language mr-1 lang">{{language?.langueSpeak |titlecase }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+                <!-- <span class=" badge badge-pill badge-secondary">Native</span> -->
+ 
+            <div  *ngIf="user.city">
+              <p class="mb-2">Lives in {{ user.city |titlecase}}</p>
             </div>
 
-            <div *ngIf="user.city">
-              <strong>Location</strong>
-              <p>{{ user.city }},{{ user.country }}</p>
-            </div>
-
-            <p class="card-text">
+            <p class="card-text" *ngIf="!isCurrentUser">
               <small class="text-muted"
-                >Last active {{ user.lastActive | timeago }}</small
+                >Last active {{ user.lastActive | timeago | timeAgoSeconde}}</small
               >
             </p>
           </div>
 
-          <ul class="list-inline member-icons text-center" id="btnsBigScreen">
-            <li class="list-inline-item">
-              <button
-                *ngIf="loggedIn()"
-                class="btn btn-info"
-                (click)="sendLike(user.id)"
-              >
-                <i class="fa fa-heart"></i>
-              </button>
-              <button
-                class="btn btn-info"
-                *ngIf="!loggedIn()"
-                (click)="toggleIsFavo(true)"
-                (click)="openModal(loginTemplate)"
-              >
-                <i class="fa fa-heart"></i>
-              </button>
-            </li>
-            <li class="list-inline-item">
-              <button
-                *ngIf="loggedIn()"
-                class="btn btn-info"
-                (click)="openModal(template)"
-              >
-                Leave a review
-              </button>
-            </li>
-            <li class="list-inline-item">
-              <button
-                *ngIf="loggedIn()"
-                (click)="setSidebar()"
-                class="btn btn-info"
-              >
-                Messages
-              </button>
-              <button
-                class="btn btn-info"
-                (click)="toggleIsFavo(false)"
-                *ngIf="!loggedIn()"
-                (click)="openModal(loginTemplate)"
-              >
-                Messages
-              </button>
-            </li>
-          </ul>
-
-          <ul
-            class="list-inline member-icons text-center fixed-bottom"
-            id="smallScreen"
-          >
-            <li class="list-inline-item">
-              <button
-                class="btn btn-info"
-                *ngIf="loggedIn()"
-                (click)="sendLike(user.id)"
-              >
-                <i class="fa fa-heart"></i>
-              </button>
-              <button
-                class="btn btn-info"
-                *ngIf="!loggedIn()"
-                (click)="toggleIsFavo(true)"
-                (click)="openModal(loginTemplate)"
-              >
-                <i class="fa fa-heart"></i>
-              </button>
-            </li>
-            <li class="list-inline-item">
-              <button
-                class="btn btn-info"
-                *ngIf="loggedIn()"
-                (click)="openModal(template)"
-              >
-                Leave a review
-              </button>
-            </li>
-            <li class="list-inline-item">
-              <button
-                class="btn btn-info"
-                *ngIf="loggedIn()"
-                (click)="setSidebar()"
-              >
-                Messages
-              </button>
-              <button
-                class="btn btn-info"
-                *ngIf="!loggedIn()"
-                (click)="toggleIsFavo(false)"
-                (click)="openModal(loginTemplate)"
-              >
-                Messages
-              </button>
-            </li>
-          </ul>
         </div>
 
         <div class="content">
-          <p style="font-size: 1.5rem">About {{ user.userName | titlecase }}</p>
+          <p class="mb-1" style="font-size: 1.5rem">About {{ user.userName | titlecase }}</p>
           <p>{{ user.introduction }}</p>
-          <p style="font-size: 1.5rem">Looking for</p>
-          <p>{{ user.lookingFor }}</p>
         </div>
+
+        <div class="row text-center">
+
+          <div class="col-md-6  "> 
+              <a *ngIf="loggedIn() && user.id !== senderId" (click)="openModal(template)">
+                <div class="alert alert-dark btns" role="alert" >
+             Review
+                </div>
+             </a>
+          </div>
+
+          <div class="col-md-6"> 
+            <a *ngIf="loggedIn() && user.id !== senderId"(click)="setSidebar()"  >
+              <div class="alert alert-dark btns" role="alert">
+                Message 
+              </div>
+            </a> 
+          </div>
+        </div>
+   
+        <a *ngIf="!loggedIn()" (click)="openModal(loginTemplate)" >
+          <div class="alert alert-dark btns" role="alert">
+          Message </div>
+        </a> 
       </div>
 
       <div class="card shadow p-5 mb-4" id="subjectsTab">
         <div class="content">
+         
           <div class="float-left mr-4 mt-1">
-            <p style="font-size: 1.5rem">Subjects</p>
+            <div style="font-size: 1.5rem">Subjects</div>
           </div>
           <tabset>
             <tab
-              heading="{{ skill.skillName }}"
+              heading="{{ skill.skillName | titlecase }}"
               id="tab1"
               *ngFor="let skill of user.skills"
             >
-              <p class="mt-3" style="color: gray">{{ skill.description }}</p>
+            <br>
+
+            <div class="row " >
+              <div class="col-6 ">
+                <div class="alert alert-primary "  *ngIf="skill.yearsOfExp">
+                    {{ skill.yearsOfExp }} years of experience 
+                  </div>
+                <div class="alert alert-primary" role="alert" *ngIf="skill.yearsOfExp === 0">
+                  Starts teaching {{skill.skillName | titlecase}} 
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="alert alert-primary"  *ngIf="skill.fee">
+                  ${{ skill.fee }} per hour
+                </div>
+                <div class="alert alert-primary" role="alert" *ngIf="skill.fee === 0">
+                  Free course
+                </div>
+              </div>
+           </div>
+
+              <p class="mt-3 ml-1" style="color: gray">{{ skill.description }}</p>
 
               <div *ngIf="skill.url1">
-                <label class="mr-2">Link </label>
+                
                 <a href="{{ skill.url1 }}" target="_blank">{{ skill.url1 }}</a>
               </div>
               <div *ngIf="skill.url2">
                 <label class="mr-2"> Link </label>
                 <a href="{{ skill.url2 }}" target="_blank">{{ skill.url2 }}</a>
               </div>
-              <div *ngIf="skill.url2">
+              <div *ngIf="skill.url3">
                 <label class="mr-2">Link </label>
                 <a href="{{ skill.url3 }}" target="_blank">{{ skill.url3 }}</a>
               </div>
+             
             </tab>
           </tabset>
         </div>
@@ -191,7 +163,7 @@
                 class="dropdown-item"
                 (click)="setSubject(skill.skillName)"
                 aria-controls="subject1"
-                >{{ skill.skillName }}</a
+                >{{ skill.skillName |titlecase }}</a
               >
             </li>
           </ul>
@@ -200,7 +172,29 @@
         <div *ngFor="let skill of user.skills">
           <div id="subject1" *ngIf="subjectTitle === skill.skillName">
             <div>
-              <p class="mt-3" style="color: gray">{{ skill.description }}</p>
+              <div class="row"> 
+
+                  <div class="col-md-6"> 
+                    <div class="alert alert-primary" role="alert" *ngIf="skill.yearsOfExp">
+                    {{ skill.yearsOfExp }} years of experience 
+                    </div>
+                    <div class="alert alert-primary" role="alert" *ngIf="skill.yearsOfExp === 0">
+                      Starts teaching {{skill.skillName | titlecase}} 
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6"> 
+                    <div  class="alert alert-primary" role="alert" *ngIf="skill.fee">
+                  ${{ skill.fee }} per hour
+                    </div>
+                    <div class="alert alert-primary" role="alert" *ngIf="skill.fee === 0">
+                      Free course
+                    </div>
+                  </div>
+              </div>
+          
+              <p class="mt-3 ml-1" style="color: gray">{{ skill.description }}</p>
 
               <div *ngIf="skill.url1">
                 <label class="mr-2">Link </label>
@@ -221,9 +215,9 @@
 
       <div class="card shadow p-5">
         <div class="reviews mb-3">
-          <span class="fa fa-star checked mr-2"></span
-          ><span class="normal mr-4">{{ user.avgRate.toFixed(1) }}</span>
-          {{ pagination.totalItems }} Reviews
+          <span class="fa fa-star star mr-2"></span
+          ><span class="normal mr-4">{{ avgRate.toFixed(1) }}</span>
+          {{ rates.length }} Reviews
         </div>
 
         <div *ngIf="rates.length > 0" style="text-align: left">
@@ -232,7 +226,7 @@
               <div class="col-3 col-md-2">
                 <img
                   class="mx-auto d-block w-100 ratePhoto"
-                  src="{{ rate.raterPhotoUrl }}"
+                  src="{{ rate.raterPhotoUrl || 'assets/user.png'}}"
                   alt="rate.raterPhotoUrl"
                 />
               </div>
@@ -268,15 +262,17 @@
                       </li>
                     </ul>
                   </div>
-                  <div>
-                    <strong>{{ rate.raterUserName | titlecase }}</strong>
+                  <div  >
+                    <span style="font-size: 1.3rem;">{{ rate.raterUserName | titlecase }}</span>
+                    <p>
+                      <small class="text-muted"> {{ rate.rateMade | timeago | timeAgoSeconde}}</small>
+                    </p>
                   </div>
-                  <p>
-                    <small>{{ rate.rateMade | timeago }}</small>
-                  </p>
-                  <p>{{ rate.comment }}</p>
+              
+                
                 </div>
               </div>
+              <p class=" col-12 mt-4">{{ rate.comment }}</p>
             </div>
             <hr />
           </div>
@@ -297,6 +293,7 @@
             lastText="&raquo;"
           >
           </pagination>
+
         </div>
       </div>
     </div>
@@ -327,7 +324,7 @@
       <ng-template #tt let-i="index" let-v="value">
         <button class="btn">
           <i
-            class="fa fa-star  {{ i < v ? 'gold' : 'gray' }}  "
+            class="fa fa-star  {{ i < v ? 'star' : 'gray' }}  "
             aria-hidden="true"
           ></i>
         </button>
@@ -407,7 +404,7 @@
 
       <button
         [disabled]="!loginForm.valid"
-        class="btn btn-outline-success loginBtn"
+        class="btn btn-outline-success btnsModal"
         type="submit"
         (click)="modalRef.hide()"
       >
@@ -419,7 +416,7 @@
         <button
           *ngIf="!loggedIn()"
           type="btn"
-          class="btn btn-primary registerBtn"
+          class="btn btn-primary btnsModal"
           [routerLink]="['/register/']"
           (click)="modalRef.hide()"
         >

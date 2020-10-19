@@ -1,39 +1,13 @@
-.img-thumbnail {
-  margin: 25px;
-  width: 100px;
-  height: 100px;
-}
-
-.card-body {
-  padding: 0 25px;
-}
-
-.card-footer {
-  padding: 10px 15px;
-  background-color: #fff;
-  border-top: none;
-}
-
-.ngx-gallery {
-  display: inline-block;
-  margin-bottom: 20px;
-}
-.checked {
+.star {
   color: gold;
   font-size: 2rem;
 }
+
 .reviews {
   font-size: 1.8rem;
 }
 .normal {
   font-size: 1.5rem;
-}
-.title {
-  font-size: 1.5rem;
-}
-.gold {
-  color: gold;
-  font-size: 2rem;
 }
 
 .gray {
@@ -48,20 +22,12 @@
 }
 
 .ratePhoto {
+  max-width: 75px;
   border-radius: 50%;
-  /* width: 75px; */
-}
-
-.countryFlag {
-  width: 40px;
 }
 
 .profile {
   width: 150px;
-}
-
-.ratePhoto {
-  max-width: 75px;
 }
 
 @media screen and (min-width: 0px) and (max-width: 991px) {
@@ -85,23 +51,61 @@
   width: 100%;
   display: block;
 }
+
 .input-block-level {
   display: block;
   width: 100%;
   min-height: 28px;
 }
 
-.loginBtn {
+.btnsModal {
   width: 100%;
   display: block;
 }
 
-.registerBtn {
-  width: 100%;
-  display: block;
-}
 .or {
   text-align: center;
-  font-size: 1rem;
   color: gray;
+}
+
+.lang {
+  display: inline-grid;
+  zoom: 1;
+  margin: 3px;
+  padding: 3px 5px;
+  background-color: rgba(178, 178, 178, 0.15);
+}
+
+.btns:hover {
+  cursor: pointer;
+}
+
+.btns {
+  padding: 7px;
+}
+
+.alert {
+  text-align: center;
+  padding: 7px;
+}
+
+.photobox {
+  position: relative;
+}
+
+.photobtn {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.photobtn:hover {
+  color: pink;
 }
