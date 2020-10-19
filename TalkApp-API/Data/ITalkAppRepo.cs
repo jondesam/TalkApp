@@ -16,8 +16,8 @@ namespace TalkApp_API.Data
         Task<Photo> GetMainPhotoForUser(int userId);
         Task<Like> GetLike(int userId, int recipientId);
         Task<Message> GetMessage(int messageId);
-        Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams);
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
+        Task<IEnumerable<Message>> GetLastMessages(int userId);
         Task<PagedList<Rate>> GetRates(RateParams rateParams);
         bool IsRated(User rater, User ratee);
         Task<Rate> GetRate(int rateId);

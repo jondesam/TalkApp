@@ -44,7 +44,7 @@ namespace TalkApp_API.Controllers
             var usersToReturn = _mapper.Map<IEnumerable<UserForDetailedDto>>(users);
 
             Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
-         
+
             return Ok(usersToReturn);
         }
 
@@ -91,7 +91,7 @@ namespace TalkApp_API.Controllers
                 _repo.Delete<Like>(like);
 
                 if (await _repo.SaveAll())
-                    return BadRequest("Unliked!");
+                    return Ok(new { });
             }
 
             if (await _repo.GetUser(recipientId) == null)

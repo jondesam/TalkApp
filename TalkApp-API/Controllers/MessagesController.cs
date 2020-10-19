@@ -40,24 +40,14 @@ namespace TalkApp_API.Controllers
             return Ok(messageFromRepo);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetMessagesForUser(int userId,
-           [FromQuery] MessageParams messageParams)
+        [HttpGet("lastMessages")]
+        public async Task<IActionResult> GetLastMessages(int userId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
+            var messages = await _repo.GetLastMessages(userId);
 
-            messageParams.UserId = userId;
+            var messagesToReturn = _mapper.Map<IEnumerable<MessageToReturnDto>>(messages);
 
-            //Paged list of messages
-            var messagesFromRepo = await _repo.GetMessagesForUser(messageParams);
-
-            var messages = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
-
-            Response.AddPagination(messagesFromRepo.CurrentPage, messagesFromRepo.PageSize,
-               messagesFromRepo.TotalCount, messagesFromRepo.TotalPages);
-
-            return Ok(messages);
+            return Ok(messagesToReturn);
         }
 
         [HttpGet("thread/{recipientId}")]
@@ -146,5 +136,6 @@ namespace TalkApp_API.Controllers
 
             return NoContent();
         }
+
     }
 }

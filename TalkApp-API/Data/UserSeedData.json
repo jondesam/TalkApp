@@ -49,7 +49,8 @@
         "fee": 40
       }
     ],
-    "Languages": [{ "langueSpeak": "french" ,"isNative":true}, { "langueSpeak": "spanish" }]
+    "Languages": [{ "langueSpeak": "french" ,"isNative":true}, { "langueSpeak": "spanish" }],
+    "IsTutor":true
   },
   {
     "Username": "Vicki",
@@ -134,7 +135,8 @@
         "fee": 14
       }
     ],
-    "Languages": [{ "langueSpeak": "korean" ,"isNative":true}, { "langueSpeak": "russian" }]
+    "Languages": [{ "langueSpeak": "korean" ,"isNative":true}, { "langueSpeak": "russian" }],
+    "IsTutor":true
   },
   {
     "Username": "ami",
@@ -160,7 +162,8 @@
         "fee": 16
       }
     ],
-    "Languages": [{ "langueSpeak": "russian" ,"isNative":true}, { "langueSpeak": "chinese" }]
+    "Languages": [{ "langueSpeak": "russian" ,"isNative":true}, { "langueSpeak": "chinese" }],
+    "IsTutor":true
   },
   {
     "Username": "Vres",
@@ -186,7 +189,8 @@
         "fee": 25
       }
     ],
-    "Languages": [{ "langueSpeak": "japanese" ,"isNative":true}, { "langueSpeak": "chinese" }]
+    "Languages": [{ "langueSpeak": "japanese" ,"isNative":true}, { "langueSpeak": "chinese" }],
+    "IsTutor":true
   },
   {
     "Username": "Reus",
@@ -212,7 +216,8 @@
         "fee": 25
       }
     ],
-    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }]
+    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }],
+    "IsTutor":true
   },
   {
     "Username": "Lee",
@@ -245,7 +250,8 @@
         "fee": 10
       }
     ],
-    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }]
+    "Languages": [{ "langueSpeak": "italian" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }],
+    "IsTutor":true
   },
   {
     "Username": "nadia",
@@ -283,6 +289,7 @@
         "description": "Reprehenderit nulla in tempor enim nostrud commodo incididunt aute minim reprehenderit aliqua sint officia."
       }
     ],
-    "Languages": [{ "langueSpeak": "arabic" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }]
+    "Languages": [{ "langueSpeak": "arabic" ,"isNative":true}, { "langueSpeak": "english" }, { "langueSpeak": "french" }],
+    "IsTutor":true
   }
 ]
