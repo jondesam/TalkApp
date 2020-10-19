@@ -1,82 +1,77 @@
 <app-nav></app-nav>
 
 <ng-sidebar-container>
+
   <!-- A sidebar -->
   <ng-sidebar
+  class="sidebar"
     position="right"
     closeOnClickOutside="true"
     animate="true"
     [(opened)]="_opened"
   >
     <div class="ng-sidebar">
-      <div class="">
+      <div class="my-3 mx-4">
         <i
           class="fa pb-1 fa-times"
           (click)="_toggleSidebar()"
           aria-hidden="true"
+          style="cursor: pointer;"
         ></i>
       </div>
-      <br />
-      <div class="card shadow">
+
+      <div class="card shadow" >
         <div class="card-body">
           <div *ngIf="messages?.length === 0">
-            <span class="noMessage">Say Hi with the message box below </span>
+            <span class="text-muted" >Write your message here... </span>
           </div>
-
+    
           <ul class="chat">
             <li *ngFor="let message of messages">
+
               <!-- to them -->
-              <div *ngIf="message.senderId == recipientId">
-                <span class="chat-img float-left">
+              <div class="recipient" *ngIf="message.senderId == recipientId">
+    
+                <span class="chat-img float-left  mr-2">
                   <img
-                    src="{{ message.senderPhotoUrl }}"
+                    src="{{ message.senderPhotoUrl || '../assets/user.png' }}"
                     alt="{{ message.senderUserName }}"
-                    class="rounded-circle"
+                    class="rounded-circle"           
                   />
                 </span>
-                <div class="chat-body">
-                  <div class="header">
-                    <strong class="primary-font">{{
-                      message.senderUserName | titlecase
-                    }}</strong>
-                    <small class="text-muted float-right">
-                      <span class="fa fa-clock-o">{{
-                        message.messageSent | timeago
-                      }}</span>
-                    </small>
+    
+                <div class="mt-4 recipientText">{{ message.content }}     
+                  <div class="dateU">
+                      <div class="dateL">
+                        <small class="text-muted float-right">
+                          {{ message.messageSent | timeago | timeAgoSeconde }}
+                          </small>
+                      </div>
                   </div>
-                  <p>{{ message.content }}</p>
                 </div>
               </div>
-
+    
               <!-- to me -->
-              <div *ngIf="message.senderId != recipientId">
-                <span class="chat-img float-right">
-                  <img
-                    src="{{ message.senderPhotoUrl }}"
-                    alt="{{ message.senderUserName }}"
-                    class="rounded-circle"
-                  />
-                </span>
-                <div class="chat-body">
-                  <div class="header">
-                    <small class="text-muted">
-                      <span class="fa fa-clock-o">{{
-                        message.messageSent | timeago
-                      }}</span>
-                      <span *ngIf="!message.isRead" class="text-danger ml-1"
-                        >(unread)</span
-                      >
-                      <span *ngIf="message.isRead" class="text-success"
-                        >(Read {{ message.dateRead | timeago }})</span
-                      >
-                    </small>
-                    <strong class="primary-font float-right mr-2">{{
-                      message.senderUserName | titlecase
-                    }}</strong>
+              <div class="sender" *ngIf="message.senderId != recipientId">
+      
+                  <div class="mt-3 senderText">{{ message.content }}
+                    <div class="dateU">
+                      <div class="dateL">
+                        <small class="text-muted float-right">
+                          {{ message.messageSent | timeago | timeAgoSeconde }}
+                          </small>
+                      </div>
                   </div>
-                  <p class="mt-3">{{ message.content }}</p>
-                </div>
+                 
+                  </div>
+                  <small class="text-muted">
+                    <!-- <span *ngIf="!message.isRead" class="text-dark ml-1"
+                      >(unread)</span 
+                    >-->
+                    <!-- <span *ngIf="message.isRead" class="text-dark"
+                      >(Read)</span
+                    > -->
+                  </small>
               </div>
             </li>
           </ul>
@@ -93,7 +88,7 @@
               name="content"
               required
               class="form-control"
-              placeholder="send a message"
+              placeholder="Send a message"
             >
             </textarea>
             <div class="input-group-append">

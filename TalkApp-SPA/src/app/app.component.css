@@ -1,27 +1,23 @@
 ng-sidebar-container {
-  height: 90vh;
+  height: 93vh;
 }
+
 ::ng-deep .ng-sidebar {
   background-color: whitesmoke;
-  width: 500px;
-  padding: 1em 0.8em;
 }
+
 .card {
   border: none;
-  height: 500px;
-  width: 450px;
+  height: auto;
+  max-width: 430px;
+  margin: 0;
+  padding: 0;
 }
 
 .chat {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.chat li {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px dotted #b3a9a9;
 }
 
 .rounded-circle {
@@ -31,9 +27,121 @@ ng-sidebar-container {
 
 .card-body {
   overflow-y: auto;
-  height: 400px;
+  height: 77vh;
 }
 
-.noMessage {
+*:focus {
+  outline: none;
+}
+
+.senderText {
+  text-align: left;
+  white-space: pre-line;
+  padding: 8px 8px 8px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 14px;
+  word-break: break-word;
+  line-height: 1.4;
+  box-shadow: transparent 0px 0px 15px 2px;
+  background-color: rgb(238, 249, 250);
+  position: relative;
+  margin-left: 50px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 767px) {
+  .card {
+    min-width: 100vw;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .card {
+    width: 500px;
+  }
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: gray;
+}
+
+.senderText {
+  text-align: left;
+  white-space: pre-line;
+  padding: 8px 8px 8px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 14px;
+  word-break: break-word;
+  line-height: 1.4;
+  box-shadow: transparent 0px 0px 15px 2px;
+  background-color: rgb(238, 249, 250);
+  position: relative;
+  margin-left: 40px;
+  max-width: 350px;
+}
+
+.recipientText {
+  display: flexbox;
+  text-align: left;
+  white-space: pre-line;
+  padding: 8px 8px 8px 16px;
+  background-color: rgb(242, 242, 242);
+  border-radius: 6px;
+  margin-left: 4px;
+  display: flex;
+  align-items: flex-end;
+  font-size: 14px;
+  word-break: break-word;
+  line-height: 1.4;
+  box-shadow: transparent 0px 0px 15px 2px;
+  margin-right: 40px;
+  max-width: 290px;
+}
+
+.recipient {
+  display: flex;
+  align-items: flex-end;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.dateU {
+  min-height: 24px;
+  min-width: 50px;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.dateL {
+  white-space: nowrap;
+  color: rgb(111, 117, 123);
+  font-size: 12px;
+  padding-left: 8px;
+  margin-left: 10px;
+  align-self: flex-end;
+}
+
+.sender {
+  display: flex;
+  align-items: flex-end;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.chatWith {
+  font-size: 1.2rem;
+  padding-top: 0.6rem;
+  margin-left: 0.4rem;
 }

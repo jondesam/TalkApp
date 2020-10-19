@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AuthService } from './_services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from './_models/user';
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
       this._opened = obj.isOpen;
 
       this.recipientId = obj.recipientId;
-      console.log(this.recipientId);
+
       if (this.recipientId) {
         this.loadMessages();
       }
@@ -51,8 +51,6 @@ export class AppComponent implements OnInit {
   }
 
   _toggleSidebar() {
-    console.log(this._opened, this.recipientId);
-
     this._opened = !this._opened;
   }
 
@@ -63,8 +61,6 @@ export class AppComponent implements OnInit {
       .pipe(
         //In order to mark as read
         tap((messages) => {
-          // console.log('me', messages);
-
           for (let i = 0; i < messages.length; i++) {
             if (
               messages[i].isRead === false &&
@@ -78,7 +74,6 @@ export class AppComponent implements OnInit {
       .subscribe(
         (messages) => {
           this.messages = messages;
-          // console.log('messages', messages);
         },
         (error) => {
           this.alertify.error(error);
@@ -88,16 +83,12 @@ export class AppComponent implements OnInit {
 
   sendMessage() {
     this.newMessage.recipientId = this.recipientId;
-    console.log('newMessage', this.newMessage);
 
     this.userService
       .sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe(
         (message: Message) => {
-          console.log(this.messages);
-
-          this.messages.unshift(message);
-          console.log(this.messages);
+          this.messages.push(message);
 
           this.newMessage.content = '';
         },
@@ -106,7 +97,7 @@ export class AppComponent implements OnInit {
         }
       );
   }
-  // Check if user is log in or not
+
   loggedIn() {
     return this.authService.loggedIn();
   }
