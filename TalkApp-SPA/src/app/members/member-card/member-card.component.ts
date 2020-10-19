@@ -6,6 +6,7 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-member-card',
@@ -17,16 +18,16 @@ export class MemberCardComponent implements OnInit {
   model: any = {};
   modalRef: BsModalRef;
   isFavo: boolean = false;
-
+ 
   constructor(
     public authService: AuthService,
     private userService: UserService,
     private alertify: AlertifyService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private titlecasePipe: TitleCasePipe
   ) {}
 
   ngOnInit() {
-    console.log(this.user);
   }
 
   sendLike(recipientId: number) {
@@ -34,7 +35,15 @@ export class MemberCardComponent implements OnInit {
       .sendLike(this.authService.decodedToken.nameid, recipientId)
       .subscribe(
         (data) => {
-          this.alertify.success('You have liked: ' + this.user.userName);
+          if (data === null) {
+            this.alertify.success(
+              'Liked ' + this.titlecasePipe.transform(this.user.userName)
+            );
+          } else {
+            this.alertify.error(
+              'Unliked ' + this.titlecasePipe.transform(this.user.userName)
+            );
+          }
         },
         (error) => {
           this.alertify.error(error);
@@ -65,5 +74,9 @@ export class MemberCardComponent implements OnInit {
   toggleIsFavo(favo: boolean) {
     this.isFavo = favo;
     return this.isFavo;
+  }
+
+  setChosenUserId() {
+    this.userService.setChosenUserId(this.user.id);
   }
 }
