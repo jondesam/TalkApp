@@ -17,12 +17,14 @@ export class MemberListResolver implements Resolve<User[]> {
   pageSize = 4;
 
   resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-    return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
-      catchError((error) => {
-        this.alertify.error('Problem retrieving data');
-        this.router.navigate(['/home']);
-        return of(null);
-      })
-    );
+    return this.userService
+      .getUsers(this.pageNumber, this.pageSize, null, null, null)
+      .pipe(
+        catchError((error) => {
+          this.alertify.error('Problem retrieving data');
+          this.router.navigate(['']);
+          return of(null);
+        })
+      );
   }
 }

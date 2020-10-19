@@ -31,7 +31,7 @@ export class MessagesResolver implements Resolve<Message[]> {
       .pipe(
         catchError((error) => {
           this.alertify.error('Problem retrieving messages');
-          this.router.navigate(['/home']);
+          this.router.navigate(['']);
           return of(null);
         })
       );
