@@ -50,6 +50,7 @@ export class AuthService {
           this.currentUser = resObj.user;
           console.log('decodedToken', this.decodedToken);
           this.changeMemberPhoto(this.currentUser.photoUrl);
+          location.reload();
         }
       })
     );

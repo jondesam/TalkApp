@@ -38,7 +38,8 @@ export class ListsComponent implements OnInit {
         this.pagination.currentPage,
         this.pagination.itemsPerPage,
         null,
-        this.likesParam
+        this.likesParam,
+        null
       )
       .subscribe(
         (res: PaginatedResult<User[]>) => {

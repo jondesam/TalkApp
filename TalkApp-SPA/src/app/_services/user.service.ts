@@ -29,7 +29,8 @@ export class UserService {
     pageNumber?,
     itemsPerPage?,
     userParams?,
-    likesParam?
+    likesParam?,
+    includeStudents?
   ): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
@@ -57,6 +58,12 @@ export class UserService {
       params = params.append('Likees', 'true');
     }
 
+    if (includeStudents !== null) {
+      params = params.append('includeStudents', 'true');
+    }
+    console.log(params);
+
+    // debugger;
     return this.http
       .get<User[]>(this.baseUrl + 'users/', {
         observe: 'response',
@@ -105,6 +112,8 @@ export class UserService {
   }
 
   getMessages(userId: number, pageNumber?, itemsPerPage?, messageContainer?) {
+    console.log('qq');
+
     const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
       Message[]
     >();
@@ -134,6 +143,14 @@ export class UserService {
           return paginatedResult;
         })
       );
+  }
+
+  getLastMessages(userId: number) {
+    console.log('eee');
+
+    return this.http.get<Message[]>(
+      this.baseUrl + 'users/' + userId + '/messages' + '/lastMessages'
+    );
   }
 
   getMessageThread(userId: number, recipientId: number) {
