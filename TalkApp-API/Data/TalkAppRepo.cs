@@ -192,11 +192,11 @@ namespace TalkApp_API.Data
             return await PagedList<Rate>.CreateAsync(rates, rateParams.PageNumber, rateParams.PageSize);
         }
 
-        public bool IsRated(User rater, User ratee)
+        public async Task<bool> IsRated(User rater, User ratee)
         {
-            var rates = _context.Rates.Where(r => r.SenderId == rater.Id).Where(r => r.RecipientId == ratee.Id);
+            var rates = await _context.Rates.Where(r => r.SenderId == rater.Id).Where(r => r.RecipientId == ratee.Id).CountAsync();
 
-            if (rates.Count() > 0)
+            if (rates > 0)
             {
                 return true;
             }
@@ -210,24 +210,21 @@ namespace TalkApp_API.Data
             return await _context.Rates.FirstOrDefaultAsync(m => m.Id == rateId);
         }
 
-        public AvgRates GetAvgRates(int recipientId, int score)
+        public async Task<AvgRates> GetAvgRates(int recipientId, int score)
         {
-            var user = _context.Users.Include(u => u.Raters).Where(u => u.Id == recipientId);
+            var previousSum = await _context.Users.Include(u => u.Raters).Where(u => u.Id == recipientId).SelectMany(user => user.Raters).SumAsync(rater => (float)rater.Score);
 
-            var previousSum = user.SelectMany(user => user.Raters).Sum(rater => (float)rater.Score);
+            var num = await _context.Users.Include(u => u.Raters).Where(u => u.Id == recipientId).Select(user => user.Raters.Count()).FirstOrDefaultAsync() + 1;
 
             var sum = previousSum + score;
 
-            var num = (user.Select(user => user.Raters.Count())).First() + 1;
-
             var avg = sum / num;
-
 
             return new AvgRates { Avg = avg, TotalNumOfRates = num };
 
-
-
         }
+
+
 
         public async Task<Skill> GetSkill(int skillId)
         {

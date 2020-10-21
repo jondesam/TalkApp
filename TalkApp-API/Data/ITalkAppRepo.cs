@@ -19,9 +19,9 @@ namespace TalkApp_API.Data
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
         Task<IEnumerable<Message>> GetLastMessages(int userId);
         Task<PagedList<Rate>> GetRates(RateParams rateParams);
-        bool IsRated(User rater, User ratee);
+        Task<bool> IsRated(User rater, User ratee);
         Task<Rate> GetRate(int rateId);
-        AvgRates GetAvgRates(int userId, int score);
+        Task<AvgRates> GetAvgRates(int userId, int score);
         Task<Skill> GetSkill(int skillId);
         Task<Language> GetLang(int langId);
         Task<IEnumerable<Language>> GetLangs(int userId);

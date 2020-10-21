@@ -36,7 +36,7 @@ namespace TalkApp_API.Controllers
 
             return Ok(messageFromRepo);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetRates(int userId, [FromQuery] RateParams rateParams)
         {
@@ -68,9 +68,9 @@ namespace TalkApp_API.Controllers
 
             var obj = _repo.GetAvgRates(rateForCreationDto.RecipientId, rateForCreationDto.Score);
 
-            if (obj.Avg == 0)
+            if (obj.Result.Avg == 0)
             {
-                obj.Avg = rateForCreationDto.Score;
+                obj.Result.Avg = rateForCreationDto.Score;
             }
 
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -84,13 +84,13 @@ namespace TalkApp_API.Controllers
             if (recipient == null)
                 return BadRequest("Could not find user");
 
-            // if (_repo.IsRated(rater, recipient))
+            // if (_repo.IsRated(rater, recipient).Result)
             //     return BadRequest("You have already commented on this person");
 
             var rate = _mapper.Map<Rate>(rateForCreationDto);
 
-            recipient.AvgRate = obj.Avg;
-            recipient.TotalNumOfRates = obj.TotalNumOfRates;
+            recipient.AvgRate = obj.Result.Avg;
+            recipient.TotalNumOfRates = obj.Result.TotalNumOfRates;
 
             _repo.Add(rate);
 
