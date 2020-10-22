@@ -5,6 +5,8 @@ import { Language } from './language';
 
 export interface User {
   id: number;
+  email: string;
+  lastName?: string;
   userName: string;
   created: Date;
   lastActive: any;
@@ -19,4 +21,5 @@ export interface User {
   raters?: Rate[];
   totalNumOfRates?: number;
   languages: Language[];
+  isTutor: boolean;
 }
