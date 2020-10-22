@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using TalkApp_API.Data;
 using TalkApp_API.Dtos;
 using TalkApp_API.Models;
+using System.Collections.Generic;
+
 
 namespace TalkApp_API.Controllers
 {
@@ -31,11 +33,10 @@ namespace TalkApp_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
         {
+            userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
 
-            userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
-
-            if (await _repo.UserExists(userForRegisterDto.UserName))
-                return BadRequest("Username already exist");
+            if (await _repo.UserExists(userForRegisterDto.Email))
+                return BadRequest("Email already registered");
 
             var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
@@ -50,17 +51,21 @@ namespace TalkApp_API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userFromRepo = await _repo.Login(userForLoginDto.UserName
+            var userFromRepo = await _repo.Login(userForLoginDto.Email
                 .ToLower(), userForLoginDto.Password);
 
             if (userFromRepo == null)
                 return BadRequest("Please check Username or Password");
 
-            var claims = new[]
+            List<Claim> claims = new List<Claim>();
+
+            if (userFromRepo.UserName != null)
             {
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.UserName)
-            };
+                claims.Add(new Claim(ClaimTypes.GivenName, userFromRepo.UserName));
+            }
+
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Email, userFromRepo.Email));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 

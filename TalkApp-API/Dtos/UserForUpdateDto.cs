@@ -13,7 +13,7 @@ namespace TalkApp_API.Dtos
         public ICollection<Skill> Skills { get; set; }
         public float AvgRate { get; set; }
         public bool IsTutor { get; set; }
-
-
+        public string LastName { get; set; }
+        public string UserName { get; set; }
     }
 }

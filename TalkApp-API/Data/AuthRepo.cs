@@ -13,9 +13,9 @@ namespace TalkApp_API.Data
             this._context = context;
 
         }
-        public async Task<User> Login(string username, string password)
+        public async Task<User> Login(string email, string password)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.UserName == username);
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.Email == email);
 
             if (user == null)
                 return null;
@@ -41,9 +41,9 @@ namespace TalkApp_API.Data
             return user;
         }
 
-        public async Task<bool> UserExists(string username)
+        public async Task<bool> UserExists(string email)
         {
-            if (await _context.Users.AnyAsync(x => x.UserName == username))
+            if (await _context.Users.AnyAsync(x => x.Email == email))
                 return true;
 
             return false;

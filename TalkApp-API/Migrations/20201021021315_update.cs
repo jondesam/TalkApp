@@ -13,7 +13,9 @@ namespace TalkApp_API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),

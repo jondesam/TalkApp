@@ -1,6 +1,7 @@
 [
   {
     "Username": "Tami",
+    "Email": "Tami@mail.com",
     "Password": "password",
     "Created": "2017-05-27",
     "Introduction": "Irure laboris ad velit sit ad exercitation Lorem elit magna ea labore. Esse laborum aliqua adipisicing laboris Lorem dolore dolor officia eu elit. Exercitation qui in sunt anim sit velit. Est laborum ea aute do nostrud. Aliqua qui eu ex adipisicing in mollit veniam consectetur minim do fugiat commodo.\r\n",
@@ -27,6 +28,7 @@
   },
   {
     "Username": "Viola",
+    "Email":"Viola@mail.com",
     "Password": "password",
     "Created": "2017-03-16",
     "Introduction": "Do amet esse qui elit incididunt aliqua ullamco ea et dolore. Est magna cupidatat dolor sint sint proident est velit exercitation fugiat. Tempor culpa labore ut ipsum aute incididunt sint tempor elit. Incididunt reprehenderit cillum veniam veniam consequat in. Anim sit sit irure et duis in Lorem. Aliqua sunt labore sint eiusmod. Incididunt ex est occaecat sit eiusmod aliquip labore ea dolore.\r\n",
@@ -54,6 +56,7 @@
   },
   {
     "Username": "Vicki",
+    "Email":"Vicky@mail.com",
     "Password": "password",
     "Created": "2017-05-20",
     "Introduction": "Tempor elit deserunt dolor sint. Sunt aute proident velit velit ad. Voluptate magna reprehenderit irure amet id mollit minim.\r\n",
@@ -80,6 +83,7 @@
   },
   {
     "Username": "Leslie",
+    "Email":"Leslie@mail.com",
     "Password": "password",
     "Created": "2017-05-02",
     "Introduction": "Elit laboris sit culpa cupidatat. Sit minim irure eu do aute cupidatat enim. In do labore duis ipsum magna nisi aliquip est minim ea nostrud velit minim. Esse duis enim ipsum quis velit amet mollit reprehenderit commodo.\r\n",
@@ -106,6 +110,7 @@
   },
   {
     "Username": "Lena",
+    "Email":"Lena@mail.com",
     "Password": "password",
     "Created": "2017-06-15",
     "Introduction": "Nulla non ea enim amet elit dolor excepteur voluptate ullamco fugiat id aute anim. Sit sint nisi anim amet. Nostrud ea elit non in cillum duis qui. Id qui sunt amet duis mollit veniam do id laboris mollit officia sunt occaecat. Dolore fugiat ea esse laboris laboris sint enim esse fugiat laborum dolore laboris consequat. Do do et nisi magna exercitation proident esse duis aute nulla excepteur proident. Sunt proident eiusmod proident sunt est magna commodo velit ex nostrud commodo.\r\n",
@@ -139,7 +144,8 @@
     "IsTutor":true
   },
   {
-    "Username": "ami",
+    "Username": "cemi",
+    "Email":"cemi@mail.com",
     "Password": "password",
     "Created": "2017-05-27",
     "Introduction": "Irure laboris ad velit sit ad exercitation Lorem elit magna ea labore. Esse laborum aliqua adipisicing laboris Lorem dolore dolor officia eu elit. Exercitation qui in sunt anim sit velit. Est laborum ea aute do nostrud. Aliqua qui eu ex adipisicing in mollit veniam consectetur minim do fugiat commodo.\r\n",
@@ -167,6 +173,7 @@
   },
   {
     "Username": "Vres",
+    "Email":"vres@mail.com",
     "Password": "password",
     "Created": "2017-03-16",
     "Introduction": "Do amet esse qui elit incididunt aliqua ullamco ea et dolore. Est magna cupidatat dolor sint sint proident est velit exercitation fugiat. Tempor culpa labore ut ipsum aute incididunt sint tempor elit. Incididunt reprehenderit cillum veniam veniam consequat in. Anim sit sit irure et duis in Lorem. Aliqua sunt labore sint eiusmod. Incididunt ex est occaecat sit eiusmod aliquip labore ea dolore.\r\n",
@@ -194,6 +201,7 @@
   },
   {
     "Username": "Reus",
+    "Email":"Reus@mail.com",
     "Password": "password",
     "Created": "2017-05-20",
     "Introduction": "Tempor elit deserunt dolor sint. Sunt aute proident velit velit ad. Voluptate magna reprehenderit irure amet id mollit minim.\r\n",
@@ -221,6 +229,7 @@
   },
   {
     "Username": "Lee",
+    "Email":"Lee@mail.com",
     "Password": "password",
     "Created": "2017-05-02",
     "Introduction": "Elit laboris sit culpa cupidatat. Sit minim irure eu do aute cupidatat enim. In do labore duis ipsum magna nisi aliquip est minim ea nostrud velit minim. Esse duis enim ipsum quis velit amet mollit reprehenderit commodo.\r\n",
@@ -255,6 +264,7 @@
   },
   {
     "Username": "nadia",
+    "Email":"Nadia@mail.com",
     "Password": "password",
     "Created": "2017-06-15",
     "Introduction": "Nulla non ea enim amet elit dolor excepteur voluptate ullamco fugiat id aute anim. Sit sint nisi anim amet. Nostrud ea elit non in cillum duis qui. Id qui sunt amet duis mollit veniam do id laboris mollit officia sunt occaecat. Dolore fugiat ea esse laboris laboris sint enim esse fugiat laborum dolore laboris consequat. Do do et nisi magna exercitation proident esse duis aute nulla excepteur proident. Sunt proident eiusmod proident sunt est magna commodo velit ex nostrud commodo.\r\n",

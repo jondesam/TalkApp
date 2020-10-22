@@ -24,7 +24,7 @@ namespace TalkApp_API.Data
 
                     user.PasswordHash = passwordHash;
                     user.PasswordSalt = passwrodSalt;
-                    user.UserName = user.UserName.ToLower();
+                    user.Email = user.Email.ToLower();
                     context.Users.Add(user);
 
                 }
