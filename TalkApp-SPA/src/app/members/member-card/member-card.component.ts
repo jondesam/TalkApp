@@ -18,7 +18,7 @@ export class MemberCardComponent implements OnInit {
   model: any = {};
   modalRef: BsModalRef;
   isFavo: boolean = false;
- 
+
   constructor(
     public authService: AuthService,
     private userService: UserService,
@@ -27,8 +27,7 @@ export class MemberCardComponent implements OnInit {
     private titlecasePipe: TitleCasePipe
   ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   sendLike(recipientId: number) {
     this.userService
