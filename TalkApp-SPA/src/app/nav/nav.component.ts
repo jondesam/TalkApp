@@ -7,15 +7,11 @@ import {
 } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../_models/user';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -29,12 +25,16 @@ export class NavComponent implements OnInit {
   modalRef: BsModalRef;
   user: User;
   registerForm: FormGroup;
+  userNameNav: string = null;
+
   constructor(
     public authService: AuthService,
     private alertify: AlertifyService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -44,16 +44,17 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    console.log(this.model);
+    console.log('asdf', this.model);
     this.authService.login(this.model).subscribe(
       (next) => {
+        // this.router.navigate(['']);
         this.alertify.success('Logged in successfully');
       },
       (error) => {
         this.alertify.error(error);
       },
       () => {
-        this.router.navigate(['/members']);
+        // this.router.navigate(['/members']);
       }
     );
   }
@@ -70,36 +71,17 @@ export class NavComponent implements OnInit {
     this.authService.decodedToken = null;
     this.authService.currentUser = null;
     this.alertify.message('Logged out');
-    this.router.navigate(['/home']);
+    this.router.navigate(['']);
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
-  dropdown() {
-    const el = document.querySelector('.dropdown');
-    console.log(el);
-    el.addEventListener('click', function (event) {
-      event.stopPropagation();
-      el.classList.toggle('is-active');
-    });
-  }
 
-  loginModal() {
-    const el = document.querySelector('.modal');
-    console.log(el);
-    el.classList.toggle('is-active');
-  }
-
-  closeModal() {
-    const el = document.querySelector('.modal');
-    console.log(el);
-    el.classList.toggle('is-active');
-  }
   createRegisterForm() {
     this.registerForm = this.formBuilder.group(
       {
-        username: ['', Validators.required],
+        email: ['', Validators.required],
         password: [
           '',
           [
@@ -143,5 +125,9 @@ export class NavComponent implements OnInit {
 
   cancel() {
     this.cancelRegister.emit(false);
+  }
+
+  setChosenUserId() {
+    this.userService.setChosenUserId(this.authService.decodedToken.nameid);
   }
 }

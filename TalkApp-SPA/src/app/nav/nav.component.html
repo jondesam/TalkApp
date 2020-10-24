@@ -1,54 +1,74 @@
-<nav class="navbar navbar-expand-md navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/home']">Talk App</a>
+<nav class="navbar navbar-expand-md container-fluid">
+  <a class="navbar-brand" [routerLink]="['']">Talk App</a>
 
-    <ul *ngIf="loggedIn()" class="navbar-nav ml-auto mr-2">
+  <div class="ml-auto">
+    <ul *ngIf="loggedIn()" class="nav">
+      <li class="nav-item" routerLinkActive="router-link-active">
+        <a class="nav-link" [routerLink]="['/messagebox',authService.decodedToken.nameid]" aria-disabled="true"
+          >Message</a
+        >
+      </li>
       <li class="nav-item" routerLinkActive="router-link-active">
         <a class="nav-link" [routerLink]="['/lists']">My List</a>
       </li>
-      <li class="nav-item" routerLinkActive="router-link-active">
+    </ul>
+  </div>
+  <div *ngIf="loggedIn()" class="btn-group" dropdown>
+    <!-- <span class="mr-1"><img src="{{ mainPhotoUrl }}" /></span> -->
+
+    <a
+      id="button-basic"
+      class="dropdown-toggle btn text-primary mr-4"
+      aria-controls="dropdown-basic"
+      dropdownToggle
+      type="btn"
+      style="color: text-primary"
+
+    >
+        {{ this.authService.decodedToken.given_name | titlecase }}<span class="caret"></span>
+    </a>
+
+    <ul
+      id="dropdown-basic"
+      *dropdownMenu
+      class="dropdown-menu"
+      role="menu"
+      aria-labelledby="button-basic"
+    >
+      <li role="menuitem">
         <a
-          class="nav-link"
-          [routerLink]="['/messages']"
-          tabindex="-1"
-          aria-disabled="true"
-          >Messages</a
+          class="dropdown-item"
+          style="text-align: left"
+          (click)="setChosenUserId()"
+          [routerLink]="['/tutor/edit/', authService.decodedToken.nameid]"
         >
+         Edit Profile</a
+        >
+      </li>
+      <li role="menuitem">
+        <a class="dropdown-item" href="#" (click)="logout()"> Log Out</a>
       </li>
     </ul>
 
-    <div *ngIf="loggedIn()" class="dropdown mr-5" dropdown>
-      <a class="dropdown-toggle" dropdownToggle>
-        {{ authService.decodedToken?.unique_name | titlecase }}
-      </a>
-
-      <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item" [routerLink]="['/member/edit']">
-          Edit Profile</a
-        >
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#" (click)="logout()"> Log Out</a>
-      </div>
-    </div>
-    <div>
-      <button
-        *ngIf="!loggedIn()"
-        type="button"
-        class="btn btn-outline-primary mr-2"
-        (click)="openModal(template)"
-      >
-        Log In
-      </button>
-      <button
-        *ngIf="!loggedIn()"
-        type="button"
-        class="btn btn-primary"
-        [routerLink]="['/register/']"
-        (click)="modalRef.hide()"
-      >
-        Register
-      </button>
-    </div>
+  </div>
+  <div class="" *ngIf="!loggedIn()">
+    <a
+      *ngIf="!loggedIn()"
+      type="btn"
+      class="btn btn-outline-primary mr-2"
+      (click)="openModal(template)"
+    >
+      Log In
+    </a>
+    <a
+      *ngIf="!loggedIn()"
+      type="btn"
+      class="btn btn-primary"
+      [routerLink]="['/register/']"
+      (click)="modalRef.hide()"
+    >
+      Sign Up
+    </a>
   </div>
 </nav>
 
@@ -56,7 +76,7 @@
   <div class="modal-header">
     <h4 class="modal-title pull-left">Log in</h4>
     <button
-      type="button"
+      type="btn"
       class="close pull-right"
       aria-label="Close"
       (click)="modalRef.hide()"
@@ -73,16 +93,16 @@
       (ngSubmit)="login()"
     >
       <input
-        class="form-control mr-sm-2 inline-block input-block-level mb-2"
+        class="form-control inline-block input-block-level mb-2"
         type="text"
-        name="username"
-        placeholder="Id"
+        name="email"
+        placeholder="Email"
         aria-label="Search"
         required
-        [(ngModel)]="model.username"
+        [(ngModel)]="model.email"
       />
       <input
-        class="form-control mr-sm-2 inline-block input-block-level mb-2"
+        class="form-control inline-block input-block-level mb-2"
         type="password"
         name="password"
         placeholder="Password"
@@ -93,7 +113,7 @@
 
       <button
         [disabled]="!loginForm.valid"
-        class="btn btn-outline-success"
+        class="btn btn-outline-success loginBtn"
         type="submit"
         (click)="modalRef.hide()"
       >

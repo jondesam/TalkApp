@@ -13,3 +13,14 @@ img {
   width: 100%;
   min-height: 28px;
 }
+
+.loginBtn {
+  width: 100%;
+  display: block;
+}
+
+@media only screen and (max-width: 767px) {
+  .nav-link {
+    padding: 0.3rem;
+  }
+}
