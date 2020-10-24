@@ -78,22 +78,26 @@ export class MemberDetailComponent implements OnInit {
   }
 
   sendLike(recipientId: number) {
-    this.userService
-      .sendLike(this.authService.decodedToken.nameid, recipientId)
-      .subscribe(
-        (data) => {
-          if (data === null) {
-            this.alertify.success('Liked ' + this.user.userName);
-          } else {
-            this.alertify.error('Unliked ' + this.user.userName);
-          }
-        },
-        (error) => {
-          console.log(error);
+    if (parseInt(this.authService.decodedToken.nameid) === recipientId) {
+      return;
+    } else {
+      this.userService
+        .sendLike(this.authService.decodedToken.nameid, recipientId)
+        .subscribe(
+          (data) => {
+            if (data === null) {
+              this.alertify.success('Liked ' + this.user.userName);
+            } else {
+              this.alertify.error('Unliked ' + this.user.userName);
+            }
+          },
+          (error) => {
+            console.log(error);
 
-          // this.alertify.error("Error");
-        }
-      );
+            // this.alertify.error("Error");
+          }
+        );
+    }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -173,11 +177,8 @@ export class MemberDetailComponent implements OnInit {
       )
       .subscribe(
         (res: PaginatedResult<Rate[]>) => {
-          // console.log('loadRates', res);
-
           this.rates = res.result;
           this.pagination = res.pagination;
-          // console.log(this.senderId, this.rates);
         },
         (error) => {
           this.alertify.error(error);
