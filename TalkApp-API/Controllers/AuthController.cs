@@ -34,6 +34,7 @@ namespace TalkApp_API.Controllers
         public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
         {
             userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
+            userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
 
             if (await _repo.UserExists(userForRegisterDto.Email))
                 return BadRequest("Email already registered");
