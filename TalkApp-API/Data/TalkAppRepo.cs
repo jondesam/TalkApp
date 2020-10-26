@@ -135,24 +135,23 @@ namespace TalkApp_API.Data
             return await _context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
         }
 
-        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        public async Task<PagedList<Message>> GetPagedMessageThread(int userId, int recipientId, MessageParams messageParams)
         {
-            var messages = await _context.Messages.
+            var messages = _context.Messages.
                 Include(u => u.Sender).ThenInclude(p => p.Photos).
                 Include(u => u.Recipient).ThenInclude(p => p.Photos)
                     .Where(m => m.RecipientId == userId && m.RecipientDeleted == false
                               && m.SenderId == recipientId
                               || m.RecipientId == recipientId && m.SenderId == userId
-                              && m.SenderDeleted == false)
-                          .OrderBy(m => m.MessageSent)
-                          .ToListAsync();
+                              && m.SenderDeleted == false).
+                                OrderByDescending(m => m.MessageSent);
 
-            return messages;
+            return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
         public async Task<IEnumerable<Message>> GetLastMessages(int userId)
         {
-            var messages = _context.Messages.Where(m => m.SenderId == userId || m.RecipientId == userId);
+            var messages = await _context.Messages.Where(m => m.SenderId == userId || m.RecipientId == userId).ToListAsync();
 
             HashSet<int> ids = new HashSet<int>();
             HashSet<Message> lastMessages = new HashSet<Message>();
@@ -165,7 +164,17 @@ namespace TalkApp_API.Data
 
             foreach (var id in ids)
             {
-                var messagesList = await GetMessageThread(userId, id);
+                MessageParams messageParams = new MessageParams();
+
+                var messagesList = await _context.Messages.
+                        Include(u => u.Sender).ThenInclude(p => p.Photos).
+                        Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                        .Where(m => m.RecipientId == userId && m.RecipientDeleted == false
+                          && m.SenderId == id
+                          || m.RecipientId == id && m.SenderId == userId
+                          && m.SenderDeleted == false)
+                      .OrderBy(m => m.MessageSent).ToListAsync();
+
                 var meesaToReurn = messagesList.LastOrDefault();
 
                 if (meesaToReurn != null)
@@ -176,7 +185,6 @@ namespace TalkApp_API.Data
 
             return lastMessages.OrderByDescending(m => m.MessageSent); ;
         }
-
         public async Task<PagedList<Rate>> GetRates(RateParams rateParams)
         {
             var rates = _context.Rates.AsNoTracking()

@@ -9,7 +9,7 @@ using TalkApp_API.Data;
 namespace TalkApp_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201021021315_update")]
+    [Migration("20201021174521_update")]
     partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
