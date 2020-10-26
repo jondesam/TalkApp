@@ -104,23 +104,30 @@ export class UserService {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
 
-  sendLike(userId: number, recipientId: number) {
+  sendLike(userId: string, recipientId: number) {
     return this.http.post(
       this.baseUrl + 'users/' + userId + '/like/' + recipientId,
       {}
     );
   }
 
-  getMessages(userId: number, pageNumber?, itemsPerPage?, messageContainer?) {
-    console.log('qq');
+  getLastMessages(userId: number) {
+    return this.http.get<Message[]>(
+      this.baseUrl + 'users/' + userId + '/messages' + '/lastMessages'
+    );
+  }
 
+  getMessageThread(
+    userId: number,
+    recipientId: number,
+    pageNumber?,
+    itemsPerPage?
+  ) {
     const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
       Message[]
     >();
 
     let params = new HttpParams();
-
-    params = params.append('MessageContainer', messageContainer);
 
     if (pageNumber != null && itemsPerPage != null) {
       params = params.append('pageNumber', pageNumber);
@@ -128,10 +135,13 @@ export class UserService {
     }
 
     return this.http
-      .get<Message[]>(this.baseUrl + 'users/' + userId + '/messages', {
-        observe: 'response',
-        params,
-      })
+      .get<Message[]>(
+        this.baseUrl + 'users/' + userId + '/messages/thread/' + recipientId,
+        {
+          observe: 'response',
+          params,
+        }
+      )
       .pipe(
         map((response) => {
           paginatedResult.result = response.body;
@@ -143,20 +153,6 @@ export class UserService {
           return paginatedResult;
         })
       );
-  }
-
-  getLastMessages(userId: number) {
-    console.log('eee');
-
-    return this.http.get<Message[]>(
-      this.baseUrl + 'users/' + userId + '/messages' + '/lastMessages'
-    );
-  }
-
-  getMessageThread(userId: number, recipientId: number) {
-    return this.http.get<Message[]>(
-      this.baseUrl + 'users/' + userId + '/messages/thread/' + recipientId
-    );
   }
 
   sendMessage(userId: number, message: Message) {

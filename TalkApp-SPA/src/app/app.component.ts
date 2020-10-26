@@ -7,6 +7,7 @@ import { Message } from './_models/Message';
 import { UserService } from './_services/user.service';
 import { AlertifyService } from './_services/alertify.service';
 import { tap } from 'rxjs/operators';
+import { Pagination } from './_models/pagination';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,16 @@ export class AppComponent implements OnInit {
   _opened: boolean = false;
   recipientId: number = 0;
 
-  messages: Message[];
+  messages: Message[] = null;
   newMessage: any = {};
+  pagination: Pagination = {
+    currentPage: 1,
+    itemsPerPage: 10,
+    totalItems: 0,
+    totalPages: null,
+  };
 
+  loadMoreBtnName = 'Load more messages';
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -55,28 +63,52 @@ export class AppComponent implements OnInit {
   }
 
   loadMessages() {
+    ++this.pagination.currentPage;
+    this.setLoadMoreBtn();
     const currentUserId = +this.authService.decodedToken.nameid;
     this.userService
-      .getMessageThread(this.authService.decodedToken.nameid, this.recipientId)
+      .getMessageThread(
+        this.authService.decodedToken.nameid,
+        this.recipientId,
+        this.pagination.currentPage,
+        this.pagination.itemsPerPage
+      )
       .pipe(
         //In order to mark as read
         tap((messages) => {
-          for (let i = 0; i < messages.length; i++) {
+          console.log(messages);
+          let messagesToCheck = messages.result;
+          for (let i = 0; i < messagesToCheck.length; i++) {
             if (
-              messages[i].isRead === false &&
-              messages[i].recipientId === currentUserId
+              messagesToCheck[i].isRead === false &&
+              messagesToCheck[i].recipientId ===
+                +this.authService.decodedToken.nameid
             ) {
-              this.userService.markAsRead(currentUserId, messages[i].id);
+              this.userService.markAsRead(
+                +this.authService.decodedToken.nameid,
+                messagesToCheck[i].id
+              );
             }
           }
         })
       )
       .subscribe(
         (messages) => {
-          this.messages = messages;
+          this.pagination = messages.pagination;
+          if (this.messages === null) {
+            this.messages = messages.result.reverse();
+          } else {
+            Array.prototype.push.apply(
+              this.messages.reverse(),
+              messages.result
+            );
+            this.messages.reverse();
+          }
         },
         (error) => {
-          this.alertify.error(error);
+          console.log(error);
+
+          this.alertify.error('error');
         }
       );
   }
@@ -100,5 +132,19 @@ export class AppComponent implements OnInit {
 
   loggedIn() {
     return this.authService.loggedIn();
+  }
+
+  onClose() {
+    this.pagination.currentPage = 0;
+    this.messages = null;
+  }
+
+  setLoadMoreBtn() {
+    if (this.pagination.currentPage === this.pagination.totalPages) {
+      this.loadMoreBtnName = 'No more messages';
+      return true;
+    }
+    this.loadMoreBtnName = 'Load more messages';
+    return false;
   }
 }

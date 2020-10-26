@@ -9,7 +9,8 @@
     closeOnClickOutside="true"
     animate="true"
     [(opened)]="_opened"
-  >
+    (onClosed)="onClose()" >
+
     <div class="ng-sidebar">
       <div class="my-3 mx-4">
         <i
@@ -19,14 +20,21 @@
           style="cursor: pointer;"
         ></i>
       </div>
-
+    
       <div class="card shadow" >
-        <div class="card-body">
+        
+        <div class="card-body" >
+
+          <button class="btn btn-outline-info btn-block" 
+          [disabled]="setLoadMoreBtn()"
+          (click)="loadMessages()" >{{loadMoreBtnName}}</button>
+
+
           <div *ngIf="messages?.length === 0">
             <span class="text-muted" >Write your message here... </span>
           </div>
     
-          <ul class="chat">
+          <ul class="chat" >
             <li *ngFor="let message of messages">
 
               <!-- to them -->
@@ -53,7 +61,7 @@
     
               <!-- to me -->
               <div class="sender" *ngIf="message.senderId != recipientId">
-      
+                
                   <div class="mt-3 senderText">{{ message.content }}
                     <div class="dateU">
                       <div class="dateL">
