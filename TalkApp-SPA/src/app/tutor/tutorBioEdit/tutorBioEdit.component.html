@@ -1,48 +1,122 @@
 <div class="container">
     <div class="card p-4 ">
         <div>
-          <form #editForm="ngForm" id="editForm">
+          <form bind-formGroup="bioForm" #editForm="ngForm" id="editForm">
+
             <div class="gray" style="font-size: 1.7rem;">Bio</div>
-            <textarea
-              name="introduction"
-              rows="6"
-              class="form-control textarea mb-3"
-              [(ngModel)]="user.introduction"
-            ></textarea>
 
-            <div  class="form-group row gray">
+              <div class="form-group">
+                <textarea
+                  name="introduction"
+                  rows="6"
+                  class="form-control textarea mb-3"
+                  [(ngModel)]="user.introduction"
+                  formControlName="bio"
+                  [ngClass]="{
+                    'is-invalid':
+                      bioForm.get('bio').hasError('minlength') &&
+                      bioForm.get('bio').touched
+                  }"
+                ></textarea>
+
+                <div class="invalid-feedback" 
+                  *ngIf="bioForm.get('bio').hasError('minlength') &&
+                  bioForm.get('bio').touched"
+                
+               > Bio must be more than 200 characters long! </div>
+                <div class="invalid-feedback"> Current length : {{user.introduction.length}}</div>
+                
+            </div>
+
+            <div class="row gray">
+              <label for="username" class="label col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">First Name</label>
+              <div class="form-group col-sm-4">
+                <input type="text" class="form-control"   
+                name="username" formControlName="username"
+                [(ngModel)]="user.userName"
+                [ngClass]="{
+                  'is-invalid': 
+                   bioForm.get('username').hasError('minlength') && 
+                   bioForm.get('username').touched }">
+  
+                <div class="invalid-feedback"> First name should be more than 2 characters </div>
+              </div>
+            </div>
+
+            <div class="row gray">
+              <label for="lastname" class="label col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">Last Name</label>
+              <div class="form-group col-sm-4">
+                <input type="text" class="form-control"   
+                name="lastname" formControlName="lastname"
+                [(ngModel)]="user.lastName"
+                [ngClass]="{
+                  'is-invalid': 
+                   bioForm.get('lastname').hasError('minlength') && 
+                   bioForm.get('lastname').touched }">
+  
+                <div class="invalid-feedback"> Last name should be more than 2 characters </div>
+              </div>
+            </div>
+
+            <div  class=" row gray">
               <label for="city" class=" col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">City</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" name="city"
-                [(ngModel)]="user.city"  >
-              </div>
-            </div>
-            <div class="form-group row gray">
-              <label for="country" class="col-4 col-sm-3 col-form-label" style="font-size: 1.2rem;">Country</label>
-              <div class="col-sm-4">
-                <input type="ttext" class="form-control"       name="country"
-                [(ngModel)]="user.country">
+
+              <div class="form-group col-sm-4">
+                <input 
+                type="text" 
+                class="form-control" 
+                name="city" 
+                formControlName="city"
+                [(ngModel)]="user.city" 
+                [ngClass]="{
+                  'is-invalid': 
+                   bioForm.get('city').hasError('minlength') && 
+                   bioForm.get('city').touched }" >
+
+                <div class="invalid-feedback"   
+                >
+               
+                Required! </div>
               </div>
             </div>
 
-            <div class="form-check my-3  ">
-              <input class="form-check-input" type="radio" name="isTutor" id="radioBtn" [value]="true" [(ngModel)]="user.isTutor"          
-              >
-              <label class="form-check-label" for="isTutor" style="color:gray">
-              Register as a tutor
-              </label>
+            <div class="row gray">
+              <label for="country" class=" col-12 col-sm-3 col-form-label" style="font-size: 1.2rem;">Country</label>
+              <div class="form-group col-sm-4">
+                <input type="ttext" class="form-control"   
+                name="country" formControlName="country"
+                [(ngModel)]="user.country"
+                [ngClass]="{
+                  'is-invalid': 
+                   bioForm.get('country').hasError('minlength') && 
+                   bioForm.get('country').touched }">
+  
+                <div class="invalid-feedback"> Required! </div>
+              </div>
             </div>
 
-            <div class="form-check my-3  " >
-              <input class="form-check-input" type="radio" name="isTutor" id="radioBtn" [value]="false" [(ngModel)]="user.isTutor" 
-              >
-              <label class="form-check-label" for="isTutor" style="color:gray">
-               Cancel a tutor register
-              </label>
-            </div>
+         
+
+           
+          
          
           </form>
 
+          <div class="form-check my-3  ">
+            <input class="form-check-input" type="radio" name="isTutor" id="radioBtn" [value]="true" [(ngModel)]="user.isTutor"          
+            >
+            <label class="form-check-label" for="isTutor" style="color:gray">
+            Tutor
+            </label>
+          </div>
+
+          <div class="form-check my-3  " >
+            <input class="form-check-input" type="radio" name="isTutor" id="radioBtn" [value]="false" [(ngModel)]="user.isTutor" 
+            >
+            <label class="form-check-label" for="isTutor" style="color:gray">
+             Student
+            </label>
+          </div>
           <hr>
 
             <app-photo-editor 

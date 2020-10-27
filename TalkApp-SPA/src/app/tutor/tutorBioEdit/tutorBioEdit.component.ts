@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from 'src/app/_models/language';
 import { User } from 'src/app/_models/user';
@@ -22,17 +22,18 @@ export class TutorBioEditComponent implements OnInit {
 
   user: User;
   mainPhotoUrl: string;
-
   newLanguage: Language = {
     langueSpeak: null,
     isNative: false,
   };
+  bioForm: FormGroup;
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
-    private authService: AuthService
+    private authService: AuthService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -42,6 +43,7 @@ export class TutorBioEditComponent implements OnInit {
     this.authService.currentPhotoUrl.subscribe((mainPhotoUrl) => {
       this.mainPhotoUrl = mainPhotoUrl;
     });
+    this.createForm();
   }
 
   updateMainPhoto(photoUrl) {
@@ -59,5 +61,15 @@ export class TutorBioEditComponent implements OnInit {
           this.alertify.error('Error');
         }
       );
+  }
+
+  createForm() {
+    this.bioForm = this.formBuilder.group({
+      bio: ['', [Validators.required, Validators.minLength(200)]],
+      city: ['', [Validators.required, Validators.minLength(2)]],
+      country: ['', [Validators.required, Validators.minLength(2)]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
+      lastname: ['', [Validators.minLength(2)]],
+    });
   }
 }
