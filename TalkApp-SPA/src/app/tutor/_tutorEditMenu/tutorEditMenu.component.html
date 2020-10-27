@@ -1,21 +1,42 @@
 <div class="container">
   <div class="mt-4">
-    <div class="card shadow p-4 ">
+    <div class=" ">
       <div class="row">
         <div class="col-12" >
           <div class="topnav nav px-3" id="smScreen" >
             <a class="navmenu" (click)="collapse('Bio')"  >Bio</a>
-            <a class="navmenu" (click)="collapse('Lang')">Languages</a>
-            <a class="navmenu" (click)="collapse('Skill')">Subjects</a>
+            <a class="navmenu" (click)="collapse('Languages')">Languages</a>
+            <a class="navmenu" (click)="collapse('Subjects')">Subjects</a>
+            <a  [routerLink]="['/members/', user.id]" >My Profile</a>
           </div>
+        </div>
+
+        <div class="btn-group ml-3 col-11" dropdown id="mobile">
+          
+          <button id="button-basic" dropdownToggle type="button" class="btn mb-2 btn-outline-primary btn-block"
+                  aria-controls="dropdown-basic">
+            {{btnName}} <span class="caret"></span>
+          </button>
+
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">  <a class="navmenu" (click)="collapse('Bio')"  >Bio</a></li>
+            <li role="menuitem">  <a class="navmenu" (click)="collapse('Languages')">Languages</a></li>
+            <a class="navmenu" (click)="collapse('Subjects')">Subjects</a>
+
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"> <a class="ml-3"  [routerLink]="['/members/', user.id]" >My Profile</a>
+            </li>
+          </ul>
         </div>
 
         <div class="col-3">
           <div class="vertical-menu " id="bigScreen">
             <a  class="menu">Menu</a>
             <a (click)="collapse('Bio')" >Bio</a>
-            <a (click)="collapse('Lang')">Languages</a>
-            <a (click)="collapse('Skill')">Subjects</a>
+            <a (click)="collapse('Languages')">Languages</a>
+            <a (click)="collapse('Subjects')">Subjects</a>
+            <a  [routerLink]="['/members/', user.id]" >My Profile</a>
           </div >
         </div>
 

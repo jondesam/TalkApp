@@ -13,6 +13,7 @@ export class TutorEditMenuComponent implements OnInit {
   isLangColllapsed: boolean = true;
   isSkillColllapsed: boolean = true;
 
+  btnName: string = 'Bio';
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -22,6 +23,8 @@ export class TutorEditMenuComponent implements OnInit {
   }
 
   collapse(tabName: string) {
+    this.btnName = tabName;
+
     this.isBioColllapsed = !this.isBioColllapsed;
 
     let btnContainer = document.getElementById('smScreen');
@@ -41,13 +44,13 @@ export class TutorEditMenuComponent implements OnInit {
         this.isSkillColllapsed = true;
         break;
 
-      case 'Lang':
+      case 'Languages':
         this.isBioColllapsed = true;
         this.isLangColllapsed = false;
         this.isSkillColllapsed = true;
         break;
 
-      case 'Skill':
+      case 'Subjects':
         this.isBioColllapsed = true;
         this.isLangColllapsed = true;
         this.isSkillColllapsed = false;
