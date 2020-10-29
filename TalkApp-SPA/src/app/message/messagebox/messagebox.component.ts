@@ -1,11 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../../_services/alertify.service';
 import { AuthService } from '../../_services/auth.service';
 import { UserService } from '../../_services/user.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { tap } from 'rxjs/operators';
 import { Message } from 'src/app/_models/Message';
+import { Pagination } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-messagebox',
@@ -13,87 +13,153 @@ import { Message } from 'src/app/_models/Message';
   styleUrls: ['./messagebox.component.css'],
 })
 export class MessageboxComponent implements OnInit {
-  messages: Message[];
-  modalRef: BsModalRef;
-  recipientId: number = 0;
+  lastMessages: Message[];
   newMessage: any = {};
-  messageThread: Message[];
+  messageThread: Message[] = null;
+  chosenMessage: Message;
+  loadMoreBtnName = 'No more messages';
+
   chatWith: string = '';
-  chatPhotoWith: string = null;
+  chatPhotoWith: string = '../../../assets/user.png';
+  pagination: Pagination = {
+    currentPage: 1,
+    itemsPerPage: 10,
+    totalItems: 0,
+    totalPages: 0,
+  };
+
   constructor(
     private userService: UserService,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService,
-    private modalService: BsModalService
+    private alertify: AlertifyService
   ) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      this.messages = data['messages'];
-      console.log(this.messages);
+      this.lastMessages = data['messages'];
     });
+    this.loadThread(this.lastMessages[0]);
+
+    this.authService.setNewMessageBadge(false);
   }
 
-  closeModal() {
-    this.modalRef.hide();
+  selectMessage(message: Message) {
+    message.isRead = true;
+    this.messageThread = [];
+    this.pagination.currentPage = 1;
+    this.loadThread(message);
   }
 
-  loadThread(
-    template: TemplateRef<any>,
-    message: Message
-  ) {
-    const currentUserId = +this.authService.decodedToken.nameid;
+  loadMore() {
+    ++this.pagination.currentPage;
+    this.loadThread(this.chosenMessage);
+  }
 
-    this.recipientId = message.recipientId;
-    this.chatWith = message.recipientUserName;
-    this.chatPhotoWith = message.recipientPhotoUrl;
+  loadThread(chosenMessage: Message) {
+    this.chosenMessage = chosenMessage;
 
-    if (message.recipientId === currentUserId) {
-      this.recipientId = message.senderId;
-      this.chatWith = message.senderUserName;
-      this.chatPhotoWith = message.senderPhotoUrl;
+    //User sent message
+    if (chosenMessage.recipientId === +this.authService.decodedToken.nameid) {
+      this.newMessage.recipientId = chosenMessage.senderId;
+      this.chatWith = chosenMessage.senderUserName;
+
+      if (chosenMessage.senderPhotoUrl === null) {
+        this.chatPhotoWith = '../../../assets/user.png';
+      } else {
+        this.chatPhotoWith = chosenMessage.senderPhotoUrl;
+      }
     }
 
+    //User recieved message
+    if (chosenMessage.recipientId !== +this.authService.decodedToken.nameid) {
+      this.newMessage.recipientId = chosenMessage.recipientId;
+      this.chatWith = chosenMessage.recipientUserName;
+
+      if (chosenMessage.recipientPhotoUrl === null) {
+        this.chatPhotoWith = '../../../assets/user.png';
+      } else {
+        this.chatPhotoWith = chosenMessage.recipientPhotoUrl;
+      }
+    }
+
+    this.setLoadMoreBtn();
+
     this.userService
-      .getMessageThread(currentUserId, this.recipientId)
+      .getMessageThread(
+        +this.authService.decodedToken.nameid,
+        this.newMessage.recipientId,
+        this.pagination.currentPage,
+        this.pagination.itemsPerPage
+      )
       .pipe(
         //In order to mark as read
         tap((messages) => {
-          for (let i = 0; i < messages.length; i++) {
+          let messagesToCheck = messages.result;
+          for (let i = 0; i < messagesToCheck.length; i++) {
             if (
-              messages[i].isRead === false &&
-              messages[i].recipientId === currentUserId
+              messagesToCheck[i].isRead === false &&
+              messagesToCheck[i].recipientId ===
+                +this.authService.decodedToken.nameid
             ) {
-              this.userService.markAsRead(currentUserId, messages[i].id);
+              this.userService.markAsRead(
+                +this.authService.decodedToken.nameid,
+                messagesToCheck[i].id
+              );
             }
           }
         })
       )
       .subscribe(
         (messages) => {
-          this.messageThread = messages;
+          this.pagination = messages.pagination;
+
+          if (this.messageThread === null) {
+            this.messageThread = messages.result.reverse();
+          } else {
+            Array.prototype.push.apply(
+              this.messageThread.reverse(),
+              messages.result
+            );
+            this.messageThread.reverse();
+          }
         },
         (error) => {
-          this.alertify.error(error);
+          console.log(error);
+          this.alertify.error('error');
         }
       );
-    this.modalRef = this.modalService.show(template);
   }
 
   sendMessage() {
-    this.newMessage.recipientId = this.recipientId;
-
     this.userService
       .sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe(
         (message: Message) => {
+          this.lastMessages = this.lastMessages.filter((message) => {
+            return message.id !== this.chosenMessage.id;
+          });
+          this.chosenMessage = message;
           this.messageThread.push(message);
+          this.lastMessages.unshift(message);
           this.newMessage.content = '';
         },
         (error) => {
           this.alertify.error(error);
         }
       );
+  }
+
+  setLoadMoreBtn() {
+    if (this.pagination.currentPage === this.pagination.totalPages) {
+      this.loadMoreBtnName = 'No more messages';
+      return true;
+    }
+    if (this.lastMessages.length === 0) {
+      this.loadMoreBtnName = 'No messages';
+      return true;
+    }
+    this.loadMoreBtnName = 'Load more messages';
+    return false;
   }
 }
