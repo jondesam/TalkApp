@@ -21,11 +21,17 @@ export class AuthService {
     isOpen: false,
     recipientId: 0,
   });
+  newMessageBadge = new BehaviorSubject<boolean>(false);
+
   currentPhotoUrl = this.mainPhotoUrl.asObservable();
   currentSidebar = this.sidebarToggle.asObservable();
+  currentNewMessage = this.newMessageBadge.asObservable();
 
   constructor(private http: HttpClient) {}
 
+  setNewMessageBadge(newMessage: boolean) {
+    this.newMessageBadge.next(newMessage);
+  }
   setSidebar(setBool: boolean, recipientId: number) {
     this.sidebarToggle.next({ isOpen: setBool, recipientId: recipientId });
   }

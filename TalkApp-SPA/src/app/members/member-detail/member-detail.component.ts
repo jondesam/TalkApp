@@ -8,8 +8,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { Rate } from 'src/app/_models/rate';
 import { Router } from '@angular/router';
 import { PaginatedResult, Pagination } from 'src/app/_models/pagination';
-import { parse } from 'path';
-import { error } from 'console';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-member-detail',
@@ -191,9 +191,28 @@ export class MemberDetailComponent implements OnInit {
   }
 
   login() {
-    console.log(this.model);
     this.authService.login(this.model).subscribe(
       (next) => {
+        this.userService
+          .getLastMessages(this.authService.decodedToken.nameid)
+          .pipe(
+            catchError((error) => {
+              this.alertify.error('Problem retrieving messages');
+              // this.router.navigate(['']);
+              return of(null);
+            })
+          )
+          .subscribe((messages) => {
+            for (let i = 0; i < messages.length; i++) {
+              if (
+                messages[i].isRead === false &&
+                messages[i].recipientId ===
+                  +this.authService.decodedToken.nameid
+              ) {
+                this.authService.setNewMessageBadge(true);
+              }
+            }
+          });
         this.alertify.success('Logged in successfully');
       },
       (error) => {
@@ -205,18 +224,5 @@ export class MemberDetailComponent implements OnInit {
   toggleIsFavo(favo: boolean) {
     this.isFavo = favo;
     return this.isFavo;
-  }
-
-  getLastMessages() {
-    this.userService
-      .getLastMessages(this.authService.decodedToken.nameid)
-      .subscribe(
-        (res: any) => {
-          console.log('last messages', res);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 }

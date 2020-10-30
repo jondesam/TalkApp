@@ -4,6 +4,9 @@ import { AlertifyService } from '../../_services/alertify.service';
 import { UserService } from '../../_services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatedResult, Pagination } from 'src/app/_models/pagination';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-member-list',
@@ -19,7 +22,8 @@ export class MemberListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -29,6 +33,31 @@ export class MemberListComponent implements OnInit {
     });
     this.userParams.orderBy = 'score';
     this.userParams.search = '';
+
+    if (this.loggedIn()) {
+      console.log('GG');
+
+      this.userService
+        .getLastMessages(this.authService.decodedToken.nameid)
+        .pipe(
+          catchError((error) => {
+            this.alertify.error('Problem retrieving messages');
+            // this.router.navigate(['']);
+            return of(null);
+          })
+        )
+        .subscribe((messages) => {
+          for (let i = 0; i < messages.length; i++) {
+            if (
+              messages[i].isRead === false &&
+              messages[i].recipientId === +this.authService.decodedToken.nameid
+            ) {
+              console.log('NEW Messages D');
+              this.authService.setNewMessageBadge(true);
+            }
+          }
+        });
+    }
   }
 
   pageChanged(event: any): void {
@@ -61,5 +90,9 @@ export class MemberListComponent implements OnInit {
 
   setBtnName(btnName: string) {
     this.btnName = btnName;
+  }
+
+  loggedIn() {
+    return this.authService.loggedIn();
   }
 }

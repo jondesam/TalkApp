@@ -3,42 +3,42 @@
     <div class="col-12">
       <div class="card shadow p-5 mb-3">
         <div class="media">
-          <div class="media-left">
-            <figure class="image is-128x128">
-              <div class="photobox">
-              <img
-                class="profile float:left"
-                src="{{ user.photoUrl || 'assets/user.png' }}"
-                alt="{{ user.userName }}"/>
-            
-              <button
-              class="btn  photobtn"
-              *ngIf="loggedIn()"
-              (click)="sendLike(user.id)" >
-            
-              <i class="fa fa-heart"></i>
-            </button>
-          </div>
-            </figure>
-          </div>
+            <div class="media-left">
+              <figure class="image is-128x128">
+                <div class="photobox">
+                <img
+                  class="profile float:left"
+                  src="{{ user.photoUrl || 'assets/user.png' }}"
+                  alt="{{ user.userName }}"/>
+              
+                    <button
+                    class="btn  photobtn"
+                    *ngIf="loggedIn()"
+                    (click)="sendLike(user.id)" >
+                  
+                    <i class="fa fa-heart"></i>
+                  </button>
+                </div>
+              </figure>
+            </div>
           <div class="media-content pl-2 pr-2 ml-3">
             <div style="font-size: 1.5rem;">
-              {{ user.userName | titlecase }}
+              {{ user.userName | titlecase }} {{user.lastName? (user.lastName.substring(0, 1) +'.' | titlecase ):null }}
             </div>
-    
-          <div class=""  *ngIf="user.languages.length > 0">Speaks
-              <div
-              class="skill"
-              style="display: inline-block"
-              *ngFor="let language of user.languages">
-              <div>
-             
-                <ul class="list-inline mb-0">
-                  <li class="language mr-1 lang">{{language?.langueSpeak |titlecase }}</li>
-                </ul>
+        
+              <div class=""  *ngIf="user.languages.length > 0">Speaks
+                  <div
+                  class="skill"
+                  style="display: inline-block"
+                  *ngFor="let language of user.languages">
+                  <div>
+                
+                    <ul class="list-inline mb-0">
+                      <li class="language mr-1 lang">{{language?.langueSpeak |titlecase }}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
                 <!-- <span class=" badge badge-pill badge-secondary">Native</span> -->
  
             <div  *ngIf="user.city">
@@ -51,7 +51,6 @@
               >
             </p>
           </div>
-
         </div>
 
         <div class="content">
@@ -213,7 +212,7 @@
         </div>
       </div>
 
-      <div class="card shadow p-5">
+      <div class="card shadow p-5" *ngIf="rates.length > 0">
         <div class="reviews mb-3">
           <span class="fa fa-star star mr-2"></span
           ><span class="normal mr-4">{{ avgRate.toFixed(1) }}</span>

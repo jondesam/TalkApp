@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { Rate } from 'src/app/_models/rate';
-import { Skill } from 'src/app/_models/skill';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TitleCasePipe } from '@angular/common';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-member-card',
@@ -24,7 +25,8 @@ export class MemberCardComponent implements OnInit {
     private userService: UserService,
     private alertify: AlertifyService,
     private modalService: BsModalService,
-    private titlecasePipe: TitleCasePipe
+    private titlecasePipe: TitleCasePipe,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -59,9 +61,29 @@ export class MemberCardComponent implements OnInit {
   }
 
   login() {
-    console.log(this.model);
     this.authService.login(this.model).subscribe(
       (next) => {
+        this.userService
+          .getLastMessages(this.authService.decodedToken.nameid)
+          .pipe(
+            catchError((error) => {
+              this.alertify.error('Problem retrieving messages');
+              this.router.navigate(['']);
+              return of(null);
+            })
+          )
+          .subscribe((messages) => {
+            for (let i = 0; i < messages.length; i++) {
+              if (
+                messages[i].isRead === false &&
+                messages[i].recipientId ===
+                  +this.authService.decodedToken.nameid
+              ) {
+                this.authService.setNewMessageBadge(true);
+              }
+            }
+          });
+
         this.alertify.success('Logged in successfully');
       },
       (error) => {

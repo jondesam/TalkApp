@@ -5,7 +5,7 @@
     <ul *ngIf="loggedIn()" class="nav">
       <li class="nav-item" routerLinkActive="router-link-active">
         <a class="nav-link" [routerLink]="['/messagebox',authService.decodedToken.nameid]" aria-disabled="true"
-          >Message</a
+          >Message <span class="badge badge-pill badge-danger" *ngIf="newMassageBadge">N</span></a
         >
       </li>
       <li class="nav-item" routerLinkActive="router-link-active">
@@ -18,7 +18,7 @@
 
     <a
       id="button-basic"
-      class="dropdown-toggle btn text-primary mr-4"
+      class="dropdown-toggle btn text-primary mr-4 nav-link"
       aria-controls="dropdown-basic"
       dropdownToggle
       type="btn"

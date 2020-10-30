@@ -20,7 +20,7 @@
           [routerLink]="['/members/', user.id]"
           (click)="setChosenUserId()"
         >
-          {{ user.userName | titlecase }}
+          {{ user.userName | titlecase }} {{user.lastName? (user.lastName.substring(0, 1) +'.' | titlecase ):null }}
         </div>
 
         <div *ngFor="let language of user.languages; let i=index" >

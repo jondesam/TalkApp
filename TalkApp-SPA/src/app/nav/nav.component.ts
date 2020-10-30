@@ -12,6 +12,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -26,6 +28,7 @@ export class NavComponent implements OnInit {
   user: User;
   registerForm: FormGroup;
   userNameNav: string = null;
+  newMassageBadge: boolean = false;
 
   constructor(
     public authService: AuthService,
@@ -41,12 +44,35 @@ export class NavComponent implements OnInit {
     this.authService.currentPhotoUrl.subscribe(
       (mainPhotoUrl) => (this.mainPhotoUrl = mainPhotoUrl)
     );
+    this.authService.currentNewMessage.subscribe(
+      (newMassageBadge) => (this.newMassageBadge = newMassageBadge)
+    );
   }
 
   login() {
     console.log('asdf', this.model);
     this.authService.login(this.model).subscribe(
       (next) => {
+        this.userService
+          .getLastMessages(this.authService.decodedToken.nameid)
+          .pipe(
+            catchError((error) => {
+              this.alertify.error('Problem retrieving messages');
+              // this.router.navigate(['']);
+              return of(null);
+            })
+          )
+          .subscribe((messages) => {
+            for (let i = 0; i < messages.length; i++) {
+              if (
+                messages[i].isRead === false &&
+                messages[i].recipientId ===
+                  +this.authService.decodedToken.nameid
+              ) {
+                this.authService.setNewMessageBadge(true);
+              }
+            }
+          });
         // this.router.navigate(['']);
         this.alertify.success('Logged in successfully');
       },
